@@ -83,6 +83,8 @@ class SwitchBridgeServer:
 
             if response_msg.is_error:
                 self._logger.error(f'SwitchBridgeServer: Request was processed with errors. Error message: {response_msg.error_message}')
+            else:
+                self._loger.info('SwitchBridgeServer: Processing complete.')
 
             response_json = response_msg.to_json()
             self._websocket_server.send_message(client, response_json)
