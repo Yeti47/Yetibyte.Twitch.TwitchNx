@@ -72,7 +72,7 @@ class SwitchBridgeServer:
 
 
     def _process_get_status_message(self, client, message)->SwitchBridgeMessage:
-        nxbt_status = self._nxbt.status
+        nxbt_status = self._nxbt.state
 
         payload = { 'Status': 'OK', 'ControllerStates': [] }
 
