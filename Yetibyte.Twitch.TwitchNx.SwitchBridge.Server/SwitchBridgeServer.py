@@ -54,7 +54,7 @@ class SwitchBridgeServer:
 
     def _on_message_received(self, client, message)->None:
 
-        self._logger.info('SwitchBridgeServer: Received message. Processing...')
+        self._logger.info('SwitchBridgeServer: Received message')
         
         switch_bridge_msg = None
 
@@ -67,11 +67,15 @@ class SwitchBridgeServer:
             self._logger.error(f'SwitchBridgeServer: Unable to process message "{message}".')
             return
 
+        self._logger.info('SwitchBridgeServer: MessageType: {switch_bridge_msg.message_type} | MessageId: {switch_bridge_msg.id}')
+
         processor = self._message_processor_map.get(switch_bridge_msg.message_type, None)
 
         if not processor:
             self._logger.error(f'SwitchBridgeServer: Message type "switch_bridge_msg.message_type" cannot be processed.')
             return
+
+        self._logger.info('SwitchBridgeServer: Processing message...')
 
         response_msg = processor(client, switch_bridge_msg)
 
@@ -126,6 +130,8 @@ class SwitchBridgeServer:
 
         controller_id = -1
 
+        self._logger.info(f'SwitchBridgeServer: Creating controller {controller_type_str}...')
+
         try:
             controller_id = self._nxbt.create_controller(controller_type)
         except Exception as ex:
@@ -133,6 +139,8 @@ class SwitchBridgeServer:
                                        is_error=True, 
                                        error_code = SwitchBridgeServer.ERROR_CODE_BAD_PAYLOAD,
                                        error_message=str(ex))
+
+        self._logger.info('SwitchBridgeServer: Controller created.')
 
         return SwitchBridgeMessage(message.id, message.message_type, 
                                    { "ControllerId": controller_id, "ControllerType": controller_type_str })
@@ -155,6 +163,8 @@ class SwitchBridgeServer:
                                        error_code = SwitchBridgeServer.ERROR_CODE_CONTROLLER_DOES_NOT_EXISTS,
                                        error_message=f'Controller with ID {controller_id} does not exist.')
 
+        self._logger.info(f'SwitchBridgeServer: Removing controller {controller_id}...')
+
         try:
             self._nxbt.remove_controller(controller_id)
         except Exception as ex:
@@ -163,6 +173,8 @@ class SwitchBridgeServer:
                                        error_code = SwitchBridgeServer.ERROR_CODE_INTERNAL, 
                                        error_message=str(ex))
         
+        self._logger.info('SwitchBridgeServer: Controller removed.')
+
         return SwitchBridgeMessage(message.id, message.message_type, {} )
 
 
@@ -187,6 +199,8 @@ class SwitchBridgeServer:
                                        error_code = SwitchBridgeServer.ERROR_CODE_CONTROLLER_DOES_NOT_EXISTS,
                                        error_message=f'Controller with ID {controller_id} does not exist.')
 
+        self._logger.info(f'SwitchBridgeServer: Executing macro for controller {controller_id}...')
+
         try:
             macro_id = self._nxbt.macro(controller_id, macro, block=False)
 
@@ -196,6 +210,8 @@ class SwitchBridgeServer:
                                        is_error=True, 
                                        error_code = SwitchBridgeServer.ERROR_CODE_INTERNAL,
                                        error_message=str(ex))
+
+        self._logger.info('SwitchBridgeServer: Macro executed.')
 
         return SwitchBridgeMessage(message.id, message.message_type, { "MacroId": macro_id, "ControllerId": controller_id } )
 
