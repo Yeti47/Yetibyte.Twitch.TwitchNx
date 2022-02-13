@@ -112,12 +112,11 @@ class SwitchBridgeServer:
         return response_msg
 
 
-if __name__ == '__main__':
-
+def main(argv):
     port = 4769
 
     try:
-        opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
+        opts, args = getopt.getopt(argv, 'p:', ['port='])
     except getopt.GetoptError:
         pass
     for opt, arg in opts:
@@ -129,3 +128,10 @@ if __name__ == '__main__':
     switch_bridge_server = SwitchBridgeServer(port=port, logger=logger)
 
     switch_bridge_server.run_forever()
+
+
+if __name__ == '__main__':
+
+    main(sys.argv[1:])
+
+    
