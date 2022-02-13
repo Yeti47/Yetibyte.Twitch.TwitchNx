@@ -26,7 +26,7 @@ class SwitchBridgeServer:
     def __init__(self, port = 4769, logger: logging.Logger = None):
         self._logger = logger or logging.Logger("_NULL_LOGGER_")
         self._nxbt = nxbt.Nxbt()
-        self._websocket_server = WebsocketServer(port=port, loglevel=logger.level)
+        self._websocket_server = WebsocketServer(port=port, loglevel=self._logger.level)
 
         self._message_processor_map = {
             SwitchBridgeServer.MSG_TYPE_GET_STATUS:           lambda client, message: self._process_get_status_message(client, message),
