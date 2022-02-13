@@ -125,7 +125,7 @@ class SwitchBridgeServer:
         except Exception as ex:
             return SwitchBridgeMessage(message.id, message.message_type, {}, 
                                        is_error=True, 
-                                       error_code = SwitchBridgeServer.ERROR_CODE_BAD_PAYLOAD 
+                                       error_code = SwitchBridgeServer.ERROR_CODE_BAD_PAYLOAD,
                                        error_message=str(ex))
 
         return SwitchBridgeMessage(message.id, message.message_type, 
