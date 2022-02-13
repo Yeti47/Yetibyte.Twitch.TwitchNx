@@ -44,6 +44,8 @@ class SwitchBridgeServer:
 
 
     def _on_message_received(self, client, message)->None:
+
+        self._logger.info('SwitchBridgeServer: Received message. Processing...')
         
         switch_bridge_msg = None
 
@@ -124,6 +126,7 @@ def main(argv):
             port = int(arg)
 
     logger = logging.Logger('SWITCH_BRIDGE_SERVER', logging.INFO)
+    logger.addHandler(logging.StreamHandler())
 
     switch_bridge_server = SwitchBridgeServer(port=port, logger=logger)
 

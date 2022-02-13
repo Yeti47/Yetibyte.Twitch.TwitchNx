@@ -22,6 +22,10 @@ def main():
 
     message = SwitchBridgeMessage("12345", "GET_STATUS", {})
 
+    message_json = message.to_json()
+
+    client_websocket.send(message_json)
+
     response_json = client_websocket.recv()
 
     print("Status Received: " + response_json)
