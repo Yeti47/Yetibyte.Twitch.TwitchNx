@@ -24,7 +24,7 @@ def main():
 
     message_json = message.to_json()
 
-    client_websocket.send(message_json)
+    ret = client_websocket.send(message_json)
 
     response_json = client_websocket.recv()
 
