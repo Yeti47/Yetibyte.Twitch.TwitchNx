@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32126.317
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Yetibyte.Twitch.TwitchNx.SwitchBridge.Server", "Yetibyte.Twitch.TwitchNx.SwitchBridge.Server\Yetibyte.Twitch.TwitchNx.SwitchBridge.Server.pyproj", "{2A7DEBDD-760E-49CF-A72C-1C4EE77F86EB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2A7DEBDD-760E-49CF-A72C-1C4EE77F86EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A7DEBDD-760E-49CF-A72C-1C4EE77F86EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {94D78899-ABEF-48F6-A7E1-6322DEB32F38}
+	EndGlobalSection
+EndGlobal
