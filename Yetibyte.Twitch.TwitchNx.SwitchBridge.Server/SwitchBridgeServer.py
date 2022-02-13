@@ -12,8 +12,15 @@ class SwitchBridgeMessage:
     id: str = field(metadata=config(field_name='Id'))
     message_type: str = field(metadata=config(field_name='MessageType'))
     payload: dict = field(metadata=config(field_name='Payload'))
+    is_error: bool = field(metadata=config(field_name='IsError'), default=False)
+    error_message: str = field(metadata=config(field_name='ErrorMessage'), default='')
+    error_code: str = field(metadata=config(field_name='ErrorCode'), default='')
 
 class SwitchBridgeServer:
+
+    ERROR_CODE_PAYLOAD_FORMAT = "PAYLOAD_FORMAT"
+    ERROR_CODE_BAD_PAYLOAD = "BAD_PAYLOAD"
+    ERROR_CODE_CONTROLLER_EXISTS = "CONTROLLER_EXISTS"
 
     MSG_TYPE_CONNECT = "CONNECT"
     MSG_TYPE_GET_STATUS = "GET_STATUS"
@@ -90,9 +97,40 @@ class SwitchBridgeServer:
         return response_msg
          
 
-    def _process_create_controller_message(self, client, message)->SwitchBridgeMessage:
-        pass
+    def _process_create_controller_message(self, client, message)->SwitchBridgeMessage:     
+        
+        controller_type = nxbt.PRO_CONTROLLER
+        controller_type_str = "PRO_CONTROLLER"
 
+        try:
+            controller_type_str = message.payload.get("ControllerType", "PRO_CONTROLLER")
+
+            if controller_type_str == "JOYCON_L":
+                controller_type = nxbt.JOYCON_L
+            elif controller_type_str == "JOYCON_R":
+                controller_type = nxbt.JOYCON_R
+            else:
+                controller_type_str = "PRO_CONTROLLER"
+
+        except Exception as ex:
+            return SwitchBridgeMessage(message.id, message.message_type, {}, 
+                                       is_error=True, 
+                                       error_code = SwitchBridgeServer.ERROR_CODE_PAYLOAD_FORMAT, 
+                                       error_message=str(ex))
+
+        controller_id = -1
+
+        try:
+            controller_id = self._nxbt.create_controller(controller_type)
+        except Exception as ex:
+            return SwitchBridgeMessage(message.id, message.message_type, {}, 
+                                       is_error=True, 
+                                       error_code = SwitchBridgeServer.ERROR_CODE_BAD_PAYLOAD 
+                                       error_message=str(ex))
+
+        return SwitchBridgeMessage(message.id, message.message_type, 
+                                   { "ControllerId": controller_id, "ControllerType": controller_type_str })
+            
 
     def _process_remove_controller_message(self, client, message)->SwitchBridgeMessage:
         pass
@@ -112,6 +150,9 @@ class SwitchBridgeServer:
         response_msg = SwitchBridgeMessage(message.id, message.message_type, payload)
 
         return response_msg
+
+    def _has_controller(self, controller_id)->bool:
+        return controller_id in self._nxbt.state
 
 
 def main(argv):

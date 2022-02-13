@@ -21,16 +21,48 @@ def main():
     client_websocket.connect(address)
 
     message = SwitchBridgeMessage("12345", "GET_STATUS", {})
-
     message_json = message.to_json()
 
-    ret = client_websocket.send(message_json)
+    print("Sending GET_STATUS request...")
+
+    client_websocket.send(message_json)
 
     response_json = client_websocket.recv()
 
     print("Status Received: " + response_json)
 
-    response = SwitchBridgeMessage.from_json(response_json)
+    contr_message = SwitchBridgeMessage("12346", "CREATE_CONTROLLER", { "ControllerType": "PRO_CONTROLLER" })
+    contr_message_json = contr_message.to_json()
+
+    print("Sending CREATE_CONTROLLER request...")
+
+    client_websocket.send(contr_message_json)
+
+    response_json = client_websocket.recv()
+
+    print("CreateController Response Received: " + response_json)
+
+    message = SwitchBridgeMessage("12345", "GET_STATUS", {})
+    message_json = message.to_json()
+
+    print("Sending GET_STATUS request...")
+
+    client_websocket.send(message_json)
+
+    response_json = client_websocket.recv()
+
+    print("Status Received: " + response_json)
+
+    addr_message = SwitchBridgeMessage("12346", "GET_SWITCH_ADDRESSES", {})
+    addr_message_json = addr_message.to_json()
+
+    print("Sending GET_SWITCH_ADDRESSES request...")
+
+    client_websocket.send(addr_message_json)
+
+    response_json = client_websocket.recv()
+
+    print("Switch Addresses Received: " + response_json)
 
     print("Press any key to quit.")
     
