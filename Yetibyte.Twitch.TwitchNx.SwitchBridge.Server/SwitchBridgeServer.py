@@ -67,7 +67,7 @@ class SwitchBridgeServer:
             self._logger.error(f'SwitchBridgeServer: Unable to process message "{message}".')
             return
 
-        self._logger.info('SwitchBridgeServer: MessageType: {switch_bridge_msg.message_type} | MessageId: {switch_bridge_msg.id}')
+        self._logger.info(f'SwitchBridgeServer: MessageType: {switch_bridge_msg.message_type} | MessageId: {switch_bridge_msg.id}')
 
         processor = self._message_processor_map.get(switch_bridge_msg.message_type, None)
 
