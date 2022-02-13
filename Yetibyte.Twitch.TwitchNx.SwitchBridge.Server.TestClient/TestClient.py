@@ -17,7 +17,7 @@ def main():
 
     address = input("Please enter the server's address (including the port):")
 
-    client_websocket = websocket.WebSocket(skip_utf8_validation=True)
+    client_websocket = websocket.WebSocket()
     client_websocket.connect(address)
 
     message = SwitchBridgeMessage("12345", "GET_STATUS", {})
