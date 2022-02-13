@@ -27,6 +27,7 @@ class SwitchBridgeServer:
         self._logger = logger or logging.Logger("_NULL_LOGGER_")
         self._nxbt = nxbt.Nxbt()
         self._websocket_server = WebsocketServer(port=port, loglevel=self._logger.level)
+        self._websocket_server.set_fn_message_received = (lambda client, server, message: self._on_message_received(client, message))
 
         self._message_processor_map = {
             SwitchBridgeServer.MSG_TYPE_GET_STATUS:           lambda client, message: self._process_get_status_message(client, message),
@@ -39,7 +40,6 @@ class SwitchBridgeServer:
 
 
     def run_forever(self)->None:
-        self._websocket_server.set_fn_message_received = (lambda client, server, message: self._on_message_received(client, message))
         self._websocket_server.run_forever()
 
 
