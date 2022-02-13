@@ -121,7 +121,7 @@ def main(argv):
         pass
     for opt, arg in opts:
         if opt in ('-p', '--port'):
-            port = arg
+            port = int(arg)
 
     logger = logging.Logger('SWITCH_BRIDGE_SERVER', logging.INFO)
 
