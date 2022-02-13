@@ -42,7 +42,7 @@ def main():
 
     print("CreateController Response Received: " + response_json)
 
-    message = SwitchBridgeMessage("12345", "GET_STATUS", {})
+    message = SwitchBridgeMessage("12347", "GET_STATUS", {})
     message_json = message.to_json()
 
     print("Sending GET_STATUS request...")
@@ -53,7 +53,7 @@ def main():
 
     print("Status Received: " + response_json)
 
-    addr_message = SwitchBridgeMessage("12346", "GET_SWITCH_ADDRESSES", {})
+    addr_message = SwitchBridgeMessage("12348", "GET_SWITCH_ADDRESSES", {})
     addr_message_json = addr_message.to_json()
 
     print("Sending GET_SWITCH_ADDRESSES request...")
