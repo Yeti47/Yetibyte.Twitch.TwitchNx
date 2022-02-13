@@ -1,6 +1,8 @@
 import nxbt
 import logging
 import sys, getopt
+import os
+import asyncio
 
 from dataclasses import dataclass, field
 from dataclasses_json import config, dataclass_json
@@ -21,8 +23,9 @@ class SwitchBridgeServer:
     ERROR_CODE_PAYLOAD_FORMAT = "PAYLOAD_FORMAT"
     ERROR_CODE_BAD_PAYLOAD = "BAD_PAYLOAD"
     ERROR_CODE_CONTROLLER_EXISTS = "CONTROLLER_EXISTS"
+    ERROR_CODE_CONTROLLER_DOES_NOT_EXISTS = "CONTROLLER_DOES_NOT_EXIST"
+    ERROR_CODE_INTERNAL = "INTERNAL"
 
-    MSG_TYPE_CONNECT = "CONNECT"
     MSG_TYPE_GET_STATUS = "GET_STATUS"
     MSG_TYPE_CREATE_CONTROLLER = "CREATE_CONTROLLER"
     MSG_TYPE_REMOVE_CONTROLLER = "REMOVE_CONTROLLER"
@@ -40,7 +43,6 @@ class SwitchBridgeServer:
             SwitchBridgeServer.MSG_TYPE_GET_STATUS:           lambda client, message: self._process_get_status_message(client, message),
             SwitchBridgeServer.MSG_TYPE_CREATE_CONTROLLER:    lambda client, message: self._process_create_controller_message(client, message),
             SwitchBridgeServer.MSG_TYPE_REMOVE_CONTROLLER:    lambda client, message: self._process_remove_controller_message(client, message),
-            SwitchBridgeServer.MSG_TYPE_CONNECT:              lambda client, message: self._process_connect_message(client, message),
             SwitchBridgeServer.MSG_TYPE_GET_SWITCH_ADDRESSES: lambda client, message: self._process_get_switch_addresses_message(client, message),
             SwitchBridgeServer.MSG_TYPE_MACRO:                lambda client, message: self._process_macro_message(client, message),
         }
@@ -74,6 +76,10 @@ class SwitchBridgeServer:
         response_msg = processor(client, switch_bridge_msg)
 
         if response_msg:
+
+            if response_msg.is_error:
+                self._logger.error(f'SwitchBridgeServer: Request was processed with errors. Error message: {response_msg.error_message}')
+
             response_json = response_msg.to_json()
             self._websocket_server.send_message(client, response_json)
 
@@ -133,15 +139,85 @@ class SwitchBridgeServer:
             
 
     def _process_remove_controller_message(self, client, message)->SwitchBridgeMessage:
-        pass
+        controller_id = -1
 
+        try:
+            controller_id = message.payload['ControllerId']
+        except Exception as ex:
+            return SwitchBridgeMessage(message.id, message.message_type, {}, 
+                                       is_error=True, 
+                                       error_code = SwitchBridgeServer.ERROR_CODE_PAYLOAD_FORMAT, 
+                                       error_message=str(ex))
 
-    def _process_connect_message(self, client, message)->SwitchBridgeMessage:
-        pass
+        if not self._has_controller(controller_id):
+            return SwitchBridgeMessage(message.id, message.message_type, {}, 
+                                       is_error=True, 
+                                       error_code = SwitchBridgeServer.ERROR_CODE_CONTROLLER_DOES_NOT_EXISTS,
+                                       error_message=f'Controller with ID {controller_id} does not exist.')
+
+        try:
+            self._nxbt.remove_controller(controller_id)
+        except Exception as ex:
+            return SwitchBridgeMessage(message.id, message.message_type, {}, 
+                                       is_error=True, 
+                                       error_code = SwitchBridgeServer.ERROR_CODE_INTERNAL, 
+                                       error_message=str(ex))
+        
+        return SwitchBridgeMessage(message.id, message.message_type, {} )
 
 
     def _process_macro_message(self, client, message)->SwitchBridgeMessage:
-        pass
+        
+        macro = ''
+        controller_id = -1
+        macro_id = ''
+
+        try:
+            macro = message.payload['Macro']
+            controller_id = message.payload['ControllerId']
+        except Exception as ex:
+            return SwitchBridgeMessage(message.id, message.message_type, {}, 
+                                       is_error=True, 
+                                       error_code = SwitchBridgeServer.ERROR_CODE_PAYLOAD_FORMAT, 
+                                       error_message=str(ex))
+
+        if not self._has_controller(controller_id):
+            return SwitchBridgeMessage(message.id, message.message_type, {}, 
+                                       is_error=True, 
+                                       error_code = SwitchBridgeServer.ERROR_CODE_CONTROLLER_DOES_NOT_EXISTS,
+                                       error_message=f'Controller with ID {controller_id} does not exist.')
+
+        try:
+            macro_id = self._nxbt.macro(controller_id, macro, block=False)
+
+            send_macro_complete_task = asyncio.create_task(_wait_for_macro_completion(client, macro_id, controller_id))
+        except Exception as ex:
+            return SwitchBridgeMessage(message.id, message.message_type, {}, 
+                                       is_error=True, 
+                                       error_code = SwitchBridgeServer.ERROR_CODE_INTERNAL,
+                                       error_message=str(ex))
+
+        return SwitchBridgeMessage(message.id, message.message_type, { "MacroId": macro_id, "ControllerId": controller_id } )
+
+
+    async def _wait_for_macro_completion(self, client, macro_id, controller_id)->None:
+
+        while controller_id in self._nxbt.state and macro_id not in self._nxbt.state[controller_id]['finished_macros']:
+            await asyncio.sleep(0.01)
+
+        self._send_macro_complete_message(client, macro_id, controller_id)
+
+
+    def _send_macro_complete_message(self, client, macro_id, controller_id)->SwitchBridgeMessage:
+
+        message_id = os.urandom(24).hex()
+
+        message = SwitchBridgeMessage(message_id, SwitchBridgeServer.MSG_TYPE_MACRO_COMPLETE, { "MacroId": macro_id, "ControllerId": controller_id } )
+        message_json = message.to_json()
+
+        self._websocket_server.send_message(client, message_json)
+
+        return message
 
 
     def _process_get_switch_addresses_message(self, client, message)->SwitchBridgeMessage:
