@@ -100,7 +100,7 @@ class SwitchBridgeServer:
                 'Id': k, 
                 'State': nxbt_status[k]['state'],
                 'Type': nxbt_status[k]['type'],
-                'IsError': nxbt_status[k]['errors'],
+                'Errors': nxbt_status[k]['errors'] or '',
                 'FinishedMacros': nxbt_status[k]['finished_macros']
             })
 
