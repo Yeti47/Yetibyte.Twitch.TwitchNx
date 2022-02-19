@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Timers;
@@ -24,6 +25,8 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
         #endregion
 
         #region Props
+
+        public IList<SwitchController> Controllers => new ReadOnlyCollection<SwitchController>(_controllers);
 
         public SwitchConnectorState State
         {
@@ -153,14 +156,18 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
         private void InitializeClient(SwitchBridgeClientConnectionSettings connectionSettings)
         {
             if (_client is not null)
-                _client.ConnectionSettings = connectionSettings;
-            else
             {
-                _client = _clientFactory.CreateClient(connectionSettings);
-                _client.MessageReceived += client_MessageReceived;
-                _client.Connected += client_Connected;
-                _client.Disconnected += client_Disconnected;
+                _client.MessageReceived -= client_MessageReceived;
+                _client.Connected -= client_Connected;
+                _client.Disconnected -= client_Disconnected;
+
+                _client.Dispose();
             }
+
+            _client = _clientFactory.CreateClient(connectionSettings);
+            _client.MessageReceived += client_MessageReceived;
+            _client.Connected += client_Connected;
+            _client.Disconnected += client_Disconnected;
         }
 
         public bool DisconnectAsync() => _client?.DisconnectAsync() ?? false;

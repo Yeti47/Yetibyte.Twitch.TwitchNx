@@ -18,6 +18,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         private readonly ToolViewModel[] _tools;
 
         public SwitchConnectionViewModel SwitchConnectionViewModel { get; private set; }
+        public SwitchControlViewModel SwitchControlViewModel { get; private set; }
 
         public IEnumerable<ToolViewModel> Tools => _tools;
 
@@ -31,10 +32,12 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             SwitchConnectionViewModel = new SwitchConnectionViewModel(switchConnector);
             SwitchConnectionViewModel.PropertyChanged += SwitchConnectionViewModel_PropertyChanged;
 
+            SwitchControlViewModel = new SwitchControlViewModel(switchConnector);
+
             _projectManager.ProjectChanged += projectManager_ProjectChanged;
             _projectManager.ProjectChanging += _projectManager_ProjectChanging;
 
-            _tools = new ToolViewModel[] { SwitchConnectionViewModel };
+            _tools = new ToolViewModel[] { SwitchConnectionViewModel, SwitchControlViewModel };
         }
 
         private void _projectManager_ProjectChanging(object? sender, EventArgs e)

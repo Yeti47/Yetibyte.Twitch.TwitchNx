@@ -52,7 +52,7 @@
             <LayoutRoot>
                 <LayoutPanel Orientation="Vertical">
                     <LayoutDocumentPane />
-                    <LayoutAnchorablePane Name="ToolsPane" DockHeight="150" />
+                    <LayoutAnchorablePane Name="ToolsPane" DockHeight="200" />
                 </LayoutPanel>
             </LayoutRoot>
         </DockingManager>

@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="Yetibyte.Twitch.TwitchNx.Mvvm.Views.SwitchControlView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:db="clr-namespace:Yetibyte.Twitch.TwitchNx.DataBinding"
+             xmlns:st="clr-namespace:Yetibyte.Twitch.TwitchNx.Styling"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:local="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="400">
+    <UserControl.Resources>
+        <db:ControllerTypeToImageSourceConverter x:Key="ControllerTypeToImageSourceConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="0" HorizontalAlignment="Stretch" Style="{StaticResource ResourceKey=FormDock}" >
+            <Label DockPanel.Dock="Left" FontWeight="SemiBold" Width="100">Switch Address:</Label>
+            <st:LeftStretchPanel>
+                <TextBox IsReadOnly="True" Text="{Binding Path=SwitchAddress, Mode=OneWay}" Width="Auto" VerticalContentAlignment="Center"/>
+            </st:LeftStretchPanel>
+        </DockPanel>
+        <ListBox Grid.Row="1" ItemsSource="{Binding Path=Controllers}" SelectedItem="{Binding Path=SelectedController}" Margin="4,4">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="3*" />
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0">
+                            <Image Source="{Binding Path=ControllerType, Converter={StaticResource ControllerTypeToImageSourceConverter}}"
+                                   Width="Auto" Height="Auto" />
+                        </Border>
+                        <Border Grid.Column="1">
+
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <StackPanel Grid.Row="2" VerticalAlignment="Center">
+            <xctk:SplitButton HorizontalAlignment="Stretch" Margin="4,0" Content="Add Controller" Command="{Binding Path=AddControllerCommand}">
+                <xctk:SplitButton.DropDownContent>
+                    <Grid>
+                        <StackPanel Margin="4">
+                            <Label FontWeight="SemiBold">Controller Type:</Label>
+                            <RadioButton GroupName="ControllerType" IsChecked="{Binding Path=IsProControllerChecked}">Pro Controller</RadioButton>
+                            <RadioButton GroupName="ControllerType" IsChecked="{Binding Path=IsJoyConLeftChecked}"   >JoyCon Left</RadioButton>
+                            <RadioButton GroupName="ControllerType" IsChecked="{Binding Path=IsJoyConRightChecked}"  >JoyCon Right</RadioButton>
+                        </StackPanel>
+                    </Grid>
+                </xctk:SplitButton.DropDownContent>
+            </xctk:SplitButton>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

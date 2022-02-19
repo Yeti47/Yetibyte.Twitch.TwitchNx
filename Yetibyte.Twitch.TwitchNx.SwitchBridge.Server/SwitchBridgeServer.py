@@ -87,6 +87,7 @@ class SwitchBridgeServer:
                 self._logger.info('SwitchBridgeServer: Processing complete.')
 
             response_json = response_msg.to_json()
+            self._logger.info(f'SwitchBridgeServer: Sending response\n\t{response_json}')
             self._websocket_server.send_message(client, response_json)
 
 
