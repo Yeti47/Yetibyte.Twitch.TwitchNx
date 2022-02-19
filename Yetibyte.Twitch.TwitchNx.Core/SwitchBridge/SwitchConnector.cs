@@ -94,6 +94,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
                     AutoReset = true
                 };
                 _timer.Elapsed += timer_Elapsed;
+                _timer.Start();
             }
         }
 
@@ -137,11 +138,18 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
         /// </summary>
         public void Update()
         {
-            if (_disposedValue || _client is null || !IsConnected)
+            if (_disposedValue || _client is null || !IsConnected || !_client.IsConnected)
                 return;
 
-            _client.GetSwitchAddresses();
-            _client.GetSwitchStatus();
+            try
+            {
+                _client.GetSwitchAddresses();
+                _client.GetSwitchStatus();
+            }
+            catch(Exception ex)
+            {
+                // TODO: proper error handling!
+            }
         }
 
         public bool Connect(SwitchBridgeClientConnectionSettings connectionSettings)
@@ -291,8 +299,6 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
 
                 controller.ErrorMessage = controllerStateData.Errors;
                 controller.State = controllerState;
-
-                OnStatusUpdated();
             }
 
             List<SwitchController> controllersToRemove = new List<SwitchController>();
@@ -308,6 +314,8 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
                 _controllers.Remove(controller);
                 OnControllerRemoved(controller.Id);
             }
+
+            OnStatusUpdated();
         }
 
         public bool Disconnect() => _client?.Disconnect() ?? false;
@@ -322,6 +330,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
         }
         protected virtual void OnDisconnected()
         {
+            SwitchAddress = String.Empty;
             State = SwitchConnectorState.Disconnected;
 
             var handler = Disconnected;

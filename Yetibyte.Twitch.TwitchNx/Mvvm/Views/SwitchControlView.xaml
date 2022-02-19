@@ -7,6 +7,7 @@
              xmlns:st="clr-namespace:Yetibyte.Twitch.TwitchNx.Styling"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:local="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.Views"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="400">
     <UserControl.Resources>
@@ -16,7 +17,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="50" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0" HorizontalAlignment="Stretch" Style="{StaticResource ResourceKey=FormDock}" >
             <Label DockPanel.Dock="Left" FontWeight="SemiBold" Width="100">Switch Address:</Label>
@@ -29,12 +30,14 @@
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*" />
-                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Border Grid.Column="0">
-                            <Image Source="{Binding Path=ControllerType, Converter={StaticResource ControllerTypeToImageSourceConverter}}"
-                                   Width="Auto" Height="Auto" />
+                        <Border Grid.Column="0" x:Name="brdImg" BorderThickness="2" Padding="12">
+                            <Grid x:Name="grdImg">
+                                <Image Source="{Binding Path=ControllerType, Converter={StaticResource ControllerTypeToImageSourceConverter}}"
+                                       Width="{Binding ActualWidth, ElementName=grdImg}" MaxWidth="{Binding ActualWidth, ElementName=brdImg}" Height="Auto" />
+                            </Grid>
                         </Border>
                         <Border Grid.Column="1">
 
@@ -44,19 +47,30 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <StackPanel Grid.Row="2" VerticalAlignment="Center">
-            <xctk:SplitButton HorizontalAlignment="Stretch" Margin="4,0" Content="Add Controller" Command="{Binding Path=AddControllerCommand}">
-                <xctk:SplitButton.DropDownContent>
-                    <Grid>
-                        <StackPanel Margin="4">
-                            <Label FontWeight="SemiBold">Controller Type:</Label>
-                            <RadioButton GroupName="ControllerType" IsChecked="{Binding Path=IsProControllerChecked}">Pro Controller</RadioButton>
-                            <RadioButton GroupName="ControllerType" IsChecked="{Binding Path=IsJoyConLeftChecked}"   >JoyCon Left</RadioButton>
-                            <RadioButton GroupName="ControllerType" IsChecked="{Binding Path=IsJoyConRightChecked}"  >JoyCon Right</RadioButton>
-                        </StackPanel>
-                    </Grid>
-                </xctk:SplitButton.DropDownContent>
-            </xctk:SplitButton>
+        <StackPanel Grid.Row="2" >
+
+            <!--<mah:SplitButton Text="Add Controller">
+                <mah:SplitButton.ItemTemplate>
+                    <DataTemplate>
+                        <Button>HENLO</Button>
+                    </DataTemplate>
+                </mah:SplitButton.ItemTemplate>
+            </mah:SplitButton>-->
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Button Content="Add Controller" Command="{Binding Path=AddControllerCommand}" />
+                <Button Command="{Binding Path=RemoveControllerCommand}">Remove Controller</Button>
+            </StackPanel>
+
+            <Expander Margin="4,4" Header="Controller Settings" FlowDirection="LeftToRight">
+                <Grid FlowDirection="LeftToRight">
+                    <StackPanel Margin="4">
+                        <Label FontWeight="SemiBold">Controller Type:</Label>
+                        <RadioButton GroupName="ControllerType" IsChecked="{Binding Path=IsProControllerChecked}">Pro Controller</RadioButton>
+                        <RadioButton GroupName="ControllerType" IsChecked="{Binding Path=IsJoyConLeftChecked}"   >JoyCon Left</RadioButton>
+                        <RadioButton GroupName="ControllerType" IsChecked="{Binding Path=IsJoyConRightChecked}"  >JoyCon Right</RadioButton>
+                    </StackPanel>
+                </Grid>
+            </Expander>
         </StackPanel>
 
     </Grid>

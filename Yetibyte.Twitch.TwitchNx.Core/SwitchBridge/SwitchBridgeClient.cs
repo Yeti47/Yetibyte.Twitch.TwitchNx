@@ -1,16 +1,18 @@
-﻿using WebSocketSharp;
-using Yetibyte.Twitch.TwitchNx.Core.SwitchBridge.DataTransfer;
+﻿using Yetibyte.Twitch.TwitchNx.Core.SwitchBridge.DataTransfer;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Websocket.Client;
+using System.Linq;
+using System.Reactive.Linq;
 
 namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
 {
     public class SwitchBridgeClient : ISwitchBridgeClient
     {
-        private readonly WebSocket _webSocket;
+        private readonly WebsocketClient _webSocket;
         private bool _disposedValue;
 
-        public bool IsConnected => _webSocket.IsAlive;
+        public bool IsConnected => _webSocket.IsRunning;
 
         public string Url => $"ws://{ConnectionSettings.Address}:{ConnectionSettings.Port}";
 
@@ -25,19 +27,31 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
         {
             ConnectionSettings = connectionSettings;
 
-            _webSocket = new WebSocket(Url);
-            _webSocket.OnMessage += webSocket_OnMessage;
-            _webSocket.OnOpen += (o, e) => OnConnected();
-            _webSocket.OnClose += (o, e) => OnDisconnected();
+            _webSocket = new WebsocketClient(new Uri(Url));
+
+            _webSocket.ReconnectionHappened.Subscribe(r => OnConnected());
+            _webSocket.MessageReceived.Subscribe(webSocket_OnMessage);
+            _webSocket.DisconnectionHappened.Subscribe(d => OnDisconnected());
+
+            //_webSocket.OnError += webSocket_OnError;
+            //_webSocket.OnMessage += webSocket_OnMessage;
+            //_webSocket.OnOpen += (o, e) => OnConnected();
+            //_webSocket.OnClose += (o, e) => OnDisconnected();
         }
 
-        private void webSocket_OnMessage(object? sender, MessageEventArgs e)
+        //private void webSocket_OnError(object? sender, WebSocketSharp.ErrorEventArgs e)
+        //{
+        //    string test = "";
+        //}
+
+        //private void webSocket_OnMessage(object? sender, MessageEventArgs e)
+        private void webSocket_OnMessage(ResponseMessage e)
         {
             SwitchBridgeMessage? baseMessage;
 
             try
             {
-                baseMessage = JsonSerializer.Deserialize<SwitchBridgeMessage>(e.Data);
+                baseMessage = JsonSerializer.Deserialize<SwitchBridgeMessage>(e.Text);
             }
             catch (Exception ex)
             {
@@ -47,7 +61,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
             }
 
             if (baseMessage == null)
-                throw new SwitchBridgeResponseException(e.Data);
+                throw new SwitchBridgeResponseException(e.Text);
 
             SwitchBridgeMessage? message;
 
@@ -55,12 +69,12 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
             {
                 message = baseMessage.MessageType.ToUpper() switch
                 {
-                    SwitchAddressesSwitchBridgeMessage.MESSAGE_TYPE => JsonSerializer.Deserialize<SwitchAddressesSwitchBridgeMessage>(e.Data),
-                    StatusSwitchBridgeMessage.MESSAGE_TYPE => JsonSerializer.Deserialize<StatusSwitchBridgeMessage>(e.Data),
-                    CreateControllerSwitchBridgeMessage.MESSAGE_TYPE => JsonSerializer.Deserialize<CreateControllerSwitchBridgeMessage>(e.Data),
-                    RemoveControllerSwitchBridgeMessage.MESSAGE_TYPE => JsonSerializer.Deserialize<RemoveControllerSwitchBridgeMessage>(e.Data),
-                    MacroSwitchBridgeMessage.MESSAGE_TYPE => JsonSerializer.Deserialize<MacroSwitchBridgeMessage>(e.Data),
-                    MacroCompleteSwitchBridgeMessage.MESSAGE_TYPE => JsonSerializer.Deserialize<MacroCompleteSwitchBridgeMessage>(e.Data),
+                    SwitchAddressesSwitchBridgeMessage.MESSAGE_TYPE => JsonSerializer.Deserialize<SwitchAddressesSwitchBridgeMessage>(e.Text),
+                    StatusSwitchBridgeMessage.MESSAGE_TYPE => JsonSerializer.Deserialize<StatusSwitchBridgeMessage>(e.Text),
+                    CreateControllerSwitchBridgeMessage.MESSAGE_TYPE => JsonSerializer.Deserialize<CreateControllerSwitchBridgeMessage>(e.Text),
+                    RemoveControllerSwitchBridgeMessage.MESSAGE_TYPE => JsonSerializer.Deserialize<RemoveControllerSwitchBridgeMessage>(e.Text),
+                    MacroSwitchBridgeMessage.MESSAGE_TYPE => JsonSerializer.Deserialize<MacroSwitchBridgeMessage>(e.Text),
+                    MacroCompleteSwitchBridgeMessage.MESSAGE_TYPE => JsonSerializer.Deserialize<MacroCompleteSwitchBridgeMessage>(e.Text),
                     _ => null
                 };
 
@@ -85,7 +99,8 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
         {
             try
             {
-                _webSocket.Connect();
+                var startTask = _webSocket.Start();
+                startTask.Wait();
             }
             catch (Exception ex)
             {
@@ -97,8 +112,10 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
 
         public bool Disconnect()
         {
-            _webSocket.Close();
+            var stopTask = _webSocket.Stop(System.Net.WebSockets.WebSocketCloseStatus.NormalClosure, "Close requested.");
+            //stopTask.Wait();
 
+            //return stopTask.Result;
             return true;
         }
 
@@ -124,7 +141,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
 
             //});
 
-            Task.Run(_webSocket.Connect);
+            _webSocket.Start();
 
             return true;
         }
@@ -133,7 +150,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
         {
             //_webSocket.CloseAsync();
 
-            Task.Run(_webSocket.Close);
+            _webSocket.Stop(System.Net.WebSockets.WebSocketCloseStatus.NormalClosure, "Close requested.");
 
             return true;
         }

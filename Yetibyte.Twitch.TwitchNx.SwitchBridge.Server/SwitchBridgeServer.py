@@ -100,7 +100,7 @@ class SwitchBridgeServer:
             payload['ControllerStates'].append({ 
                 'Id': k, 
                 'State': nxbt_status[k]['state'],
-                'Type': nxbt_status[k]['type'],
+                'Type': nxbt_status[k]['type'].name,
                 'Errors': nxbt_status[k]['errors'] or '',
                 'FinishedMacros': nxbt_status[k]['finished_macros']
             })

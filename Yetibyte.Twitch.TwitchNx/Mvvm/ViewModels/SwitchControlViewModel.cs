@@ -19,6 +19,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         private readonly SwitchConnector _switchConnector;
         private readonly ObservableCollection<ControllerViewModel> _controllers = new ObservableCollection<ControllerViewModel>();
         private readonly RelayCommand _addControllerCommand;
+        private readonly RelayCommand _removeControllerCommand;
 
         private ControllerViewModel? _selectedController;
 
@@ -29,6 +30,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         public string SwitchAddress => _switchConnector.SwitchAddress;
 
         public ICommand AddControllerCommand => _addControllerCommand;
+        public ICommand RemoveControllerCommand => _removeControllerCommand;
 
         public IEnumerable<ControllerViewModel> Controllers => _controllers;
 
@@ -39,6 +41,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             {
                 _selectedController = value;
                 OnPropertyChanged();
+                _removeControllerCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -67,10 +70,17 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             _switchConnector.Connected += switchConnector_Connected;
             _switchConnector.Disconnected += switchConnector_Disconnected;
             _switchConnector.StatusUpdated += switchConnector_StatusUpdated;
+            _switchConnector.SwitchAddressChanged += switchConnector_SwitchAddressChanged;
             _switchConnector.ControllerAdded += _switchConnector_ControllerAdded;
             _switchConnector.ControllerRemoved += _switchConnector_ControllerRemoved;
 
             _addControllerCommand = new RelayCommand(ExecuteAddControllerCommand, CanExecuteAddControllerCommand);
+            _removeControllerCommand = new RelayCommand(ExecuteRemoveControllerCommand, CanExecuteRemoveControllerCommand);
+        }
+
+        private void switchConnector_SwitchAddressChanged(object? sender, EventArgs e)
+        {
+            OnPropertyChanged(nameof(SwitchAddress));
         }
 
         private void NotifyControllerCommandsCanExecuteChanged()
@@ -78,6 +88,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             Application.Current?.Dispatcher?.Invoke(() =>
             {
                 _addControllerCommand.NotifyCanExecuteChanged();
+                _removeControllerCommand.NotifyCanExecuteChanged();
             });
         }
 
@@ -106,13 +117,30 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             return _switchConnector.IsConnected;
         }
 
+        private void ExecuteRemoveControllerCommand()
+        {
+            if (SelectedController is null)
+                return;
+
+            _switchConnector.RemoveController(SelectedController.Id);
+        }
+
+        private bool CanExecuteRemoveControllerCommand()
+        {
+            return SelectedController is not null && _switchConnector.IsConnected;
+        }
+
         private void _switchConnector_ControllerRemoved(object? sender, SwitchControllerRemovedEventArgs e)
         {
             var controllerViewModel = FindViewModelForController(e.ControllerId);
 
             if (controllerViewModel is not null)
             {
-                _controllers.Remove(controllerViewModel);
+                Application.Current?.Dispatcher?.Invoke(() =>
+                    {
+                        _controllers.Remove(controllerViewModel);
+                    }
+                );
             }
 
         }
@@ -124,7 +152,12 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             if (controllerViewModel is null)
             {
                 controllerViewModel = new ControllerViewModel();
-                _controllers.Add(controllerViewModel);
+
+                Application.Current?.Dispatcher?.Invoke(() =>
+                    {
+                        _controllers.Add(controllerViewModel);
+                    }
+                );
             }
 
             controllerViewModel.Update(e.Controller);
@@ -132,14 +165,33 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         private void switchConnector_StatusUpdated(object? sender, EventArgs e)
         {
-            OnPropertyChanged(nameof(SwitchAddress));
+            foreach(ControllerViewModel existingControllerVm in _controllers)
+            {
+                if (!_switchConnector.Controllers.Any(c => c.Id == existingControllerVm.Id)) // Controller in VM not found in actual Switch, so remove from VM
+                {
+                    Application.Current?.Dispatcher?.Invoke(() =>
+                        {
+                            _controllers.Remove(existingControllerVm);
+                        }
+                    );
+                }
+            }
 
             foreach(SwitchController controller in _switchConnector.Controllers)
             {
                 var controllerViewModel = FindViewModelForController(controller);
 
-                if (controllerViewModel is null)
-                    continue;
+                if (controllerViewModel is null) // Controller not found in view model, so create it
+                {
+                    controllerViewModel = new ControllerViewModel();
+                    controllerViewModel.Update(controller);
+
+                    Application.Current?.Dispatcher?.Invoke(() =>
+                    {
+                        _controllers.Add(controllerViewModel);
+                    }
+                    );
+                }
 
                 controllerViewModel.Update(controller); 
             }
