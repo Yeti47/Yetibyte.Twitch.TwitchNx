@@ -206,7 +206,7 @@ class SwitchBridgeServer:
         try:
             macro_id = self._nxbt.macro(controller_id, macro, block=False)
 
-            send_macro_complete_task = asyncio.create_task(_wait_for_macro_completion(client, macro_id, controller_id))
+            send_macro_complete_task = asyncio.create_task(self._wait_for_macro_completion(client, macro_id, controller_id, message.id))
         except Exception as ex:
             return SwitchBridgeMessage(message.id, message.message_type, {}, 
                                        is_error=True, 
@@ -218,19 +218,19 @@ class SwitchBridgeServer:
         return SwitchBridgeMessage(message.id, message.message_type, { "MacroId": macro_id, "ControllerId": controller_id } )
 
 
-    async def _wait_for_macro_completion(self, client, macro_id, controller_id)->None:
+    async def _wait_for_macro_completion(self, client, macro_id, controller_id, orig_msg_id)->None:
 
         while controller_id in self._nxbt.state and macro_id not in self._nxbt.state[controller_id]['finished_macros']:
             await asyncio.sleep(0.01)
 
-        self._send_macro_complete_message(client, macro_id, controller_id)
+        self._send_macro_complete_message(client, macro_id, controller_id, orig_msg_id)
 
 
-    def _send_macro_complete_message(self, client, macro_id, controller_id)->SwitchBridgeMessage:
+    def _send_macro_complete_message(self, client, macro_id, controller_id, orig_msg_id)->SwitchBridgeMessage:
 
         message_id = os.urandom(24).hex()
 
-        message = SwitchBridgeMessage(message_id, SwitchBridgeServer.MSG_TYPE_MACRO_COMPLETE, { "MacroId": macro_id, "ControllerId": controller_id } )
+        message = SwitchBridgeMessage(message_id, SwitchBridgeServer.MSG_TYPE_MACRO_COMPLETE, { "MacroId": macro_id, "ControllerId": controller_id, "OriginalMessageId": orig_msg_id } )
         message_json = message.to_json()
 
         self._websocket_server.send_message(client, message_json)

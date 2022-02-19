@@ -18,7 +18,10 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
         bool IsConnected { get; }
 
         bool Connect();
+        bool ConnectAsync();
+        
         bool Disconnect();
+        bool DisconnectAsync();
 
         void CreateController(string controllerType);
         void RemoveController(int controllerId);

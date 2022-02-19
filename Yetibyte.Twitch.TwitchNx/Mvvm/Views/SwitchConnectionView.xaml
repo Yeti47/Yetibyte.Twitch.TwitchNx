@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="Yetibyte.Twitch.TwitchNx.Mvvm.Views.SwitchConnectionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.Views"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+             xmlns:st="clr-namespace:Yetibyte.Twitch.TwitchNx.Styling"
+             xmlns:db="clr-namespace:Yetibyte.Twitch.TwitchNx.DataBinding"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="300">
+    <UserControl.Resources>
+        <db:SwitchConnectionStateToImageSourceConverter x:Key="SwitchConnectionStateToImageSourceConverter" />
+        <db:SwitchConnectionStateToBrushConverter x:Key="SwitchConnectionStateToBrushConverter" />
+        <db:BoolToTextConverter x:Key="BoolToBusyTextConverter" TrueText="Waiting for Switch connection..." FalseText="Connecting to Bridge..." />
+        <db:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <db:BoolToCollapsedConverter x:Key="BoolToCollapsedConverter" />
+        <sys:Boolean x:Key="TRUE">True</sys:Boolean>
+        <sys:Boolean x:Key="FALSE">False</sys:Boolean>
+    </UserControl.Resources>
+    <Grid Margin="8,8">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="60" />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0">
+                <DockPanel HorizontalAlignment="Stretch" Style="{StaticResource ResourceKey=FormDock}" >
+                    <Label DockPanel.Dock="Left" FontWeight="SemiBold" Width="80">Address:</Label>
+                    <st:LeftStretchPanel>
+                        <TextBox Text="{Binding Path=ClientAddress, UpdateSourceTrigger=PropertyChanged}" Width="Auto" VerticalContentAlignment="Center"
+                         />
+                    </st:LeftStretchPanel>
+                </DockPanel>
+
+                <DockPanel HorizontalAlignment="Stretch" Style="{StaticResource ResourceKey=FormDock}">
+                    <Label DockPanel.Dock="Left" FontWeight="SemiBold" Width="80">Port:</Label>
+                    <st:LeftStretchPanel>
+                        <xctk:IntegerUpDown Text="{Binding Path=ClientPort}" Minimum="1" Maximum="99999"
+                            />
+                    </st:LeftStretchPanel>
+                </DockPanel>
+
+                <GroupBox Header="Status" Margin="10,10" Width="Auto" Height="{Binding ActualWidth, RelativeSource={RelativeSource Self}}" MaxHeight="200" MaxWidth="200" Background="{Binding Path=ConnectionState, Converter={StaticResource SwitchConnectionStateToBrushConverter}}" >
+                    <Grid>
+                        <xctk:BusyIndicator IsBusy="{Binding Path=IsBusy}" BusyContent="{Binding Path=IsWaitingForSwitch, Converter={StaticResource BoolToBusyTextConverter}}">
+                            <Image Source="{Binding Path=ConnectionState, Converter={StaticResource SwitchConnectionStateToImageSourceConverter}}" />
+                        </xctk:BusyIndicator>
+                    </Grid>
+                </GroupBox>
+
+            </StackPanel>
+
+            <Grid Grid.Row="1" Height="40" >
+                <Button Command="{Binding Path=ConnectCommand}" Visibility="{Binding Path=CanConnect, Converter={StaticResource BoolToCollapsedConverter}}" Content="Connect" VerticalAlignment="Center" />
+                <Button Command="{Binding Path=DisconnectCommand}" Visibility="{Binding Path=CanConnect, Converter={StaticResource BoolToCollapsedConverter}, ConverterParameter={StaticResource TRUE}}" Content="Disconnect" VerticalAlignment="Center" />
+            </Grid>
+
+        </Grid>
+    </Grid>
+</UserControl>

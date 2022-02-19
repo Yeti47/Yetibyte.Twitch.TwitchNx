@@ -2,6 +2,7 @@
 {
     public enum ControllerState
     {
+        NotSynced,
         Initializing,
         Connecting,
         Reconnecting,

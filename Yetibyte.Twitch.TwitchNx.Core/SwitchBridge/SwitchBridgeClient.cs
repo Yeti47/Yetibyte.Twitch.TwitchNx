@@ -41,7 +41,9 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
             }
             catch (Exception ex)
             {
-                throw new SwitchBridgeResponseException(e.Data, innerException: ex);
+                // TODO: Instead of throwing an exception, raise an event!
+                // throw new SwitchBridgeResponseException(e.Data, innerException: ex);
+                return;
             }
 
             if (baseMessage == null)
@@ -65,13 +67,18 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
             }
             catch (Exception ex)
             {
-                throw new SwitchBridgeResponseException(e.Data, innerException: ex);
+                // TODO: Instead of throwing an exception, raise an event!
+                // throw new SwitchBridgeResponseException(e.Data, innerException: ex);
+                return;
             }
 
             if (message is not null)
                 OnMessageReceived(message);
             else
-                throw new SwitchBridgeResponseException(e.Data);
+            {
+                // TODO: Instead of throwing an exception, raise an event!
+                // throw new SwitchBridgeResponseException(e.Data);
+            }
         }
 
         public bool Connect()
@@ -84,6 +91,49 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
             {
                 throw new SwitchBridgeConnectionException(innerException: ex);
             }
+
+            return true;
+        }
+
+        public bool Disconnect()
+        {
+            _webSocket.Close();
+
+            return true;
+        }
+
+        public bool ConnectAsync()
+        {
+            //try
+            //{
+            //    _webSocket.ConnectAsync();
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw new SwitchBridgeConnectionException(innerException: ex);
+            //}
+
+            //return true;
+
+            //Task.Run(() => _webSocket.Connect()).ContinueWith(t =>
+            //{
+            //    if (t.IsFaulted)
+            //    {
+            //        // Raise OnError event
+            //    }
+
+            //});
+
+            Task.Run(_webSocket.Connect);
+
+            return true;
+        }
+
+        public bool DisconnectAsync()
+        {
+            //_webSocket.CloseAsync();
+
+            Task.Run(_webSocket.Close);
 
             return true;
         }
@@ -111,13 +161,6 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
                 throw new SwitchBridgeOperationException(nameof(CreateController), innerException: ex);
             }
             
-        }
-
-        public bool Disconnect()
-        {
-            _webSocket.Close();
-
-            return true;
         }
 
         public void ExecuteMacro(string macro, int controllerId)
@@ -261,5 +304,6 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
+
     }
 }

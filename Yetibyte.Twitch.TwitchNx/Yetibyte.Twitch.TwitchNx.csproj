@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\bridge-31.png" />
+    <None Remove="Images\Computer_lab_icon.png" />
+    <None Remove="Images\Nintendo_Switch_Logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Images\bridge-31.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Computer_lab_icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Nintendo_Switch_Logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dirkster.AvalonDock" Version="4.70.0" />
+    <PackageReference Include="Dirkster.AvalonDock.Themes.Metro" Version="4.70.0" />
+    <PackageReference Include="Dirkster.AvalonDock.Themes.VS2013" Version="4.70.0" />
+    <PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="5.0.100" />
+    <PackageReference Include="MahApps.Metro" Version="2.4.9" />
+    <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Yetibyte.Twitch.TwitchNx.Core\Yetibyte.Twitch.TwitchNx.Core.csproj" />
+  </ItemGroup>
+
+</Project>

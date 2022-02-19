@@ -2,8 +2,15 @@
 
 namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge.Models
 {
+    /// <summary>
+    /// Describes a Nintendo Switch controller.
+    /// </summary>
     public class SwitchController
     {
+        public const string CONTROLLER_TYPE_NAME_PRO_CONTROLLER = "PRO_CONTROLLER";
+        public const string CONTROLLER_TYPE_NAME_JOYCON_LEFT = "JOYCON_L";
+        public const string CONTROLLER_TYPE_NAME_JOYCON_RIGHT = "JOYCON_R";
+
         private ControllerState _state = ControllerState.Initializing;
 
         public int Id { get; }
