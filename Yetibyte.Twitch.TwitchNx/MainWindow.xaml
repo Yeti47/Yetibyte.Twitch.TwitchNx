@@ -23,11 +23,29 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <WrapPanel Grid.Row="0"></WrapPanel>
+        <WrapPanel Grid.Row="0">
+            <Menu VerticalAlignment="Center">
+                <MenuItem Header="File">
+                    <MenuItem x:Name="menuNewProject" Click="menuNewProject_Click"  Header="New..." />
+                    <MenuItem x:Name="menuLoadProject" Click="menuLoadProject_Click" Header="Open..." />
+                    <MenuItem x:Name="menuSaveProject" Click="menuSaveProject_Click"   Header="Save" />
+                    <MenuItem x:Name="menuSaveProjectAs" Click="menuSaveProjectAs_Click" Header="Save As..." />
+                    <MenuItem x:Name="menuCloseProject" Command="{Binding Path=CloseProjectCommand}" Header="Close" />
+                </MenuItem>
+                <MenuItem Header="Edit">
+
+                </MenuItem>
+                <MenuItem Header="View">
+
+                </MenuItem>
+            </Menu>
+        </WrapPanel>
 
         <DockingManager x:Name="dockManager" Grid.Row="1"
                         AnchorablesSource="{Binding Path=Tools}"
                         Theme="{Binding Path=Theme}"
+                        IsEnabled="{Binding Path=CanEditProject}"
+                        Visibility="{Binding Path=CanEditProject, Converter={StaticResource BoolToVisibilityConverter}}"
                         >
             <DockingManager.LayoutItemContainerStyleSelector>
                 <st:PanesStyleSelector>

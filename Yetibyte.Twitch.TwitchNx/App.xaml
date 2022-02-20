@@ -27,6 +27,10 @@
                 <v:SwitchControlView />
             </DataTemplate>
 
+            <DataTemplate x:Key="NewProject" DataType="{x:Type vm:NewProjectViewModel}">
+                <v:NewProjectView />
+            </DataTemplate>
+
             <Style x:Key="FormDock" TargetType="DockPanel">
                 <Setter Property="Margin" Value="0,2"/>
             </Style>

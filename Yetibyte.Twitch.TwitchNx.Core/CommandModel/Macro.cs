@@ -3,22 +3,29 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
 {
+    [Serializable]
     public class Macro : IList<MacroInstruction>
     {
         private readonly List<MacroInstruction> _instructions = new List<MacroInstruction>();
 
+        [JsonIgnore]
         public MacroInstruction this[int index] { get => ((IList<MacroInstruction>)_instructions)[index]; set => ((IList<MacroInstruction>)_instructions)[index] = value; }
 
+        [JsonIgnore]
         public int Count => ((ICollection<MacroInstruction>)_instructions).Count;
 
+        [JsonIgnore]
         public bool IsReadOnly => false;
 
+        [JsonIgnore]
         public float TotalSeconds => _instructions.Sum(i => i.Seconds);
 
+        [JsonIgnore]
         public TimeSpan TotalDuration => TimeSpan.FromSeconds(TotalSeconds);
 
         public void Add(MacroInstruction item)

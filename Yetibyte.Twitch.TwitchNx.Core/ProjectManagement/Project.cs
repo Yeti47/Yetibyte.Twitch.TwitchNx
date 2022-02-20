@@ -11,23 +11,29 @@ namespace Yetibyte.Twitch.TwitchNx.Core.ProjectManagement
 {
     public class Project
     {
+        public const string UNTITLED_PROJECT_NAME = "Untitled";
+
         private string _name = string.Empty;
 
         public string Name
         {
             get { return _name; }
             set { 
-                if (_name != value)
+
+                string newValue = value?.Trim() ?? string.Empty;
+
+                if (string.IsNullOrWhiteSpace(newValue))
+                    newValue = UNTITLED_PROJECT_NAME;
+
+                if (_name != newValue)
                 {
                     string oldName = _name;
-                    _name = value; 
+                    _name = newValue; 
 
                     OnNameChanged(oldName, Name);
                 }
             }
         }
-
-        public bool IsUnnamed => string.IsNullOrWhiteSpace(_name);
 
         public CommandSettings CommandSettings { get; } = new CommandSettings();
 
@@ -36,9 +42,16 @@ namespace Yetibyte.Twitch.TwitchNx.Core.ProjectManagement
 
         public event EventHandler<NameChangedEventArgs>? NameChanged;
 
-        public Project()
+        public Project(string projectName)
         {
-            
+            _name = projectName;
+        }
+
+        public Project(string projectName, CommandSettings commandSettings, SwitchBridgeClientConnectionSettings switchBridgeClientConnectionSettings)
+        {
+            _name = projectName;
+            CommandSettings = commandSettings;
+            SwitchBridgeClientConnectionSettings = switchBridgeClientConnectionSettings;
         }
 
         protected virtual void OnNameChanged(string oldName, string newName)

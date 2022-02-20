@@ -1,10 +1,13 @@
 ﻿using AvalonDock.Themes;
+using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Yetibyte.Twitch.TwitchNx.Core.ProjectManagement;
 using Yetibyte.Twitch.TwitchNx.Core.SwitchBridge;
 using Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.Layout;
@@ -17,12 +20,28 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         private readonly SwitchConnector _switchConnector;
         private readonly ToolViewModel[] _tools;
 
+        private readonly RelayCommand _closeProjectCommand;
+
+        private bool _isProjectOpen;
+
+        public ICommand CloseProjectCommand => _closeProjectCommand;
+
         public SwitchConnectionViewModel SwitchConnectionViewModel { get; private set; }
         public SwitchControlViewModel SwitchControlViewModel { get; private set; }
 
         public IEnumerable<ToolViewModel> Tools => _tools;
 
         public Theme Theme { get; } = new AvalonDock.Themes.Vs2013LightTheme();
+
+        public bool CanEditProject
+        {
+            get => _isProjectOpen;
+            set
+            {
+                _isProjectOpen = value;
+                OnPropertyChanged();
+            }
+        }
 
         public MainViewModel(IProjectManager projectManager, SwitchConnector switchConnector)
         {
@@ -38,6 +57,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             _projectManager.ProjectChanging += _projectManager_ProjectChanging;
 
             _tools = new ToolViewModel[] { SwitchConnectionViewModel, SwitchControlViewModel };
+
+            _closeProjectCommand = new RelayCommand(() => _projectManager.CloseProject(), () => _projectManager.IsProjectOpen);
         }
 
         private void _projectManager_ProjectChanging(object? sender, EventArgs e)
@@ -52,10 +73,14 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         {
             UpdateConnectionViewModel();
 
+            CanEditProject = _projectManager.IsProjectOpen;
+
             if (_projectManager.CurrentProject is not null)
             {
                 _projectManager.CurrentProject.SwitchBridgeClientConnectionSettings.SettingsChanged += SwitchBridgeClientConnectionSettings_SettingsChanged;
             }
+
+            _closeProjectCommand.NotifyCanExecuteChanged();
 
         }
         private void UpdateConnectionViewModel()
@@ -73,10 +98,13 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         {
             Project? project = _projectManager.CurrentProject;
 
-            if (project is not null)
+            if (project is not null) 
             {
-                project.SwitchBridgeClientConnectionSettings.Address = SwitchConnectionViewModel.ClientAddress;
-                project.SwitchBridgeClientConnectionSettings.Port = SwitchConnectionViewModel.ClientPort;
+                if (e.PropertyName == nameof(SwitchConnectionViewModel.ClientAddress))
+                    project.SwitchBridgeClientConnectionSettings.Address = SwitchConnectionViewModel.ClientAddress;
+
+                if (e.PropertyName == nameof(SwitchConnectionViewModel.ClientPort))
+                    project.SwitchBridgeClientConnectionSettings.Port = SwitchConnectionViewModel.ClientPort;
             }
         }
     }

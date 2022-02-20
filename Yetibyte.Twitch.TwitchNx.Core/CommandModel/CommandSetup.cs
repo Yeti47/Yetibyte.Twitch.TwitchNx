@@ -7,13 +7,15 @@ using Yetibyte.Twitch.TwitchNx.Core.Common;
 
 namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
 {
+    [Serializable]
     public class CommandSetup
     {
         private string _command = string.Empty;
 
         public string Command
         {
-            get => _command; set
+            get => _command; 
+            set
             {
                 if (_command != value)
                 {

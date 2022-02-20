@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="Yetibyte.Twitch.TwitchNx.Mvvm.Views.NewProjectView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="600">
+    <Grid Margin="8" Grid.IsSharedSizeScope="True">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0"
+               Grid.Column="0"
+               VerticalAlignment="Center"
+               FontWeight="SemiBold"
+               Content="Project Name:" />
+
+        <TextBox Grid.Row="0"
+                 Grid.Column="1"
+                 Margin="8 8 0 0"
+                 Text="{Binding ProjectName, UpdateSourceTrigger=PropertyChanged}" />
+
+        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Right" Orientation="Horizontal">
+            <Button MinWidth="80"
+                    Margin="8 8 0 0"
+                    Command="{Binding Path=CancelCommand}"
+                    Content="Cancel"
+                    Style="{DynamicResource MahApps.Styles.Button.Dialogs}" />
+            <Button MinWidth="80"
+                    Margin="4 8 0 0"
+                    Command="{Binding Path=ConfirmCommand}"
+                    Content="OK"
+                    Style="{DynamicResource MahApps.Styles.Button.Dialogs.Accent}" />
+        </StackPanel>
+    </Grid>
+</UserControl>

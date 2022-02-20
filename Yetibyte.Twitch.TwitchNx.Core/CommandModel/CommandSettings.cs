@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Yetibyte.Twitch.TwitchNx.Core.Utilities;
 
 namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
 {
+    [Serializable]
     public class CommandSettings
     {
         private const string DEFAULT_COMMAND_PREFIX = "!";
@@ -17,7 +19,10 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
 
         public string CommandPrefix { get; set; } = DEFAULT_COMMAND_PREFIX;
 
+        [JsonIgnore]
         public IReadOnlyList<CommandSetup> CommandSetups => new ReadOnlyCollection<CommandSetup>(_commands);
+
+        [JsonIgnore]
         public IReadOnlyList<CooldownGroup> CooldownGroups => new ReadOnlyCollection<CooldownGroup>(_cooldownGroups);
 
         public event EventHandler<CommandSetupAddedEventArgs>? CommandSetupAdded;

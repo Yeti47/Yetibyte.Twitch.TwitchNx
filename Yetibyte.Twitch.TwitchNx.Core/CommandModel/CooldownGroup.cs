@@ -2,20 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
 {
+    [Serializable]
     public class CooldownGroup
     {
+        [JsonInclude]
         private readonly Dictionary<PermissionLevel, float> _times = new Dictionary<PermissionLevel, float>();
 
         public string Name { get; set; }
         
         public float SharedTime { get; set; }
 
+        [JsonIgnore]
         public TimeSpan SharedDuration => TimeSpan.FromSeconds(SharedTime);
 
+        [JsonIgnore]
         public IEnumerable<(PermissionLevel permissionLevel, float time)> Times => _times.Select(kvp => (kvp.Key, kvp.Value));
 
         public CooldownGroup(string name)

@@ -30,10 +30,10 @@
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="120"/>
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Border Grid.Column="0" x:Name="brdImg" BorderThickness="2" Padding="12">
+                        <Border Grid.Column="0" x:Name="brdImg" BorderThickness="2" Padding="12" MaxHeight="120">
                             <Grid x:Name="grdImg">
                                 <Image Source="{Binding Path=ControllerType, Converter={StaticResource ControllerTypeToImageSourceConverter}}"
                                        Width="{Binding ActualWidth, ElementName=grdImg}" MaxWidth="{Binding ActualWidth, ElementName=brdImg}" Height="Auto" />
