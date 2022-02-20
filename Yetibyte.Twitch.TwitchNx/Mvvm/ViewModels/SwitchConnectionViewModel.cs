@@ -18,6 +18,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         #region Fields
 
         private readonly SwitchConnector _switchConnector;
+        private SwitchBridgeClientConnectionSettings _switchBridgeClientConnectionSettings;
+
         private readonly RelayCommand _connectCommand;
         private readonly RelayCommand _disconnectCommand;
 
@@ -40,6 +42,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
                 {
                     _clientAddress = value;
                     OnPropertyChanged();
+                    _switchBridgeClientConnectionSettings.Address = value;
                     NotifyConnectionStatePropsChanged();
                 }
             }
@@ -54,6 +57,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
                 {
                     _clientPort = value;
                     OnPropertyChanged();
+                    _switchBridgeClientConnectionSettings.Port = value;
                     NotifyConnectionStatePropsChanged();
                 }
             }
@@ -85,19 +89,41 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             }
         }
 
+        public SwitchBridgeClientConnectionSettings SwitchBridgeClientConnectionSettings
+        {
+            get => _switchBridgeClientConnectionSettings;
+            set
+            {
+                _switchBridgeClientConnectionSettings.SettingsChanged -= switchBridgeClientConnectionSettings_SettingsChanged;
+
+                _switchBridgeClientConnectionSettings = value;
+
+                _switchBridgeClientConnectionSettings.SettingsChanged += switchBridgeClientConnectionSettings_SettingsChanged;
+
+                ClientAddress = _switchBridgeClientConnectionSettings.Address;
+                ClientPort = _switchBridgeClientConnectionSettings.Port;
+
+                OnPropertyChanged();
+            }
+        }
+
         #endregion
 
         #region Ctors
 
-        public SwitchConnectionViewModel(SwitchConnector switchConnector) : base("Switch Connection")
+        public SwitchConnectionViewModel(SwitchConnector switchConnector, SwitchBridgeClientConnectionSettings switchBridgeClientConnectionSettings) : base("Switch Connection")
         {
             _switchConnector = switchConnector;
+            _switchBridgeClientConnectionSettings = switchBridgeClientConnectionSettings;
+            _switchBridgeClientConnectionSettings.SettingsChanged += switchBridgeClientConnectionSettings_SettingsChanged;
+
+            _clientPort = switchBridgeClientConnectionSettings.Port;
+            _clientAddress = switchBridgeClientConnectionSettings.Address;
 
             _switchConnector.StateChanged += switchConnector_StateChanged;
             _switchConnector.Connected += switchConnector_Connected;
             _switchConnector.Disconnected += switchConnector_Disconnected;
             _switchConnector.SwitchAddressChanged += switchConnector_SwitchAddressChanged;
-
 
             _connectCommand = new RelayCommand(ExcecuteConnectCommand, CanExecuteConnectCommand);
             _disconnectCommand = new RelayCommand(ExecuteDisconnectCommand, CanExecuteDisconnectCommand);
@@ -181,6 +207,11 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             });
         }
 
+        private void switchBridgeClientConnectionSettings_SettingsChanged(object? sender, EventArgs e)
+        {
+            ClientAddress = _switchBridgeClientConnectionSettings.Address;
+            ClientPort = _switchBridgeClientConnectionSettings.Port;
+        }
 
         #endregion
     }

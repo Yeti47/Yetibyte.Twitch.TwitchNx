@@ -4,6 +4,7 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +19,9 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
     {
         private readonly IProjectManager _projectManager;
         private readonly SwitchConnector _switchConnector;
-        private readonly ToolViewModel[] _tools;
+        private readonly ObservableCollection<ToolViewModel> _tools;
+
+        private SwitchConnectionViewModel _switchConnectionViewModel;
 
         private readonly RelayCommand _closeProjectCommand;
 
@@ -26,7 +29,16 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         public ICommand CloseProjectCommand => _closeProjectCommand;
 
-        public SwitchConnectionViewModel SwitchConnectionViewModel { get; private set; }
+        public SwitchConnectionViewModel SwitchConnectionViewModel
+        {
+            get => _switchConnectionViewModel;
+            private set
+            {
+                _switchConnectionViewModel = value;
+                OnPropertyChanged();
+            }
+        }
+
         public SwitchControlViewModel SwitchControlViewModel { get; private set; }
 
         public IEnumerable<ToolViewModel> Tools => _tools;
@@ -48,64 +60,32 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             _projectManager = projectManager;
             _switchConnector = switchConnector;
 
-            SwitchConnectionViewModel = new SwitchConnectionViewModel(switchConnector);
-            SwitchConnectionViewModel.PropertyChanged += SwitchConnectionViewModel_PropertyChanged;
+            _switchConnectionViewModel = new SwitchConnectionViewModel(switchConnector, projectManager.CurrentProject?.SwitchBridgeClientConnectionSettings ?? SwitchBridgeClientConnectionSettings.CreateEmpty());
 
             SwitchControlViewModel = new SwitchControlViewModel(switchConnector);
 
             _projectManager.ProjectChanged += projectManager_ProjectChanged;
             _projectManager.ProjectChanging += _projectManager_ProjectChanging;
 
-            _tools = new ToolViewModel[] { SwitchConnectionViewModel, SwitchControlViewModel };
+            _tools = new ObservableCollection<ToolViewModel> { SwitchConnectionViewModel, SwitchControlViewModel };
 
             _closeProjectCommand = new RelayCommand(() => _projectManager.CloseProject(), () => _projectManager.IsProjectOpen);
         }
 
         private void _projectManager_ProjectChanging(object? sender, EventArgs e)
         {
-            if (_projectManager.CurrentProject is not null)
-            {
-                _projectManager.CurrentProject.SwitchBridgeClientConnectionSettings.SettingsChanged -= SwitchBridgeClientConnectionSettings_SettingsChanged;
-            }
+
         }
 
         private void projectManager_ProjectChanged(object? sender, EventArgs e)
         {
-            UpdateConnectionViewModel();
-
             CanEditProject = _projectManager.IsProjectOpen;
 
-            if (_projectManager.CurrentProject is not null)
-            {
-                _projectManager.CurrentProject.SwitchBridgeClientConnectionSettings.SettingsChanged += SwitchBridgeClientConnectionSettings_SettingsChanged;
-            }
+            SwitchConnectionViewModel.SwitchBridgeClientConnectionSettings = _projectManager.CurrentProject?.SwitchBridgeClientConnectionSettings ?? SwitchBridgeClientConnectionSettings.CreateEmpty();
 
             _closeProjectCommand.NotifyCanExecuteChanged();
 
         }
-        private void UpdateConnectionViewModel()
-        {
-            SwitchConnectionViewModel.ClientAddress = _projectManager.CurrentProject?.SwitchBridgeClientConnectionSettings?.Address ?? string.Empty;
-            SwitchConnectionViewModel.ClientPort = _projectManager.CurrentProject?.SwitchBridgeClientConnectionSettings?.Port ?? SwitchBridgeClientConnectionSettings.DEFAULT_PORT;
-        }
 
-        private void SwitchBridgeClientConnectionSettings_SettingsChanged(object? sender, EventArgs e)
-        {
-            UpdateConnectionViewModel();
-        }
-
-        private void SwitchConnectionViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            Project? project = _projectManager.CurrentProject;
-
-            if (project is not null) 
-            {
-                if (e.PropertyName == nameof(SwitchConnectionViewModel.ClientAddress))
-                    project.SwitchBridgeClientConnectionSettings.Address = SwitchConnectionViewModel.ClientAddress;
-
-                if (e.PropertyName == nameof(SwitchConnectionViewModel.ClientPort))
-                    project.SwitchBridgeClientConnectionSettings.Port = SwitchConnectionViewModel.ClientPort;
-            }
-        }
     }
 }
