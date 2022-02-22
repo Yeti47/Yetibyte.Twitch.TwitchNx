@@ -78,6 +78,9 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
         {
             bool success = _cooldownGroups.Remove(cooldownGroup);
 
+            foreach (var command in _commands.Where(c => c.CooldownGroup == cooldownGroup))
+                command.CooldownGroup = null;
+
             if (success)
                 OnCooldownGroupRemoved(cooldownGroup);
 

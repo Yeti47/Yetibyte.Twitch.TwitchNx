@@ -9,7 +9,7 @@ using Yetibyte.Twitch.TwitchNx.Core.SwitchBridge;
 
 namespace Yetibyte.Twitch.TwitchNx.Core.ProjectManagement
 {
-    public class Project
+    public class Project : ICommandSettingsProvider
     {
         public const string UNTITLED_PROJECT_NAME = "Untitled";
 

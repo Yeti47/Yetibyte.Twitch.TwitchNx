@@ -11,10 +11,11 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
     public class CommandSetup
     {
         private string _command = string.Empty;
+        private string _name = string.Empty;
 
         public string Command
         {
-            get => _command; 
+            get => _command;
             set
             {
                 if (_command != value)
@@ -24,11 +25,18 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
             }
         }
 
+        public string Name {
+            get => string.IsNullOrWhiteSpace(_name) ? _command : _name;
+            set => _name = value; 
+        }
+
+        public string Description { get; set; } = string.Empty;
+
         public Macro Macro { get; set; }
 
         public PermissionLevel PermissionLevel { get; set; } = PermissionLevel.Any;
 
-        public string CooldownGroupName { get; set; } = string.Empty;
+        public CooldownGroup? CooldownGroup { get; set; }
 
         public CommandSetup(string command, Macro macro)
         {

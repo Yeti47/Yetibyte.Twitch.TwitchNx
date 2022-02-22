@@ -56,9 +56,9 @@
                         </Grid.ColumnDefinitions>
                         <Border Grid.Column="0" x:Name="brdImg" 
                                 BorderThickness="2" Padding="12" 
-                                MaxHeight="120" Height="120" 
+                                MaxHeight="120" Height="120" Background="Transparent"
                                 BorderBrush="{DynamicResource MahApps.Brushes.Accent}">
-                            <Grid x:Name="grdImg">
+                            <Grid x:Name="grdImg" Background="Transparent">
                                 <Image Source="{Binding Path=ControllerType, Converter={StaticResource ControllerTypeToImageSourceConverter}}"
                                        Width="{Binding ActualWidth, ElementName=grdImg}" MaxWidth="{Binding ActualWidth, ElementName=brdImg}" Height="Auto" 
                                        >
