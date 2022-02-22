@@ -11,7 +11,7 @@
         mc:Ignorable="d"
         TitleCharacterCasing="Normal"
         GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
-        Title="TwitchNX" Height="450" Width="800">
+        Title="TwitchNX" Height="720" Width="1280">
     <Window.Resources>
         <sys:Boolean x:Key="TRUE">True</sys:Boolean>
         <sys:Boolean x:Key="FALSE">False</sys:Boolean>
@@ -68,9 +68,10 @@
             </DockingManager.LayoutUpdateStrategy>
 
             <LayoutRoot>
-                <LayoutPanel Orientation="Vertical">
+                <LayoutPanel Orientation="Horizontal">
                     <LayoutDocumentPane />
-                    <LayoutAnchorablePane Name="ToolsPane" DockMinHeight="100" DockHeight="300"/>
+                    <!--<LayoutAnchorablePane Name="ToolsPane" DockMinHeight="100" DockHeight="300" />-->
+                    <LayoutAnchorablePane Name="ToolsPane" DockMinWidth="100" DockWidth="300"  />
                 </LayoutPanel>
             </LayoutRoot>
         </DockingManager>

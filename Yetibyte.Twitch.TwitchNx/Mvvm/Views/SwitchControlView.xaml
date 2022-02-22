@@ -8,10 +8,16 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:local="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.Views"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
+             x:Name="usrControlView"
              d:DesignHeight="450" d:DesignWidth="400">
     <UserControl.Resources>
         <db:ControllerTypeToImageSourceConverter x:Key="ControllerTypeToImageSourceConverter" />
+        <db:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <db:PercentageConverter x:Key="PercentageConverter" />
+        <db:MinusConverter x:Key="MinusConverter" />
+        <db:InverseBooleanConverter x:Key="InverseBooleanConverter" />
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -22,25 +28,147 @@
         <DockPanel Grid.Row="0" HorizontalAlignment="Stretch" Style="{StaticResource ResourceKey=FormDock}" >
             <Label DockPanel.Dock="Left" FontWeight="SemiBold" Width="100">Switch Address:</Label>
             <st:LeftStretchPanel>
-                <TextBox IsReadOnly="True" Text="{Binding Path=SwitchAddress, Mode=OneWay}" Width="Auto" VerticalContentAlignment="Center"/>
+                <TextBox IsReadOnly="True" Text="{Binding Path=SwitchAddress, Mode=OneWay}" Width="Auto" VerticalContentAlignment="Center" x:Name="txtAddress"/>
             </st:LeftStretchPanel>
         </DockPanel>
-        <ListBox Grid.Row="1" ItemsSource="{Binding Path=Controllers}" SelectedItem="{Binding Path=SelectedController}" Margin="4,4">
+        <ListBox Grid.Row="1" 
+                 ItemsSource="{Binding Path=Controllers}" 
+                 SelectedItem="{Binding Path=SelectedController}" 
+                 Margin="4,4" 
+                 >
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Add" Command="{Binding Path=AddControllerCommand}" />
+                </ContextMenu>
+            </ListBox.ContextMenu>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid>
+                    <Grid Margin="-5,0,0,0" >
+                        <Grid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Remove" 
+                                          Command="{Binding Path=RemoveCommand}" />
+                            </ContextMenu>
+                        </Grid.ContextMenu>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="120"/>
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Border Grid.Column="0" x:Name="brdImg" BorderThickness="2" Padding="12" MaxHeight="120">
+                        <Border Grid.Column="0" x:Name="brdImg" 
+                                BorderThickness="2" Padding="12" 
+                                MaxHeight="120" Height="120" 
+                                BorderBrush="{DynamicResource MahApps.Brushes.Accent}">
                             <Grid x:Name="grdImg">
                                 <Image Source="{Binding Path=ControllerType, Converter={StaticResource ControllerTypeToImageSourceConverter}}"
-                                       Width="{Binding ActualWidth, ElementName=grdImg}" MaxWidth="{Binding ActualWidth, ElementName=brdImg}" Height="Auto" />
+                                       Width="{Binding ActualWidth, ElementName=grdImg}" MaxWidth="{Binding ActualWidth, ElementName=brdImg}" Height="Auto" 
+                                       >
+                                    <Image.Style>
+                                        <Style>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=DataContext.IsConnecting}" Value="True">
+                                                    <Setter Property="Image.Opacity" Value="0.5" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=DataContext.IsConnecting}" Value="False">
+                                                    <Setter Property="Image.Opacity" Value="1" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+
+                                <Rectangle Fill="{DynamicResource MahApps.Brushes.Accent4}" Width="120" Height="120" Margin="-12,-12"  
+                                           Visibility="{Binding Path=IsConnecting, Converter={StaticResource BoolToVisibilityConverter}}" 
+                                           />
+                                <mah:ProgressRing HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="{DynamicResource MahApps.Brushes.Accent}"
+                                                  Visibility="{Binding Path=IsConnecting, Converter={StaticResource BoolToVisibilityConverter}}" 
+                                                  /> 
                             </Grid>
                         </Border>
-                        <Border Grid.Column="1">
+                        <Border Grid.Column="1" BorderThickness="2" Margin="-2,0,0,0" 
+                                BorderBrush="{DynamicResource MahApps.Brushes.Accent}" 
+                                MaxHeight="120" Height="120" 
+                                x:Name="brdInfo">
+                            <Grid Background="Transparent">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="60" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="2*" />
+                                </Grid.RowDefinitions>
 
+                                <!--<Rectangle IsHitTestVisible="True"
+                                           Grid.Column="0"
+                                           Grid.ColumnSpan="2"
+                                           Grid.RowSpan="4"
+                                           Fill="Red"
+                                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />-->
+
+
+                                <Label Grid.Column="0" Grid.Row="0"
+                                       Content="ID:" 
+                                       FontWeight="SemiBold"
+                                       FontSize="10" 
+                                       VerticalAlignment="Center"
+                                       />
+
+                                <TextBlock Grid.Column="1" Grid.Row="0"
+                                           Text="{Binding Path=Id}"
+                                           FontSize="10" 
+                                           VerticalAlignment="Center"
+                                           />
+
+                                <Label Grid.Column="0" Grid.Row="1"
+                                       Content="Type:" 
+                                       FontWeight="SemiBold"
+                                       FontSize="10" 
+                                       VerticalAlignment="Center"
+                                       />
+
+                                <TextBlock Grid.Column="1" Grid.Row="1"
+                                           Text="{Binding Path=ControllerType}"
+                                           FontSize="10" 
+                                           VerticalAlignment="Center"
+                                           />
+
+                                <Label Grid.Column="0" Grid.Row="2"
+                                       Content="State:" 
+                                       FontWeight="SemiBold"
+                                       FontSize="10" 
+                                       VerticalAlignment="Center"
+                                       />
+
+                                <TextBlock Grid.Column="1" Grid.Row="2"
+                                           Text="{Binding Path=State}"
+                                           FontSize="10" 
+                                           VerticalAlignment="Center"
+                                           />
+
+                                <Label Grid.Column="0" Grid.Row="3"
+                                       Content="Error:" 
+                                       FontWeight="SemiBold"
+                                       FontSize="10" 
+                                       VerticalAlignment="Center"
+                                       IsEnabled="{Binding Path=IsError}"
+                                       />
+                                
+                                <ScrollViewer Grid.Column="1" Grid.Row="3" VerticalScrollBarVisibility="Auto" IsHitTestVisible="{Binding Path=IsError, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <TextBlock 
+                                               Text="{Binding Path=ErrorMessage}"
+                                               FontSize="10" 
+                                               VerticalAlignment="Stretch" Margin="0,4,8,4"
+                                               HorizontalAlignment="Left"
+                                               Foreground="{DynamicResource MahApps.Brushes.SystemControlErrorTextForeground}"
+                                               TextWrapping="Wrap"
+                                               MaxWidth="{Binding Path=ActualWidth, ElementName=txtAddress, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource MinusConverter}, ConverterParameter='120'}"
+                                               IsEnabled="{Binding Path=IsError, Mode=OneWay}"
+                                               />
+                                </ScrollViewer>
+
+                            </Grid>
                         </Border>
                     </Grid>
                 </DataTemplate>
@@ -59,6 +187,7 @@
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                 <Button Content="Add Controller" Command="{Binding Path=AddControllerCommand}" />
                 <Button Command="{Binding Path=RemoveControllerCommand}">Remove Controller</Button>
+                <Button Margin="4,0" Command="{Binding Path=UnselectCommand}">Unselect</Button>
             </StackPanel>
 
             <Expander Margin="4,4" Header="Controller Settings" FlowDirection="LeftToRight">

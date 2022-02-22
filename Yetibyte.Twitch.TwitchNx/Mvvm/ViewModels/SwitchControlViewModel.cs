@@ -20,6 +20,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         private readonly ObservableCollection<ControllerViewModel> _controllers = new ObservableCollection<ControllerViewModel>();
         private readonly RelayCommand _addControllerCommand;
         private readonly RelayCommand _removeControllerCommand;
+        private readonly RelayCommand<int> _removeControllerAtCommand;
+        private readonly RelayCommand _unselectCommand;
 
         private ControllerViewModel? _selectedController;
 
@@ -31,6 +33,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         public ICommand AddControllerCommand => _addControllerCommand;
         public ICommand RemoveControllerCommand => _removeControllerCommand;
+        public ICommand RemoveControllerAtCommand => _removeControllerAtCommand;
+        public ICommand UnselectCommand => _unselectCommand;
 
         public IEnumerable<ControllerViewModel> Controllers => _controllers;
 
@@ -41,6 +45,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             {
                 _selectedController = value;
                 OnPropertyChanged();
+                _unselectCommand.NotifyCanExecuteChanged();
                 _removeControllerCommand.NotifyCanExecuteChanged();
             }
         }
@@ -76,6 +81,21 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
             _addControllerCommand = new RelayCommand(ExecuteAddControllerCommand, CanExecuteAddControllerCommand);
             _removeControllerCommand = new RelayCommand(ExecuteRemoveControllerCommand, CanExecuteRemoveControllerCommand);
+            _removeControllerAtCommand = new RelayCommand<int>(ExecuteRemoveControllerAtCommand, CanExecuteRemoveControllerAtCommand);
+            _unselectCommand = new RelayCommand(() => SelectedController = null, () => SelectedController != null);
+        }
+
+        private void ExecuteRemoveControllerAtCommand(int id)
+        {
+            if (!CanExecuteRemoveControllerAtCommand(id))
+                return;
+
+            _switchConnector.RemoveController(id);
+        }
+
+        private bool CanExecuteRemoveControllerAtCommand(int id)
+        {
+            return _controllers.Any(c => c.Id == id) && _switchConnector.IsConnected;
         }
 
         private void switchConnector_SwitchAddressChanged(object? sender, EventArgs e)
@@ -89,6 +109,9 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             {
                 _addControllerCommand.NotifyCanExecuteChanged();
                 _removeControllerCommand.NotifyCanExecuteChanged();
+
+                foreach(var controller in _controllers)
+                    controller.NotifyRemoveCommandCanExecuteChanged();
             });
         }
 
@@ -151,7 +174,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
             if (controllerViewModel is null)
             {
-                controllerViewModel = new ControllerViewModel();
+                controllerViewModel = new ControllerViewModel(_switchConnector);
 
                 Application.Current?.Dispatcher?.Invoke(() =>
                     {
@@ -183,7 +206,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
                 if (controllerViewModel is null) // Controller not found in view model, so create it
                 {
-                    controllerViewModel = new ControllerViewModel();
+                    controllerViewModel = new ControllerViewModel(_switchConnector);
                     controllerViewModel.Update(controller);
 
                     Application.Current?.Dispatcher?.Invoke(() =>

@@ -9,7 +9,7 @@ using System.Windows.Data;
 
 namespace Yetibyte.Twitch.TwitchNx.DataBinding
 {
-	[ValueConversion(typeof(Boolean), typeof(Visibility))]
+    [ValueConversion(typeof(Boolean), typeof(Visibility))]
 	public sealed class BoolToVisibilityConverter : IValueConverter
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
