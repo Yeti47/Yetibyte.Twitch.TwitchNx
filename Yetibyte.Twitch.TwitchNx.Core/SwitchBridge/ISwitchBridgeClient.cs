@@ -26,7 +26,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
         void CreateController(string controllerType);
         void RemoveController(int controllerId);
 
-        void ExecuteMacro(string macro, int controllerId);
+        string ExecuteMacro(string macro, int controllerId);
 
         void GetSwitchStatus();
 

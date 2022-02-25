@@ -17,18 +17,26 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
 
         public CommandSetup CommandSetup { get; }
 
-        public Command(string id, ICommandUser user, CommandSetup commandSetup, string originalMessage)
+        public string Name => CommandSetup.Name;
+
+        public DateTime Timestamp { get; }
+
+        public Command(string id, ICommandUser user, CommandSetup commandSetup, string originalMessage, DateTime timestamp)
         {
             Id = id;
             User = user;
             CommandSetup = commandSetup;
             OriginalMessage = originalMessage;
+            Timestamp = timestamp;
         }
 
         public override bool Equals(object? obj) => ReferenceEquals(obj, this) || obj is Command other && other.Id == Id;
         public bool Equals(Command? other) => ReferenceEquals(other, this) || other is Command otherCmd && otherCmd.Id == Id;
 
         public override int GetHashCode() => Id.GetHashCode();
+
+        public static bool operator ==(Command a, Command b) => ReferenceEquals(a, b) || a is Command cmd && cmd.Equals(b);
+        public static bool operator !=(Command a, Command b) => !(a == b);
 
     }
 }

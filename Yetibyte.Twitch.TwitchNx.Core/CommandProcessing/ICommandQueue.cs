@@ -2,6 +2,8 @@
 {
     public interface ICommandQueue
     {
+        bool IsQueueFull { get; }
+
         bool Enqueue(Command command);
     }
 }

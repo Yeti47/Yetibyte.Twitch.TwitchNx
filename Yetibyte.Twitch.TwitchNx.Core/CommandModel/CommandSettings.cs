@@ -19,6 +19,11 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
 
         public string CommandPrefix { get; set; } = DEFAULT_COMMAND_PREFIX;
 
+        public int MaxQueueCapacity { get; set; }
+
+        public string QueueFullMessage { get; set; } = "{USER}, the command queue is already full. Please wait before submitting any more commands.";
+
+
         [JsonIgnore]
         public IReadOnlyList<CommandSetup> CommandSetups => new ReadOnlyCollection<CommandSetup>(_commands);
 
@@ -118,5 +123,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
             var handler = CooldownGroupRemoved;
             handler?.Invoke(this, new CooldownGroupRemovedEventArgs(cooldownGroup));
         }
+
+        public string GetQueueFullMessage(string userName) => QueueFullMessage.Replace("{USER}", userName);
     }
 }

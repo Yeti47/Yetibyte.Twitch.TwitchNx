@@ -9,6 +9,7 @@ using Yetibyte.Twitch.TwitchNx.Core.SwitchBridge.Models;
 
 namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
 {
+
     public class SwitchConnector : IDisposable
     {
         #region Fields
@@ -77,6 +78,9 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
         public event EventHandler<AddingSwitchControllerEventArgs>? AddingController;
         public event EventHandler<SwitchControllerAddedEventArgs>? ControllerAdded;
         public event EventHandler<SwitchControllerRemovedEventArgs>? ControllerRemoved;
+
+        public event EventHandler<SwitchConnectorMacroEventargs>? MacroExecuted;
+        public event EventHandler<SwitchConnectorMacroCompleteEventArgs>? MacroComplete;
 
         #endregion
 
@@ -150,6 +154,14 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
             {
                 // TODO: proper error handling!
             }
+        }
+
+        public string ExecuteMacro(string macro, int controllerId)
+        {
+            if (!IsConnected || _client is null)
+                return string.Empty;
+
+            return _client.ExecuteMacro(macro, controllerId);
         }
 
         public bool Connect(SwitchBridgeClientConnectionSettings connectionSettings)
@@ -227,10 +239,28 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
                     RemoveControllerSwitchBridgeMessage removeControllerMessage = (RemoveControllerSwitchBridgeMessage)e.Message;
                     ProcessRemoveControllerMessage(removeControllerMessage);
                     break;
+                case MacroSwitchBridgeMessage.MESSAGE_TYPE:
+                    MacroSwitchBridgeMessage macroSwitchBridgeMessage = (MacroSwitchBridgeMessage)e.Message;
+                    ProcessMacroMessage(macroSwitchBridgeMessage);
+                    break;
+                case MacroCompleteSwitchBridgeMessage.MESSAGE_TYPE:
+                    MacroCompleteSwitchBridgeMessage macroCompleteSwitchBridgeMessage = (MacroCompleteSwitchBridgeMessage)e.Message;
+                    ProcessMacroCompleteMessage(macroCompleteSwitchBridgeMessage);
+                    break;
                 default:
                     // TODO: Proper handling of unknown message types.
                     break;
             }
+        }
+
+        private void ProcessMacroMessage(MacroSwitchBridgeMessage macroSwitchBridgeMessage)
+        {
+            
+        }
+
+        private void ProcessMacroCompleteMessage(MacroCompleteSwitchBridgeMessage macroCompleteSwitchBridgeMessage)
+        {
+            
         }
 
         private void ProcessCreateControllerMessage(CreateControllerSwitchBridgeMessage message)
@@ -341,6 +371,18 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
         {
             var handler = SwitchAddressChanged;
             handler?.Invoke(this, EventArgs.Empty);
+        }
+
+        protected virtual void OnMacroExecuted(string macroMessageId)
+        {
+            var handler = MacroExecuted;
+            handler?.Invoke(this, new SwitchConnectorMacroEventargs(macroMessageId));
+        }
+
+        protected virtual void OnMacroCompleted(string originalMacroMessageId)
+        {
+            var handler = MacroComplete;
+            handler?.Invoke(this, new SwitchConnectorMacroCompleteEventArgs(originalMacroMessageId));
         }
 
         protected virtual void OnControllerAdded(SwitchController controller)

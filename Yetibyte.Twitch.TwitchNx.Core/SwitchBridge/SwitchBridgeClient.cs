@@ -180,7 +180,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
             
         }
 
-        public void ExecuteMacro(string macro, int controllerId)
+        public string ExecuteMacro(string macro, int controllerId)
         {
             if (!IsConnected)
                 throw new InvalidOperationException($"{nameof(SwitchBridgeClient)} not connected.");
@@ -202,6 +202,8 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
             {
                 throw new SwitchBridgeOperationException(nameof(ExecuteMacro), innerException: ex);
             }
+
+            return message.Id;
         }
 
         public void GetSwitchAddresses()

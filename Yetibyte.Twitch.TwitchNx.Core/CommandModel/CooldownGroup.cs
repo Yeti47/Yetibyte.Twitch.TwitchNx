@@ -17,6 +17,9 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
         
         public float SharedTime { get; set; }
 
+        public string UserCooldownMessage { get; set; } = "{USER}, please wait another {TIME} seconds before using this command again.";
+        public string SharedCooldownMessage { get; set; } = "{USER}, this command is not ready yet. Please wait another {TIME} seconds.";
+
         [JsonIgnore]
         public TimeSpan SharedDuration => TimeSpan.FromSeconds(SharedTime);
 
@@ -46,6 +49,23 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
             }
 
             return 0;
+        }
+
+        public string GetUserCooldownMessage(string userName, double remainingSeconds)
+        {
+            return GetCooldownMessage(UserCooldownMessage, userName, remainingSeconds);
+        }
+
+        public string GetSharedCooldownMessage(string userName, double remainingSeconds)
+        {
+            return GetCooldownMessage(SharedCooldownMessage, userName, remainingSeconds);
+        }
+
+        private string GetCooldownMessage(string messageTemplate, string userName, double remainingSeconds)
+        {
+            return messageTemplate
+                .Replace("{USER}", userName)
+                .Replace("{TIME}", remainingSeconds.ToString(".1"));
         }
 
     }

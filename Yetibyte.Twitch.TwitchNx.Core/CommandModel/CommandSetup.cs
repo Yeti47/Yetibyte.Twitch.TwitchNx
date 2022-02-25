@@ -38,6 +38,8 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
 
         public CooldownGroup? CooldownGroup { get; set; }
 
+        public int ControllerIndex { get; set; } = 0;
+
         public CommandSetup(string command, Macro macro)
         {
             Command = command;
