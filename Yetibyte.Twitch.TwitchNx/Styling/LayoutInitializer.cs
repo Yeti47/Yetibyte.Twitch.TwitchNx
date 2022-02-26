@@ -19,7 +19,25 @@ namespace Yetibyte.Twitch.TwitchNx.Styling
                 destinationContainer.FindParent<LayoutFloatingWindow>() != null)
                 return false;
 
-            var toolsPane = layout.Descendents().OfType<LayoutAnchorablePane>().FirstOrDefault(d => d.Name == "ToolsPane");
+            DefaultPaneAttribute? defaultPaneAttribute = null;
+
+            if (anchorableToShow.Content != null)
+            {
+                defaultPaneAttribute = anchorableToShow.Content.GetType().GetCustomAttributes(typeof(DefaultPaneAttribute), true)
+                    .FirstOrDefault() as DefaultPaneAttribute;
+            }
+
+            string targetPaneName = !string.IsNullOrWhiteSpace(defaultPaneAttribute?.DefaultPaneName) ? defaultPaneAttribute.DefaultPaneName : "MainLeft";
+
+            var toolsPane = layout.Descendents()
+                .OfType<LayoutAnchorablePane>().Concat(
+                    layout.Descendents()
+                    .OfType<LayoutAnchorable>()
+                    .Select(a => a.Content)
+                    .OfType<LayoutAnchorablePane>()
+                ).FirstOrDefault(d => d.Name == targetPaneName);
+
+
             if (toolsPane != null)
             {
                 toolsPane.Children.Add(anchorableToShow);

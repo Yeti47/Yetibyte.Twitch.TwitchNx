@@ -7,9 +7,11 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
     {
         private static readonly CultureInfo SECONDS_FORMAT_CULTURE = new CultureInfo("en-US");
 
+        [Newtonsoft.Json.JsonProperty("Input")]
         private readonly List<IControllerInput> _input = new List<IControllerInput>();
         private float _seconds;
 
+        [Newtonsoft.Json.JsonIgnore]
         public IControllerInput this[int index] { get => ((IList<IControllerInput>)_input)[index]; set => ((IList<IControllerInput>)_input)[index] = value; }
 
         public float Seconds { 
@@ -17,8 +19,10 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
             set => _seconds = Math.Abs(value); 
         }
 
+        [Newtonsoft.Json.JsonIgnore]
         public int Count => ((ICollection<IControllerInput>)_input).Count;
 
+        [Newtonsoft.Json.JsonIgnore]
         public bool IsReadOnly => false;
 
         public MacroInstruction(float seconds)

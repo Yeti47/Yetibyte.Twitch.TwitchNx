@@ -27,6 +27,10 @@
                 <v:SwitchControlView />
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type vm:ProjectExplorerViewModel}">
+                <v:ProjectExplorerView />
+            </DataTemplate>
+
             <DataTemplate x:Key="NewProject" DataType="{x:Type vm:NewProjectViewModel}">
                 <v:NewProjectView />
             </DataTemplate>

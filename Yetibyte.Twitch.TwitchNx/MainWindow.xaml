@@ -26,7 +26,10 @@
         <WrapPanel Grid.Row="0">
             <Menu VerticalAlignment="Center">
                 <MenuItem Header="File">
-                    <MenuItem x:Name="menuNewProject" Click="menuNewProject_Click"  Header="New..." />
+                    <MenuItem x:Name="menuNew" Header="New">
+                        <MenuItem  Click="menuNewProject_Click" Header="Project..."/>
+                        <MenuItem Command="{Binding Path=ProjectExplorerViewModel.NewCommandSetupCommand}" Header="Command" />
+                    </MenuItem>
                     <MenuItem x:Name="menuLoadProject" Click="menuLoadProject_Click" Header="Open..." />
                     <MenuItem x:Name="menuSaveProject" Click="menuSaveProject_Click"   Header="Save" />
                     <MenuItem x:Name="menuSaveProjectAs" Click="menuSaveProjectAs_Click" Header="Save As..." />
@@ -69,9 +72,25 @@
 
             <LayoutRoot>
                 <LayoutPanel Orientation="Horizontal">
-                    <LayoutDocumentPane />
+
+                    <LayoutAnchorablePane Name="MainLeft" DockMinWidth="100" DockWidth="300">
+                        
+                    </LayoutAnchorablePane>
+
+                    <!--<LayoutAnchorablePaneGroup x:Name="MainCenter">
+
+                    </LayoutAnchorablePaneGroup>-->
+                    <LayoutDocumentPaneGroup x:Name="MainCenter" DockWidth="*">
+                        <LayoutDocumentPane />
+                    </LayoutDocumentPaneGroup>
+
+                    <LayoutAnchorablePane Name="MainRight" DockMinWidth="100" DockWidth="300">
+
+                    </LayoutAnchorablePane>
+
+                   
                     <!--<LayoutAnchorablePane Name="ToolsPane" DockMinHeight="100" DockHeight="300" />-->
-                    <LayoutAnchorablePane Name="ToolsPane" DockMinWidth="100" DockWidth="300"  />
+                    <!--<LayoutAnchorablePane Name="ToolsPane" DockMinWidth="100" DockWidth="300"  />-->
                 </LayoutPanel>
             </LayoutRoot>
         </DockingManager>

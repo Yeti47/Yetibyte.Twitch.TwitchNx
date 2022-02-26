@@ -11,21 +11,22 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
     [Serializable]
     public class Macro : IList<MacroInstruction>
     {
+        [Newtonsoft.Json.JsonProperty("Instructions")]
         private readonly List<MacroInstruction> _instructions = new List<MacroInstruction>();
 
-        [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public MacroInstruction this[int index] { get => ((IList<MacroInstruction>)_instructions)[index]; set => ((IList<MacroInstruction>)_instructions)[index] = value; }
 
-        [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public int Count => ((ICollection<MacroInstruction>)_instructions).Count;
 
-        [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public bool IsReadOnly => false;
 
-        [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public float TotalSeconds => _instructions.Sum(i => i.Seconds);
 
-        [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public TimeSpan TotalDuration => TimeSpan.FromSeconds(TotalSeconds);
 
         public void Add(MacroInstruction item)

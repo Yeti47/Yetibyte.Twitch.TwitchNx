@@ -14,7 +14,10 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
     {
         private const string DEFAULT_COMMAND_PREFIX = "!";
 
+        [Newtonsoft.Json.JsonProperty("CommandSetups")]
         private readonly List<CommandSetup> _commands = new List<CommandSetup>();
+
+        [Newtonsoft.Json.JsonProperty("CooldownGroups")]
         private readonly List<CooldownGroup> _cooldownGroups = new List<CooldownGroup>();
 
         public string CommandPrefix { get; set; } = DEFAULT_COMMAND_PREFIX;
@@ -24,10 +27,10 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
         public string QueueFullMessage { get; set; } = "{USER}, the command queue is already full. Please wait before submitting any more commands.";
 
 
-        [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public IReadOnlyList<CommandSetup> CommandSetups => new ReadOnlyCollection<CommandSetup>(_commands);
 
-        [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public IReadOnlyList<CooldownGroup> CooldownGroups => new ReadOnlyCollection<CooldownGroup>(_cooldownGroups);
 
         public event EventHandler<CommandSetupAddedEventArgs>? CommandSetupAdded;
@@ -125,5 +128,23 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
         }
 
         public string GetQueueFullMessage(string userName) => QueueFullMessage.Replace("{USER}", userName);
+
+        public string GetFreeDefaultCommandName()
+        {
+            const string defaultName = "untitled";
+
+            string name = defaultName;
+
+            int ctr = 0;
+
+            while (_commands.Any(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
+            {
+                ctr++;
+
+                name = $"{defaultName}{ctr}";
+            }
+
+            return name;
+        }
     }
 }

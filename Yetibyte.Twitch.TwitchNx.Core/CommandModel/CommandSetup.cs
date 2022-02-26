@@ -46,5 +46,14 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
             Macro = macro;
         }
 
+        public CommandSetup(string command) : this(command, new Macro())
+        {
+
+        }
+
+        private CommandSetup() : this(string.Empty)
+        {
+        }
+
     }
 }

@@ -9,7 +9,7 @@ using Yetibyte.Twitch.TwitchNx.Core.SwitchBridge;
 
 namespace Yetibyte.Twitch.TwitchNx.Core.ProjectManagement
 {
-    public class Project : ICommandSettingsProvider
+    public class Project : ICommandSettingsProvider, IProject
     {
         public const string UNTITLED_PROJECT_NAME = "Untitled";
 
@@ -18,7 +18,8 @@ namespace Yetibyte.Twitch.TwitchNx.Core.ProjectManagement
         public string Name
         {
             get { return _name; }
-            set { 
+            set
+            {
 
                 string newValue = value?.Trim() ?? string.Empty;
 
@@ -28,7 +29,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.ProjectManagement
                 if (_name != newValue)
                 {
                     string oldName = _name;
-                    _name = newValue; 
+                    _name = newValue;
 
                     OnNameChanged(oldName, Name);
                 }

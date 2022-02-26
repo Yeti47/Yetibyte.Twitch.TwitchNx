@@ -40,6 +40,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         }
 
         public SwitchControlViewModel SwitchControlViewModel { get; private set; }
+        public ProjectExplorerViewModel ProjectExplorerViewModel { get; private set; }
 
         public IEnumerable<ToolViewModel> Tools => _tools;
 
@@ -63,11 +64,12 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             _switchConnectionViewModel = new SwitchConnectionViewModel(switchConnector, projectManager.CurrentProject?.SwitchBridgeClientConnectionSettings ?? SwitchBridgeClientConnectionSettings.CreateEmpty());
 
             SwitchControlViewModel = new SwitchControlViewModel(switchConnector);
+            ProjectExplorerViewModel = new ProjectExplorerViewModel(projectManager);
 
             _projectManager.ProjectChanged += projectManager_ProjectChanged;
             _projectManager.ProjectChanging += _projectManager_ProjectChanging;
 
-            _tools = new ObservableCollection<ToolViewModel> { SwitchConnectionViewModel, SwitchControlViewModel };
+            _tools = new ObservableCollection<ToolViewModel> { SwitchConnectionViewModel, SwitchControlViewModel, ProjectExplorerViewModel };
 
             _closeProjectCommand = new RelayCommand(() => _projectManager.CloseProject(), () => _projectManager.IsProjectOpen);
         }
