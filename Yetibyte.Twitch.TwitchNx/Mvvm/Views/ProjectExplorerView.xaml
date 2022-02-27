@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.Views"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="400">
     <Grid>
@@ -23,7 +24,7 @@
 
             <ListBox ItemsSource="{Binding Path=Commands}" 
                      SelectedItem="{Binding Path=SelectedCommand}"
-                     DisplayMemberPath="Name" 
+                     
                      BorderThickness="1"
                      BorderBrush="{DynamicResource MahApps.Brushes.Accent4}">
 
@@ -32,6 +33,18 @@
                         <MenuItem Header="New" Command="{Binding Path=NewCommandSetupCommand}" />
                     </ContextMenu>
                 </ListBox.ContextMenu>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Label Content="{Binding Path=Name}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseDoubleClick">
+                                    <i:InvokeCommandAction Command="{Binding Path=OpenCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Label>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
                 
             </ListBox>
 

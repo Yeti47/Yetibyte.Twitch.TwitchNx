@@ -21,6 +21,9 @@
             Y = Math.Max(0, Math.Min(y, 100));
         }
 
-        public string Macro => $"{StickMacro}@{MacroX}{MacroY}";
+        public string GetMacro()
+        {
+            return $"{StickMacro}@{MacroX}{MacroY}";
+        }
     }
 }

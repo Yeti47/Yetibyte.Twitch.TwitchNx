@@ -25,9 +25,15 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
             }
         }
 
-        public string Name {
+        public string Name
+        {
             get => string.IsNullOrWhiteSpace(_name) ? _command : _name;
-            set => _name = value; 
+            set
+            {
+                string oldName = _name;
+                _name = value;
+                OnNameChanged(oldName);
+            }
         }
 
         public string Description { get; set; } = string.Empty;
@@ -39,6 +45,8 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
         public CooldownGroup? CooldownGroup { get; set; }
 
         public int ControllerIndex { get; set; } = 0;
+
+        public event EventHandler<NameChangedEventArgs>? NameChanged;
 
         public CommandSetup(string command, Macro macro)
         {
@@ -53,6 +61,12 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
 
         private CommandSetup() : this(string.Empty)
         {
+        }
+
+        protected virtual void OnNameChanged(string oldName)
+        {
+            var handler = NameChanged;
+            handler?.Invoke(this, new NameChangedEventArgs(oldName, Name));
         }
 
     }

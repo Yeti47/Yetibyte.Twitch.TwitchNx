@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
 {
-    public class MacroInstruction : IList<IControllerInput>
+    public class MacroInstruction : IList<IControllerInput>, IMacroInstruction
     {
         private static readonly CultureInfo SECONDS_FORMAT_CULTURE = new CultureInfo("en-US");
 
@@ -14,9 +14,10 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
         [Newtonsoft.Json.JsonIgnore]
         public IControllerInput this[int index] { get => ((IList<IControllerInput>)_input)[index]; set => ((IList<IControllerInput>)_input)[index] = value; }
 
-        public float Seconds { 
-            get => _seconds; 
-            set => _seconds = Math.Abs(value); 
+        public float Seconds
+        {
+            get => _seconds;
+            set => _seconds = Math.Abs(value);
         }
 
         [Newtonsoft.Json.JsonIgnore]
@@ -93,7 +94,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
 
         public override string ToString()
         {
-            return string.Join(' ', _input.Select(i => i.Macro)) + " " + Seconds.ToString(".4", SECONDS_FORMAT_CULTURE) + "s";
+            return string.Join(' ', _input.Select(i => i.GetMacro())) + " " + Seconds.ToString(".4", SECONDS_FORMAT_CULTURE) + "s";
         }
     }
 }

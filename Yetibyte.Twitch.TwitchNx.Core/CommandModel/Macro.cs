@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
 {
     [Serializable]
-    public class Macro : IList<MacroInstruction>
+    public class Macro : IList<IMacroInstruction>
     {
         [Newtonsoft.Json.JsonProperty("Instructions")]
-        private readonly List<MacroInstruction> _instructions = new List<MacroInstruction>();
+        private readonly List<IMacroInstruction> _instructions = new List<IMacroInstruction>();
 
         [Newtonsoft.Json.JsonIgnore]
-        public MacroInstruction this[int index] { get => ((IList<MacroInstruction>)_instructions)[index]; set => ((IList<MacroInstruction>)_instructions)[index] = value; }
+        public IMacroInstruction this[int index] { get => ((IList<IMacroInstruction>)_instructions)[index]; set => ((IList<IMacroInstruction>)_instructions)[index] = value; }
 
         [Newtonsoft.Json.JsonIgnore]
-        public int Count => ((ICollection<MacroInstruction>)_instructions).Count;
+        public int Count => ((ICollection<IMacroInstruction>)_instructions).Count;
 
         [Newtonsoft.Json.JsonIgnore]
         public bool IsReadOnly => false;
@@ -29,49 +29,49 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
         [Newtonsoft.Json.JsonIgnore]
         public TimeSpan TotalDuration => TimeSpan.FromSeconds(TotalSeconds);
 
-        public void Add(MacroInstruction item)
+        public void Add(IMacroInstruction item)
         {
-            ((ICollection<MacroInstruction>)_instructions).Add(item);
+            ((ICollection<IMacroInstruction>)_instructions).Add(item);
         }
 
         public void Clear()
         {
-            ((ICollection<MacroInstruction>)_instructions).Clear();
+            ((ICollection<IMacroInstruction>)_instructions).Clear();
         }
 
-        public bool Contains(MacroInstruction item)
+        public bool Contains(IMacroInstruction item)
         {
-            return ((ICollection<MacroInstruction>)_instructions).Contains(item);
+            return ((ICollection<IMacroInstruction>)_instructions).Contains(item);
         }
 
-        public void CopyTo(MacroInstruction[] array, int arrayIndex)
+        public void CopyTo(IMacroInstruction[] array, int arrayIndex)
         {
-            ((ICollection<MacroInstruction>)_instructions).CopyTo(array, arrayIndex);
+            ((ICollection<IMacroInstruction>)_instructions).CopyTo(array, arrayIndex);
         }
 
-        public IEnumerator<MacroInstruction> GetEnumerator()
+        public IEnumerator<IMacroInstruction> GetEnumerator()
         {
-            return ((IEnumerable<MacroInstruction>)_instructions).GetEnumerator();
+            return ((IEnumerable<IMacroInstruction>)_instructions).GetEnumerator();
         }
 
-        public int IndexOf(MacroInstruction item)
+        public int IndexOf(IMacroInstruction item)
         {
-            return ((IList<MacroInstruction>)_instructions).IndexOf(item);
+            return ((IList<IMacroInstruction>)_instructions).IndexOf(item);
         }
 
-        public void Insert(int index, MacroInstruction item)
+        public void Insert(int index, IMacroInstruction item)
         {
-            ((IList<MacroInstruction>)_instructions).Insert(index, item);
+            ((IList<IMacroInstruction>)_instructions).Insert(index, item);
         }
 
-        public bool Remove(MacroInstruction item)
+        public bool Remove(IMacroInstruction item)
         {
-            return ((ICollection<MacroInstruction>)_instructions).Remove(item);
+            return ((ICollection<IMacroInstruction>)_instructions).Remove(item);
         }
 
         public void RemoveAt(int index)
         {
-            ((IList<MacroInstruction>)_instructions).RemoveAt(index);
+            ((IList<IMacroInstruction>)_instructions).RemoveAt(index);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -79,10 +79,10 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
             return ((IEnumerable)_instructions).GetEnumerator();
         }
 
-        public static Macro Create(params MacroInstruction[] instructions)
+        public static Macro Create(params IMacroInstruction[] instructions)
         {
             Macro result = new Macro();
-            result._instructions.AddRange(instructions ?? Array.Empty<MacroInstruction>());
+            result._instructions.AddRange(instructions ?? Array.Empty<IMacroInstruction>());
 
             return result;
         }

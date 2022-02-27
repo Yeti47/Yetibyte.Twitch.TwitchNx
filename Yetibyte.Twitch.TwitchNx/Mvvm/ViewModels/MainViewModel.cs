@@ -42,6 +42,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         public SwitchControlViewModel SwitchControlViewModel { get; private set; }
         public ProjectExplorerViewModel ProjectExplorerViewModel { get; private set; }
 
+        public DocumentManagerViewModel DocumentManagerViewModel { get; private set; }
+
         public IEnumerable<ToolViewModel> Tools => _tools;
 
         public Theme Theme { get; } = new AvalonDock.Themes.Vs2013LightTheme();
@@ -63,8 +65,9 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
             _switchConnectionViewModel = new SwitchConnectionViewModel(switchConnector, projectManager.CurrentProject?.SwitchBridgeClientConnectionSettings ?? SwitchBridgeClientConnectionSettings.CreateEmpty());
 
+            DocumentManagerViewModel = new DocumentManagerViewModel();
             SwitchControlViewModel = new SwitchControlViewModel(switchConnector);
-            ProjectExplorerViewModel = new ProjectExplorerViewModel(projectManager);
+            ProjectExplorerViewModel = new ProjectExplorerViewModel(projectManager, DocumentManagerViewModel);
 
             _projectManager.ProjectChanged += projectManager_ProjectChanged;
             _projectManager.ProjectChanging += _projectManager_ProjectChanging;

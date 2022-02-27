@@ -159,10 +159,11 @@
                                     <TextBlock 
                                                Text="{Binding Path=ErrorMessage}"
                                                FontSize="10" 
-                                               VerticalAlignment="Stretch" Margin="0,4,8,4"
+                                               Margin="0,4,8,4"
+                                               VerticalAlignment="Stretch" 
                                                HorizontalAlignment="Left"
-                                               Foreground="{DynamicResource MahApps.Brushes.SystemControlErrorTextForeground}"
                                                TextWrapping="Wrap"
+                                               Foreground="{DynamicResource MahApps.Brushes.SystemControlErrorTextForeground}"
                                                MaxWidth="{Binding Path=ActualWidth, ElementName=txtAddress, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource MinusConverter}, ConverterParameter='120'}"
                                                IsEnabled="{Binding Path=IsError, Mode=OneWay}"
                                                />

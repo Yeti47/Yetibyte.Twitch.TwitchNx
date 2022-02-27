@@ -49,6 +49,7 @@
                         Theme="{Binding Path=Theme}"
                         IsEnabled="{Binding Path=CanEditProject}"
                         Visibility="{Binding Path=CanEditProject, Converter={StaticResource BoolToVisibilityConverter}}"
+                        DocumentsSource="{Binding Path=DocumentManagerViewModel.Documents}"
                         >
             <DockingManager.LayoutItemContainerStyleSelector>
                 <st:PanesStyleSelector>
@@ -63,6 +64,17 @@
                             <Setter Property="IsActive" Value="{Binding Model.IsActive, Mode=TwoWay}" />
                         </Style>
                     </st:PanesStyleSelector.ToolStyle>
+                    <st:PanesStyleSelector.DocumentStyle>
+                        <Style TargetType="{x:Type LayoutItem}">
+                            <Setter Property="Title" Value="{Binding Model.Title}" />
+                            <!--<Setter Property="ToolTip" Value="{Binding Model.FilePath}" />-->
+                            <Setter Property="CloseCommand" Value="{Binding Model.CloseCommand}" />
+                            <Setter Property="IconSource" Value="{Binding Model.IconSource}" />
+                            <Setter Property="ContentId" Value="{Binding Model.ContentId}" />
+                            <Setter Property="IsSelected" Value="{Binding Model.IsSelected, Mode=TwoWay}" />
+                            <Setter Property="IsActive" Value="{Binding Model.IsActive, Mode=TwoWay}" />
+                        </Style>
+                    </st:PanesStyleSelector.DocumentStyle>
                 </st:PanesStyleSelector>
             </DockingManager.LayoutItemContainerStyleSelector>
 

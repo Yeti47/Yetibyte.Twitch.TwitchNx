@@ -35,6 +35,10 @@
                 <v:NewProjectView />
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type vm:CommandSetupDocumentViewModel}">
+                <v:CommandSetupDocumentView />
+            </DataTemplate>
+
             <Style x:Key="FormDock" TargetType="DockPanel">
                 <Setter Property="Margin" Value="0,2"/>
             </Style>

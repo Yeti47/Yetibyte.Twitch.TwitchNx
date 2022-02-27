@@ -8,7 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Yetibyte.Twitch.TwitchNx.Core.CommandModel;
+using Yetibyte.Twitch.TwitchNx.Core.Common;
 using Yetibyte.Twitch.TwitchNx.Core.ProjectManagement;
+using Yetibyte.Twitch.TwitchNx.Mvvm.Models;
 using Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.Layout;
 using Yetibyte.Twitch.TwitchNx.Styling;
 
@@ -30,12 +32,37 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         public class CommandViewModel : ObservableObject
         {
+            private readonly IDocumentManager _documentManager;
+            private readonly CommandSetup _commandSetup;
+            private readonly RelayCommand _openCommand;
+
             private string _name = string.Empty;
 
             public string Name
             {
                 get { return _name; }
                 set { _name = value; OnPropertyChanged(); }
+            }
+
+            public ICommand OpenCommand => _openCommand;
+
+            public CommandSetup CommandSetup => _commandSetup;
+
+            public CommandViewModel(IDocumentManager documentManager, CommandSetup commandSetup)
+            {
+                _documentManager = documentManager;
+                _commandSetup = commandSetup;
+
+                _name = commandSetup.Name;
+
+                _openCommand = new RelayCommand(() =>
+                {
+                    if (!_documentManager.IsDocumentOpen(typeof(CommandSetup), _commandSetup.Name))
+                    {
+                        _documentManager.OpenDocument(new CommandSetupDocumentViewModel(_documentManager, _commandSetup));
+                    }
+                    _documentManager.TrySelect(typeof(CommandSetup), _commandSetup.Name);
+                });
             }
         }
 
@@ -44,8 +71,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         private readonly RelayCommand _newCommandSetupCommand;
         
         private readonly IProjectManager _projectManager;
-
-
+        private readonly IDocumentManager _documentManager;
         private CommandViewModel? _selectedCommand;
         private CooldownGroupViewModel? _selectedCooldownGroup;
 
@@ -66,14 +92,36 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         public IEnumerable<CommandViewModel> Commands => _commands;
         public IEnumerable<CooldownGroupViewModel> CooldownGroups => _cooldownGroups;
 
-        public ProjectExplorerViewModel(IProjectManager projectManager) : base("Project Explorer")
+        public ProjectExplorerViewModel(IProjectManager projectManager, IDocumentManager documentManager) : base("Project Explorer")
         {
             _projectManager = projectManager;
+            _documentManager = documentManager;
             _projectManager.ProjectChanging += ProjectManager_ProjectChanging;
             _projectManager.ProjectChanged += ProjectManager_ProjectChanged;
 
             _newCommandSetupCommand = new RelayCommand(ExecuteNewCommandSetupCommand, CanExecuteNewCommandSetupCommand);
+
+            _commands.CollectionChanged += commands_CollectionChanged;
             
+        }
+
+        private void commands_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems is not null)
+            {
+                foreach(CommandViewModel oldItem in e.OldItems)
+                {
+                    oldItem.CommandSetup.NameChanged -= CommandSetup_NameChanged;
+                }
+            }
+
+            if (e.NewItems is not null)
+            {
+                foreach (CommandViewModel newItem in e.NewItems)
+                {
+                    newItem.CommandSetup.NameChanged += CommandSetup_NameChanged;
+                }
+            }
         }
 
         private bool CanExecuteNewCommandSetupCommand()
@@ -136,6 +184,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
             if (commandVm != null)
                 _commands.Remove(commandVm);
+
         }
 
         private void CommandSettings_CooldownGroupAdded(object? sender, Core.CommandModel.CooldownGroupAddedEventArgs e)
@@ -145,7 +194,16 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         private void CommandSettings_CommandSetupAdded(object? sender, Core.CommandModel.CommandSetupAddedEventArgs e)
         {
-            _commands.Add(new CommandViewModel { Name = e.CommandSetup.Name });
+            _commands.Add(new CommandViewModel(_documentManager, e.CommandSetup));
+
+        }
+
+        private void CommandSetup_NameChanged(object? sender, NameChangedEventArgs e)
+        {
+            var commandVm = _commands.FirstOrDefault(c => c.Name == e.OldName);
+
+            if (commandVm != null)
+                commandVm.Name = e.NewName;
         }
 
         private void PopulateExplorerItems()
@@ -159,9 +217,10 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             _commands.Clear(); 
             _cooldownGroups.Clear(); 
 
-            foreach(var commandVm in _projectManager.CurrentProject.CommandSettings.CommandSetups.Select(cs => new CommandViewModel { Name = cs.Name}))
+            foreach(var commandVm in _projectManager.CurrentProject.CommandSettings.CommandSetups.Select(cs => new CommandViewModel(_documentManager, cs)))
             {
                 _commands.Add(commandVm);
+
             }
 
             foreach(var cooldownVm in _projectManager.CurrentProject.CommandSettings.CooldownGroups.Select(cg => new CooldownGroupViewModel { Name = cg.Name }))

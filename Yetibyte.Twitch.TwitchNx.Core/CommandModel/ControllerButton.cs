@@ -34,5 +34,7 @@
         public ControllerInputType InputType => ControllerInputType.Button;
 
         public override string ToString() => Name;
+
+        public string GetMacro() => Macro;
     }
 }

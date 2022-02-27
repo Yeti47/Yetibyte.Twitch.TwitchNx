@@ -4,6 +4,6 @@
     {
         ControllerInputType InputType { get; }
 
-        string Macro { get; }
+        string GetMacro();
     }
 }
