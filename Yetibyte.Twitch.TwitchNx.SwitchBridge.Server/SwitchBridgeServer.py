@@ -276,5 +276,5 @@ async def main(argv):
 
 
 if __name__ == '__main__':
-    loop = asyncio.new_event_loop()¶
+    loop = asyncio.new_event_loop()
     loop.run_forever(main(sys.argv[1:]))
