@@ -181,7 +181,7 @@ class SwitchBridgeServer:
         return SwitchBridgeMessage(message.id, message.message_type, {} )
 
 
-    def _process_macro_message(self, client, message)->SwitchBridgeMessage:
+    async def _process_macro_message(self, client, message)->SwitchBridgeMessage:
         
         macro = ''
         controller_id = -1
