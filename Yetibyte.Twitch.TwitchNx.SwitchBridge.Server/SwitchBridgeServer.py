@@ -49,7 +49,7 @@ class SwitchBridgeServer:
 
 
     def run_forever(self)->None:
-        self._websocket_server.run_forever()
+        self._websocket_server.run_forever(True)
 
 
     def _on_message_received(self, client, message)->None:
