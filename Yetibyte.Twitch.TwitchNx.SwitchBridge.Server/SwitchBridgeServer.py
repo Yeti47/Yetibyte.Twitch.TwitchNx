@@ -96,7 +96,9 @@ class SwitchBridgeServer:
     def _process_get_status_message(self, client, message)->SwitchBridgeMessage:
         nxbt_status = self._nxbt.state
 
-        payload = { 'Status': 'OK', 'ControllerStates': [] }
+        include_finished_macros = message.payload.get('IncludeFinishedMacros', False)
+
+        payload = { 'Status': 'OK', 'ControllerStates': [], 'IncludeFinishedMacros': include_finished_macros }
 
         for k in nxbt_status.keys():
             payload['ControllerStates'].append({ 
@@ -104,7 +106,7 @@ class SwitchBridgeServer:
                 'State': nxbt_status[k]['state'],
                 'Type': str(nxbt_status[k]['type']).replace('ControllerTypes.', ''),
                 'Errors': nxbt_status[k]['errors'] or '',
-                'FinishedMacros': nxbt_status[k]['finished_macros']
+                'FinishedMacros': nxbt_status[k]['finished_macros'] if include_finished_macros else []
             })
 
         response_msg = SwitchBridgeMessage(message.id, message.message_type, payload)

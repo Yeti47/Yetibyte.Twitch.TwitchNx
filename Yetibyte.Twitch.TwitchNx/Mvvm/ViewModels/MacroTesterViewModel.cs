@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros;
 using Yetibyte.Twitch.TwitchNx.Core.SwitchBridge;
 using Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.Layout;
 
@@ -13,9 +14,13 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 {
     public class MacroTesterViewModel : ToolViewModel
     {
-        private string _macroText = string.Empty;
-        private RelayCommand _sendMacroCommand;
+        private const string ERROR_MESSAGE = "The macro you entered is invalid. Please check your input.";
+
+        private readonly RelayCommand _sendMacroCommand;
         private readonly SwitchConnector _switchConnector;
+
+        private string _macroText = string.Empty;
+        private string _errorMessage = string.Empty;
 
         public SwitchControlViewModel SwitchControlViewModel { get; }
 
@@ -27,7 +32,18 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             set { 
                 _macroText = value; 
                 OnPropertyChanged(); 
-                _sendMacroCommand.NotifyCanExecuteChanged();  
+                _sendMacroCommand.NotifyCanExecuteChanged();
+                ErrorMessage = string.Empty;
+            }
+        }
+
+        public string ErrorMessage
+        {
+            get { return _errorMessage; }
+            set
+            {
+                _errorMessage = value;
+                OnPropertyChanged();
             }
         }
 
@@ -45,7 +61,19 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             {
                 if (SwitchControlViewModel.SelectedController is not null && _switchConnector.IsConnected && !string.IsNullOrWhiteSpace(MacroText))
                 {
-                    _switchConnector.ExecuteMacro(MacroText.Replace("\r", ""), SwitchControlViewModel.SelectedController.Id);
+                    string macroText = MacroText.Replace("\r", "");
+
+                    if (!Macro.Validate(macroText))
+                    {
+                        ErrorMessage = ERROR_MESSAGE;
+                        return;
+                    }
+                    else
+                    {
+                        ErrorMessage = string.Empty;
+                    }
+
+                    _switchConnector.ExecuteMacro(macroText, SwitchControlViewModel.SelectedController.Id);
                 }
             }, () =>
             {

@@ -10,15 +10,26 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="30" />
             </Grid.RowDefinitions>
 
             <TextBox Grid.Row="0"
                      AcceptsReturn="True"
                      Text="{Binding Path=MacroText, UpdateSourceTrigger=PropertyChanged}"
+                     VerticalScrollBarVisibility="Auto"
                      VerticalAlignment="Stretch" />
 
-            <StackPanel Grid.Row="1"
+            <TextBlock Grid.Row="1"
+                       Margin="4,4"
+                       Foreground="Red"
+                       TextWrapping="Wrap"
+                       Text="{Binding ErrorMessage}"
+                       VerticalAlignment="Center"
+                       />
+
+
+            <StackPanel Grid.Row="2"
                         Orientation="Horizontal"
                         FlowDirection="RightToLeft">
 
