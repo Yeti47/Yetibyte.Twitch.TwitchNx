@@ -44,7 +44,7 @@ class SwitchBridgeServer:
             SwitchBridgeServer.MSG_TYPE_CREATE_CONTROLLER:    lambda client, message: self._process_create_controller_message(client, message),
             SwitchBridgeServer.MSG_TYPE_REMOVE_CONTROLLER:    lambda client, message: self._process_remove_controller_message(client, message),
             SwitchBridgeServer.MSG_TYPE_GET_SWITCH_ADDRESSES: lambda client, message: self._process_get_switch_addresses_message(client, message),
-            SwitchBridgeServer.MSG_TYPE_MACRO:                lambda client, message: self._process_macro_message(client, message),
+            SwitchBridgeServer.MSG_TYPE_MACRO:                lambda client, message: asyncio.run(self._process_macro_message(client, message)),
         }
 
 
@@ -206,8 +206,6 @@ class SwitchBridgeServer:
 
         try:
             macro_id = self._nxbt.macro(controller_id, macro, block=False)
-
-            event_loop = asyncio.get_event_loop()
 
             send_macro_complete_task = asyncio.create_task(self._wait_for_macro_completion(client, macro_id, controller_id, message.id))
         except Exception as ex:
