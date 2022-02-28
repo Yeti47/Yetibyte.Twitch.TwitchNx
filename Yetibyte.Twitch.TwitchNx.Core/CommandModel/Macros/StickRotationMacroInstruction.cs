@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Text;
 
-namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
+namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros
 {
     [Serializable]
     public class StickRotationMacroInstruction : IMacroInstruction
@@ -31,9 +31,9 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
                     delta = 8;
                 }
 
-                return delta * (IsCounterClockwise ? -1 : 1);   
+                return delta * (IsCounterClockwise ? -1 : 1);
             }
-        
+
         }
 
         public IEnumerable<ControllerStickDirection> Steps
@@ -42,16 +42,18 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
             {
                 int stepDelta = StepDelta;
 
-                for(int i = 0; i < Math.Abs(stepDelta); i++)
+                for (int i = 0; i < Math.Abs(stepDelta); i++)
                 {
-                    int stepValue = ((int)StartDirection + (i * Math.Sign(stepDelta))) % 8;
+                    int stepValue = ((int)StartDirection + i * Math.Sign(stepDelta)) % 8;
 
-                    yield return (ControllerStickDirection)(stepValue);
+                    yield return (ControllerStickDirection)stepValue;
                 }
             }
         }
 
         public float Seconds { get; set; }
+
+        public MacroInstructionType InstructionType => MacroInstructionType.Animation;
 
         public StickRotationMacroInstruction(ControllerStickDirection startDirection, ControllerStickDirection endDirection, ControllerStick stick = ControllerStick.Left)
         {
@@ -73,14 +75,13 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
             }
         }
 
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public override string ToString()
         {
             StringBuilder macroBuilder = new StringBuilder();
 
             double stepDuration = Steps.Count() != 0
-                ? (Seconds / Steps.Count())
+                ? Seconds / Steps.Count()
                 : 0;
 
             int i = 0;
@@ -103,6 +104,11 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
             }
 
             return macroBuilder.ToString();
+        }
+
+        public IEnumerable<TimeBoxedControllerInput> GetControllerInputs(TimeSpan parentStartTime, TimeSpan parentEndTime)
+        {
+            throw new NotImplementedException();
         }
     }
 }

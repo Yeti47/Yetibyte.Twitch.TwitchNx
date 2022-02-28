@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Yetibyte.Twitch.TwitchNx.Core.CommandModel;
+using Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros;
 
 namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 {
