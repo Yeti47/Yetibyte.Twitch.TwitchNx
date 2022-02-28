@@ -225,7 +225,7 @@ class SwitchBridgeServer:
 
         try:
             while controller_id in self._nxbt.state and macro_id not in self._nxbt.state[controller_id]['finished_macros'] and self._nxbt.state[controller_id]['state'] == 'connected':
-                asyncio.sleep(0)
+                await asyncio.sleep(0)
         except Exception as ex:
             self._logger.error(f'SwitchBridgeServer: Error while waiting for macro completion: {ex}')
 
