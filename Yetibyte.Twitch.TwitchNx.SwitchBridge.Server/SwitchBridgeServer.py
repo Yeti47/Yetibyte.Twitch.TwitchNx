@@ -224,7 +224,7 @@ class SwitchBridgeServer:
         self._logger.info("SwitchBridgeServer: Waiting for completion of macro '" + macro_id + "'...")
 
         try:
-            while controller_id in self._nxbt.state and macro_id not in self._nxbt.state[controller_id]['finished_macros']:
+            while controller_id in self._nxbt.state and macro_id not in self._nxbt.state[controller_id]['finished_macros'] and self._nxbt.state[controller_id]['state'] == 'connected':
                 pass
         except Exception as ex:
             self._logger.error(f'SwitchBridgeServer: Error while waiting for macro completion: {ex}')
