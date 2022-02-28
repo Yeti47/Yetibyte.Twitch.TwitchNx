@@ -207,6 +207,8 @@ class SwitchBridgeServer:
         try:
             macro_id = self._nxbt.macro(controller_id, macro, block=False)
 
+            event_loop = asyncio.get_event_loop()
+
             send_macro_complete_task = asyncio.create_task(self._wait_for_macro_completion(client, macro_id, controller_id, message.id))
         except Exception as ex:
             return SwitchBridgeMessage(message.id, message.message_type, {}, 
