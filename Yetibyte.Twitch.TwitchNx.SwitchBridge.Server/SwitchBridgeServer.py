@@ -49,7 +49,7 @@ class SwitchBridgeServer:
 
 
     def run_forever(self)->None:
-        self._websocket_server.run_forever(True)
+        self._websocket_server.run_forever(False)
 
 
     def _on_message_received(self, client, message)->None:
@@ -256,7 +256,7 @@ class SwitchBridgeServer:
         return controller_id in self._nxbt.state
 
 
-def main(argv):
+async def main(argv):
     port = 4769
 
     try:
@@ -276,5 +276,5 @@ def main(argv):
 
 
 if __name__ == '__main__':
-
-    main(sys.argv[1:])
+    loop = asyncio.new_event_loop()¶
+    loop.run_forever(main(sys.argv[1:]))
