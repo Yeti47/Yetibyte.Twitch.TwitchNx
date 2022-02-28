@@ -256,7 +256,7 @@ class SwitchBridgeServer:
         return controller_id in self._nxbt.state
 
 
-def main(argv):
+async def main(argv):
     port = 4769
 
     try:
