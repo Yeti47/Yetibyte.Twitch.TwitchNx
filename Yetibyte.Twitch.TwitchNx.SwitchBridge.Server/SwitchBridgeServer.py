@@ -223,9 +223,12 @@ class SwitchBridgeServer:
 
         self._logger.info("SwitchBridgeServer: Waiting for completion of macro '" + macro_id + "'...")
 
-        while controller_id in self._nxbt.state and macro_id not in self._nxbt.state[controller_id]['finished_macros']:
-            print(self._nxbt.state[controller_id]['finished_macros'])
-            await asyncio.sleep(0.01)
+        try:
+            while controller_id in self._nxbt.state and macro_id not in self._nxbt.state[controller_id]['finished_macros']:
+                print(self._nxbt.state[controller_id]['finished_macros'])
+                await asyncio.sleep(0.01)
+        except Exception as ex:
+            self._logger.error(f'SwitchBridgeServer: Error while waiting for macro completion: {ex}')
 
         self._logger.info("SwitchBridgeServer: Macro '" + macro_id + "' completed. Sending completion response.")
         self._send_macro_complete_message(client, macro_id, controller_id, orig_msg_id)
