@@ -256,7 +256,7 @@ class SwitchBridgeServer:
         return controller_id in self._nxbt.state
 
 
-async def main(argv):
+def main(argv):
     port = 4769
 
     try:
@@ -277,4 +277,4 @@ async def main(argv):
 
 if __name__ == '__main__':
 
-    asyncio.run(main(sys.argv[1:]))
+    main(sys.argv[1:])
