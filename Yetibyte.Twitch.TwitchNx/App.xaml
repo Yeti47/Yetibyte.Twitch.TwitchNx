@@ -39,6 +39,10 @@
                 <v:CommandSetupDocumentView />
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type vm:MacroTesterViewModel}">
+                <v:MacroTesterView />
+            </DataTemplate>
+
             <Style x:Key="FormDock" TargetType="DockPanel">
                 <Setter Property="Margin" Value="0,2"/>
             </Style>

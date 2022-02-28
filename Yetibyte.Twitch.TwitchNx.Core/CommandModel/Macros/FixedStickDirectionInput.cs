@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
+namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros
 {
     [Serializable]
     public class FixedStickDirectionInput : IControllerInput

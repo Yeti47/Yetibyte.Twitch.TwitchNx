@@ -1,4 +1,4 @@
-﻿namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
+﻿namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros
 {
     public record ControllerButton(string Name, string Macro) : IControllerInput
     {

@@ -43,6 +43,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         public ProjectExplorerViewModel ProjectExplorerViewModel { get; private set; }
 
         public DocumentManagerViewModel DocumentManagerViewModel { get; private set; }
+        public MacroTesterViewModel MacroTesterViewModel { get; private set; }
 
         public IEnumerable<ToolViewModel> Tools => _tools;
 
@@ -68,11 +69,12 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             DocumentManagerViewModel = new DocumentManagerViewModel();
             SwitchControlViewModel = new SwitchControlViewModel(switchConnector);
             ProjectExplorerViewModel = new ProjectExplorerViewModel(projectManager, DocumentManagerViewModel);
+            MacroTesterViewModel = new MacroTesterViewModel(switchConnector, SwitchControlViewModel);
 
             _projectManager.ProjectChanged += projectManager_ProjectChanged;
             _projectManager.ProjectChanging += _projectManager_ProjectChanging;
 
-            _tools = new ObservableCollection<ToolViewModel> { SwitchConnectionViewModel, SwitchControlViewModel, ProjectExplorerViewModel };
+            _tools = new ObservableCollection<ToolViewModel> { SwitchConnectionViewModel, SwitchControlViewModel, ProjectExplorerViewModel, MacroTesterViewModel };
 
             _closeProjectCommand = new RelayCommand(() => _projectManager.CloseProject(), () => _projectManager.IsProjectOpen);
         }
