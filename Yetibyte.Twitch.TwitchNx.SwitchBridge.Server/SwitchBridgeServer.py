@@ -3,6 +3,8 @@ import logging
 import sys, getopt
 import os
 import asyncio
+import time
+from threading import Thread
 
 from dataclasses import dataclass, field
 from dataclasses_json import config, dataclass_json
@@ -44,7 +46,7 @@ class SwitchBridgeServer:
             SwitchBridgeServer.MSG_TYPE_CREATE_CONTROLLER:    lambda client, message: self._process_create_controller_message(client, message),
             SwitchBridgeServer.MSG_TYPE_REMOVE_CONTROLLER:    lambda client, message: self._process_remove_controller_message(client, message),
             SwitchBridgeServer.MSG_TYPE_GET_SWITCH_ADDRESSES: lambda client, message: self._process_get_switch_addresses_message(client, message),
-            SwitchBridgeServer.MSG_TYPE_MACRO:                lambda client, message: asyncio.run(self._process_macro_message(client, message)),
+            SwitchBridgeServer.MSG_TYPE_MACRO:                lambda client, message: self._process_macro_message(client, message),
         }
 
 
@@ -181,7 +183,7 @@ class SwitchBridgeServer:
         return SwitchBridgeMessage(message.id, message.message_type, {} )
 
 
-    async def _process_macro_message(self, client, message)->SwitchBridgeMessage:
+    def _process_macro_message(self, client, message)->SwitchBridgeMessage:
         
         macro = ''
         controller_id = -1
@@ -207,7 +209,10 @@ class SwitchBridgeServer:
         try:
             macro_id = self._nxbt.macro(controller_id, macro, block=False)
 
-            send_macro_complete_task = asyncio.create_task(self._wait_for_macro_completion(client, macro_id, controller_id, message.id))
+            thread = Thread(target = self._wait_for_macro_completion, args = [ client, macro_id, controller_id, message.id ])
+            thread.start()
+
+            # send_macro_complete_task = asyncio.create_task(self._wait_for_macro_completion(client, macro_id, controller_id, message.id))
         except Exception as ex:
             return SwitchBridgeMessage(message.id, message.message_type, {}, 
                                        is_error=True, 
@@ -218,14 +223,16 @@ class SwitchBridgeServer:
 
         return SwitchBridgeMessage(message.id, message.message_type, { "MacroId": macro_id, "ControllerId": controller_id } )
 
+    def _wait_for_macro_threaded(self, args):
+        self._wait_for_macro_completion(args[0], args[1], args[2], args[3])
 
-    async def _wait_for_macro_completion(self, client, macro_id, controller_id, orig_msg_id)->None:
+    def _wait_for_macro_completion(self, client, macro_id, controller_id, orig_msg_id)->None:
 
         self._logger.info("SwitchBridgeServer: Waiting for completion of macro '" + macro_id + "'...")
 
         try:
             while controller_id in self._nxbt.state and macro_id not in self._nxbt.state[controller_id]['finished_macros'] and self._nxbt.state[controller_id]['state'] == 'connected':
-                await asyncio.sleep(0)
+                time.sleep(0.01)
         except Exception as ex:
             self._logger.error(f'SwitchBridgeServer: Error while waiting for macro completion: {ex}')
 
