@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="Yetibyte.Twitch.TwitchNx.Mvvm.Views.MacroTimeLine.MacroTimeTrackElementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.Views.MacroTimeLine"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:dd="urn:gong-wpf-dragdrop"
+             mc:Ignorable="d" 
+             d:DesignHeight="120" d:DesignWidth="400">
+    <Grid >
+        <!--<Rectangle Fill="Red" Width="60" Height="50" />-->
+        <Border BorderBrush="{DynamicResource MahApps.Brushes.Accent4}"
+                Background="{DynamicResource MahApps.Brushes.Highlight}"
+                IsHitTestVisible="True"
+                Height="50"
+                Width="60"
+                BorderThickness="1">
+
+            <TextBlock Text="Test"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       FontSize="20"
+                       Foreground="{DynamicResource MahApps.Brushes.Gray}"
+                       FontWeight="Bold" />
+
+        </Border>
+    </Grid>
+</UserControl>

@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Yetibyte.Twitch.TwitchNx.Core.CommandModel;
 using Yetibyte.Twitch.TwitchNx.Mvvm.Models;
 using Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.Layout;
+using Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine;
 
 namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 {
@@ -89,12 +90,16 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         public ICommand ApplyCommand => _applyCommand;
 
+        public MacroTimeLineViewModel MacroTimeLineViewModel { get; private set; }
+
         public CommandSetupDocumentViewModel(IDocumentManager documentManager, CommandSetup commandSetup) : base(documentManager)
         {
             _commandSetup = commandSetup;
             _commandName = commandSetup.Name;
             _description = commandSetup.Description;
             _permissionLevel = commandSetup.PermissionLevel;
+
+            MacroTimeLineViewModel = new MacroTimeLineViewModel(commandSetup.Macro);
 
             Title = _commandName;
 

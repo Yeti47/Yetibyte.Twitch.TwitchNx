@@ -56,6 +56,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             _switchConnector.ControllerRemoved += switchConnector_ControllerRemoved;
 
             SwitchControlViewModel = switchControlViewModel;
+            SwitchControlViewModel.PropertyChanged += SwitchControlViewModel_PropertyChanged;
 
             _sendMacroCommand = new RelayCommand(() =>
             {
@@ -79,6 +80,14 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             {
                 return SwitchControlViewModel.SelectedController is not null && _switchConnector.IsConnected && !string.IsNullOrWhiteSpace(MacroText);
             });
+        }
+
+        private void SwitchControlViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(SwitchControlViewModel.SelectedController))
+            {
+                RaiseCommandCanExecuteChanged();
+            }
         }
 
         private void switchConnector_ControllerRemoved(object? sender, SwitchControllerRemovedEventArgs e)
