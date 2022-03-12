@@ -44,6 +44,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         public DocumentManagerViewModel DocumentManagerViewModel { get; private set; }
         public MacroTesterViewModel MacroTesterViewModel { get; private set; }
+        public MacroToolBoxViewModel MacroToolBoxViewModel { get; private set; }
 
         public IEnumerable<ToolViewModel> Tools => _tools;
 
@@ -59,7 +60,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             }
         }
 
-        public MainViewModel(IProjectManager projectManager, SwitchConnector switchConnector)
+        public MainViewModel(IProjectManager projectManager, SwitchConnector switchConnector, Func<IEnumerable<MacroInstructionTemplateViewModel>> macroInstructionTemplateFactory)
         {
             _projectManager = projectManager;
             _switchConnector = switchConnector;
@@ -71,10 +72,20 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             ProjectExplorerViewModel = new ProjectExplorerViewModel(projectManager, DocumentManagerViewModel);
             MacroTesterViewModel = new MacroTesterViewModel(switchConnector, SwitchControlViewModel);
 
+            IEnumerable<MacroInstructionTemplateViewModel> macroInstructionTemplateViewModels = macroInstructionTemplateFactory.Invoke();
+
+            MacroToolBoxViewModel = new MacroToolBoxViewModel(macroInstructionTemplateViewModels);
+
             _projectManager.ProjectChanged += projectManager_ProjectChanged;
             _projectManager.ProjectChanging += _projectManager_ProjectChanging;
 
-            _tools = new ObservableCollection<ToolViewModel> { SwitchConnectionViewModel, SwitchControlViewModel, ProjectExplorerViewModel, MacroTesterViewModel };
+            _tools = new ObservableCollection<ToolViewModel> { 
+                SwitchConnectionViewModel, 
+                SwitchControlViewModel, 
+                ProjectExplorerViewModel, 
+                MacroTesterViewModel,
+                MacroToolBoxViewModel
+            };
 
             _closeProjectCommand = new RelayCommand(() => _projectManager.CloseProject(), () => _projectManager.IsProjectOpen);
         }

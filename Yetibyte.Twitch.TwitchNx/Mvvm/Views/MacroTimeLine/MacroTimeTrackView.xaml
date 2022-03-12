@@ -5,20 +5,36 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.Views.MacroTimeLine"
              xmlns:dd="urn:gong-wpf-dragdrop"
+             xmlns:db="clr-namespace:Yetibyte.Twitch.TwitchNx.DataBinding"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <db:MinPercentageMultiConveter x:Key="MinPercentageMultiConveter" />
+        <db:MaxPercentageMultiConverter x:Key="MaxPercentageMultiConverter" />
+    </UserControl.Resources>
     <Grid Height="50"
           HorizontalAlignment="Stretch"
+          Background="Transparent"
           >
+        <Grid.Width>
+            <MultiBinding Converter="{StaticResource MaxPercentageMultiConverter}" ConverterParameter="100">
+                <Binding Path="TrackWidth" />
+                <Binding RelativeSource="{RelativeSource AncestorType={x:Type ItemsControl}}" Path="ActualWidth" />
+            </MultiBinding>
+        </Grid.Width>
+        
         <ItemsControl ItemsSource="{Binding Elements}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate >
-                    <StackPanel Orientation="Horizontal" />
+                    <Canvas HorizontalAlignment="Stretch" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <local:MacroTimeTrackElementView DataContext="{Binding}" dd:DragDrop.IsDragSource="True" />
+                    <local:MacroTimeTrackElementView DataContext="{Binding}" 
+                                                     GotFocus="MacroTimeTrackElementView_GotFocus"
+                                                     dd:DragDrop.DragHandler="{Binding}"
+                                                     dd:DragDrop.IsDragSource="True" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

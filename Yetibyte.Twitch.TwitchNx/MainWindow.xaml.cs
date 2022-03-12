@@ -32,11 +32,11 @@ namespace Yetibyte.Twitch.TwitchNx
 
         public MainViewModel ViewModel { get; private set; }
 
-        public MainWindow(IProjectManager projectManager, SwitchConnector switchConnector)
+        public MainWindow(IProjectManager projectManager, SwitchConnector switchConnector, Func<IEnumerable<MacroInstructionTemplateViewModel>> macroInstructionTemplateFactory)
         {
             InitializeComponent();
 
-            DataContext = ViewModel = new MainViewModel(projectManager, switchConnector);
+            DataContext = ViewModel = new MainViewModel(projectManager, switchConnector, macroInstructionTemplateFactory);
             _projectManager = projectManager;
         }
 

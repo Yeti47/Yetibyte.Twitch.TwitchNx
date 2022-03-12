@@ -70,7 +70,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
 
         public bool HasCommand(CommandSetup commandSetup) => _commands.Contains(commandSetup);
 
-        public bool HasCommand(string command) => _commands.Any(c => c.Command == command);
+        public bool HasCommand(string name) => _commands.Any(c => c.Name == name);
 
         public void AddCooldownGroup(CooldownGroup cooldownGroup)
         {

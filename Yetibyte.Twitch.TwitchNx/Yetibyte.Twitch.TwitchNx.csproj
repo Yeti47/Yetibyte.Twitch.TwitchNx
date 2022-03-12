@@ -12,6 +12,25 @@
     <None Remove="Images\Computer_lab_icon.png" />
     <None Remove="Images\joyconl.png" />
     <None Remove="Images\joyconr.png" />
+    <None Remove="Images\Macros\btn_A.gif" />
+    <None Remove="Images\Macros\btn_B.gif" />
+    <None Remove="Images\Macros\btn_capture.gif" />
+    <None Remove="Images\Macros\btn_DPAD_DOWN.gif" />
+    <None Remove="Images\Macros\btn_DPAD_LEFT.gif" />
+    <None Remove="Images\Macros\btn_DPAD_RIGHT.gif" />
+    <None Remove="Images\Macros\btn_DPAD_UP.gif" />
+    <None Remove="Images\Macros\btn_home.gif" />
+    <None Remove="Images\Macros\btn_L.gif" />
+    <None Remove="Images\Macros\btn_minus.gif" />
+    <None Remove="Images\Macros\btn_plus.gif" />
+    <None Remove="Images\Macros\btn_R.gif" />
+    <None Remove="Images\Macros\btn_SL.gif" />
+    <None Remove="Images\Macros\btn_SR.gif" />
+    <None Remove="Images\Macros\btn_X.gif" />
+    <None Remove="Images\Macros\btn_Y.gif" />
+    <None Remove="Images\Macros\btn_ZL.gif" />
+    <None Remove="Images\Macros\btn_ZR.gif" />
+    <None Remove="Images\Macros\stick_R.gif" />
     <None Remove="Images\Nintendo_Switch_Logo.png" />
     <None Remove="Images\procon.png" />
   </ItemGroup>
@@ -29,6 +48,63 @@
     <Content Include="Images\joyconr.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Images\Macros\btn_A.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Macros\btn_B.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Macros\btn_capture.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Macros\btn_DPAD_DOWN.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Macros\btn_DPAD_LEFT.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Macros\btn_DPAD_RIGHT.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Macros\btn_DPAD_UP.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Macros\btn_home.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Macros\btn_L.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Macros\btn_minus.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Macros\btn_plus.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Macros\btn_R.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Macros\btn_SL.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Macros\btn_SR.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Macros\btn_X.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Macros\btn_Y.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Macros\btn_ZL.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Macros\btn_ZR.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Macros\stick_R.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Images\Nintendo_Switch_Logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -46,7 +122,7 @@
     <PackageReference Include="MahApps.Metro" Version="2.4.9" />
     <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
-    <PackageReference Include="WpfAnimatedGif" Version="2.0.2" />
+    <PackageReference Include="XamlAnimatedGif" Version="2.0.2" />
   </ItemGroup>
 
   <ItemGroup>

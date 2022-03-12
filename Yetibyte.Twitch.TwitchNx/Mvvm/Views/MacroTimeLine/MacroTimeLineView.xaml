@@ -27,6 +27,7 @@
             <ScrollViewer Grid.Row="1" 
                           x:Name="scrollTracks"
                           VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Auto"
                           >
 
                 <ItemsControl x:Name="itemsTracks"
@@ -50,6 +51,8 @@
                                 </Grid.Style>
 
                                 <local:MacroTimeTrackView x:Name="ctrlTrack" DataContext="{Binding}" 
+                                                          GotFocus="ctrlTrack_GotFocus"
+                                                          GotMouseCapture="ctrlTrack_GotMouseCapture"
                                                           dd:DragDrop.IsDropTarget="True" 
                                                           dd:DragDrop.DropHandler="{Binding}"/>
 

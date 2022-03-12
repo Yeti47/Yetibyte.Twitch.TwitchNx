@@ -43,6 +43,10 @@
                 <v:MacroTesterView />
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type vm:MacroToolBoxViewModel}">
+                <v:MacroToolBoxView />
+            </DataTemplate>
+
             <Style x:Key="FormDock" TargetType="DockPanel">
                 <Setter Property="Margin" Value="0,2"/>
             </Style>

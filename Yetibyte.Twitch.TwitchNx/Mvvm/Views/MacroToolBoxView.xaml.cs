@@ -13,21 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Yetibyte.Twitch.TwitchNx.Mvvm.Views.MacroTimeLine
+namespace Yetibyte.Twitch.TwitchNx.Mvvm.Views
 {
     /// <summary>
-    /// Interaction logic for MacroTimeTrackView.xaml
+    /// Interaction logic for MacroToolBoxView.xaml
     /// </summary>
-    public partial class MacroTimeTrackView : UserControl
+    public partial class MacroToolBoxView : UserControl
     {
-        public MacroTimeTrackView()
+        public MacroToolBoxView()
         {
             InitializeComponent();
-        }
-
-        private void MacroTimeTrackElementView_GotFocus(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

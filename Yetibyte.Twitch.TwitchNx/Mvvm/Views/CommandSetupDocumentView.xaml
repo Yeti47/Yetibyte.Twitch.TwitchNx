@@ -71,7 +71,7 @@
                    Content="Macro"
                    FontWeight="SemiBold" />
 
-            <tmln:MacroTimeLineView Grid.Row="1" DataContext="{Binding MacroTimeLineViewModel}" />
+            <tmln:MacroTimeLineView Grid.Row="1" DataContext="{Binding MacroTimeLineViewModel}" Margin="8,8" />
 
         </Grid>
 

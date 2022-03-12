@@ -1,20 +1,41 @@
 ﻿using GongSolutions.Wpf.DragDrop;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using System;
+using System.Linq;
 using System.Windows;
 
 namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 {
-    public class MacroTimeTrackElementViewModel :ObservableObject, IDragSource
+    public class MacroTimeTrackElementViewModel : ObservableObject, IDragSource
     {
+        public const float MINIMUM_DURATION_SECONDS = 0.1f;
+
         private TimeSpan _startTime;
         private TimeSpan _duration;
+        private MacroTimeTrackViewModel? _timeTrack;
+
+        public Point HandlePosition { get; private set; }
+
+        private MacroTimeTrackViewModel? _originalTimeTrack;
+        private TimeSpan? _originalStartTime;
+        private MacroInstructionTemplateViewModel _instructionTemplateViewModel;
+
+        public MacroInstructionTemplateViewModel InstructionTemplateViewModel
+        {
+            get { return _instructionTemplateViewModel; }
+            set { _instructionTemplateViewModel = value; OnPropertyChanged(); }
+        }
+
 
         public TimeSpan StartTime
         {
             get { return _startTime; }
             set { 
-                _startTime = value; 
+                _startTime = value;
+
+                if (_timeTrack is not null)
+                    _startTime = _timeTrack.SnapTimeSpan(_startTime);
+
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(EndTime));
             }
@@ -24,24 +45,172 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
         {
             get { return _duration; }
             set { 
-                _duration = value; 
+                _duration = value;
+
+                if (_timeTrack is not null)
+                    _duration = _timeTrack.SnapTimeSpan(_duration);
+
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(EndTime));
             }
         }
 
-        public TimeSpan EndTime => _startTime + _duration;
+        public TimeSpan EndTime
+        {
+            get
+            {
+                TimeSpan endTime = _startTime + _duration;
+
+                return _timeTrack is not null ? _timeTrack.SnapTimeSpan(endTime) : endTime;
+            }
+        }
+
+        public bool IsDraggable { get; set; } = true;
+
+        public string Name { get; set; } = "Henlo";
+
+        public float UnitsPerSecond => _timeTrack?.UnitsPerSecond ?? MacroTimeTrackViewModel.DEFAULT_UNITS_PER_SECOND;
+
+
+        public MacroTimeTrackViewModel? TimeTrack
+        {
+            get => _timeTrack;
+            set
+            {
+                if (_timeTrack != value)
+                {
+                    _timeTrack?.RemoveElement(this);
+
+                    _timeTrack = value;
+
+                    if (!_timeTrack?.ContainsElement(this) ?? false)
+                    {
+                        _timeTrack?.AddElement(this);
+                    }
+
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public MacroTimeTrackElementViewModel(MacroInstructionTemplateViewModel instructionTemplateViewModel)
+        {
+            _instructionTemplateViewModel = instructionTemplateViewModel;
+
+            //if (!_timeTrack.ContainsElement(this))
+            //{
+            //    _timeTrack.AddElement(this);
+            //}
+        }
+
+        public void AdjustDurationByUnits(double units)
+        {
+            double seconds = units / UnitsPerSecond;
+
+            TimeSpan targetDuration = Duration + TimeSpan.FromSeconds(seconds);
+
+            if (_timeTrack is not null)
+                targetDuration = _timeTrack.SnapTimeSpan(targetDuration);
+
+            if (_timeTrack?.Elements
+                .OrderBy(e => e.StartTime)
+                .FirstOrDefault(e => e != this 
+                    && e.StartTime > StartTime && e.StartTime < (StartTime + targetDuration)) is MacroTimeTrackElementViewModel firstCollision)
+            {
+                targetDuration = firstCollision.StartTime - StartTime;
+
+                if (_timeTrack is not null)
+                    targetDuration = _timeTrack.SnapTimeSpan(targetDuration);
+            }
+
+            if (targetDuration <= TimeSpan.FromSeconds(MINIMUM_DURATION_SECONDS))
+                targetDuration = TimeSpan.FromSeconds(MINIMUM_DURATION_SECONDS);
+
+            Duration = targetDuration;
+        }
+
+        public void AdjustStartTimeByUnits(double units)
+        {
+            double seconds = units / UnitsPerSecond;
+
+            TimeSpan targetStartTime = StartTime + TimeSpan.FromSeconds(seconds);
+
+            if (_timeTrack is not null)
+                targetStartTime = _timeTrack.SnapTimeSpan(targetStartTime);
+
+            if (EndTime - targetStartTime < TimeSpan.FromSeconds(MINIMUM_DURATION_SECONDS))
+                targetStartTime = EndTime - TimeSpan.FromSeconds(MINIMUM_DURATION_SECONDS);
+
+            if (_timeTrack is not null)
+                targetStartTime = _timeTrack.SnapTimeSpan(targetStartTime);
+
+            if (targetStartTime < TimeSpan.Zero)
+                targetStartTime = TimeSpan.Zero;
+
+            if (_timeTrack?.Elements
+                .OrderBy(e => e.EndTime)
+                .FirstOrDefault(e => e != this 
+                    && e.EndTime > targetStartTime
+                    && e.StartTime < StartTime) is MacroTimeTrackElementViewModel firstCollision)
+            {
+                targetStartTime = firstCollision.EndTime;
+
+                if (_timeTrack is not null)
+                    targetStartTime = _timeTrack.SnapTimeSpan(targetStartTime);
+            }
+
+            TimeSpan oldStartTime = StartTime;
+
+            StartTime = targetStartTime;
+
+            Duration = Duration + (oldStartTime - StartTime);
+
+            if (Duration < TimeSpan.FromSeconds(MINIMUM_DURATION_SECONDS))
+                Duration = TimeSpan.FromSeconds(MINIMUM_DURATION_SECONDS);
+
+        }
+
+        public int Overlaps(MacroTimeTrackElementViewModel other)
+        {
+            if (other == this)
+                return 0;
+
+            if (this.StartTime <= other.StartTime && this.EndTime > other.StartTime)
+                return -1;
+            if (this.StartTime < other.EndTime && this.EndTime >= other.EndTime)
+                return 1;
+
+            if ((this.StartTime < other.EndTime && this.StartTime > other.StartTime)
+                || (this.EndTime < other.EndTime && this.EndTime >= other.EndTime)) {
+
+                if (!(this.EndTime < other.EndTime && this.EndTime >= other.EndTime))
+                    return 1;
+
+                if (!(this.StartTime < other.EndTime && this.StartTime > other.StartTime))
+                    return -1;
+
+
+                return Math.Sign(other.StartTime.TotalSeconds - this.StartTime.TotalSeconds);
+
+            }
+
+            return 0;
+        }
 
         #region IDragSource Implementation
 
         bool IDragSource.CanStartDrag(IDragInfo dragInfo)
         {
-            return true;
+            return IsDraggable;
         }
 
         void IDragSource.DragCancelled()
         {
-            
+            if (_originalTimeTrack is not null)
+                TimeTrack = _originalTimeTrack;
+
+            if (_originalStartTime is not null)
+                StartTime = _originalStartTime.Value;
         }
 
         void IDragSource.DragDropOperationFinished(DragDropEffects operationResult, IDragInfo dragInfo)
@@ -56,6 +225,14 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 
         void IDragSource.StartDrag(IDragInfo dragInfo)
         {
+            HandlePosition = dragInfo.PositionInDraggedItem;
+
+            _originalTimeTrack = _timeTrack;
+            _originalStartTime = _startTime;
+
+            dragInfo.Effects = IsDraggable ? DragDropEffects.Move : DragDropEffects.None;
+
+            dragInfo.Data = this;
             
         }
 

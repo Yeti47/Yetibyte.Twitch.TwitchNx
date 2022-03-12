@@ -14,18 +14,6 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
         private string _command = string.Empty;
         private string _name = string.Empty;
 
-        public string Command
-        {
-            get => _command;
-            set
-            {
-                if (_command != value)
-                {
-                    _command = value;
-                }
-            }
-        }
-
         public string Name
         {
             get => string.IsNullOrWhiteSpace(_name) ? _command : _name;
@@ -49,13 +37,13 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
 
         public event EventHandler<NameChangedEventArgs>? NameChanged;
 
-        public CommandSetup(string command, Macro macro)
+        public CommandSetup(string name, Macro macro)
         {
-            Command = command;
+            Name = name;
             Macro = macro;
         }
 
-        public CommandSetup(string command) : this(command, new Macro())
+        public CommandSetup(string name) : this(name, new Macro())
         {
 
         }

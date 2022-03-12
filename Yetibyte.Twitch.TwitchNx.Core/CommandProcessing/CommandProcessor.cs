@@ -24,7 +24,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
             _commandQueue = commandQueue;
         }
 
-        public bool AppliesTo(Command command) => command.Name.Equals(_commandSetup.Command, StringComparison.OrdinalIgnoreCase);
+        public bool AppliesTo(Command command) => command.Name.Equals(_commandSetup.Name, StringComparison.OrdinalIgnoreCase);
 
         public DateTime GetLastUse(string userName)
         {

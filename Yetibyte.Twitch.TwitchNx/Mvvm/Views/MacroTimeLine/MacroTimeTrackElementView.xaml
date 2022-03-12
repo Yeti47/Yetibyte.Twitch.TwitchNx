@@ -6,23 +6,78 @@
              xmlns:local="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.Views.MacroTimeLine"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:dd="urn:gong-wpf-dragdrop"
+             xmlns:db="clr-namespace:Yetibyte.Twitch.TwitchNx.DataBinding"
+             xmlns:v="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.Views"
              mc:Ignorable="d" 
              d:DesignHeight="120" d:DesignWidth="400">
+    <UserControl.Resources>
+        <db:TimeSpanToThicknessMultiValueConverter x:Key="TimeSpanToThicknessMultiValueConverter" />
+        <db:TimeSpanToDoubleMultiValueConverter x:Key="TimeSpanToDoubleMultiValueConverter" />
+        <db:TimeSpanToSizeMultiValueConverter x:Key="TimeSpanToSizeMultiValueConverter" />
+    </UserControl.Resources>
     <Grid >
         <!--<Rectangle Fill="Red" Width="60" Height="50" />-->
         <Border BorderBrush="{DynamicResource MahApps.Brushes.Accent4}"
                 Background="{DynamicResource MahApps.Brushes.Highlight}"
                 IsHitTestVisible="True"
-                Height="50"
-                Width="60"
-                BorderThickness="1">
+                Height="50" 
+                BorderThickness="1" RenderTransformOrigin="0.5,0.5">
+            <Border.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform>
+                        <TranslateTransform.X>
+                            <MultiBinding Converter="{StaticResource TimeSpanToDoubleMultiValueConverter}">
+                                <Binding Path="StartTime" />
+                                <Binding Path="UnitsPerSecond" />
+                            </MultiBinding>
+                        </TranslateTransform.X>
+                    </TranslateTransform>
+                </TransformGroup>
+            </Border.RenderTransform>
+            <Border.Width>
+                <MultiBinding Converter="{StaticResource TimeSpanToDoubleMultiValueConverter}">
+                    <Binding Path="Duration" />
+                    <Binding Path="UnitsPerSecond" />
+                </MultiBinding>
+            </Border.Width>
+            <!--<Border.Margin>
+                <MultiBinding Converter="{StaticResource TimeSpanToThicknessMultiValueConverter}">
+                    <Binding Path="StartTime" />
+                    <Binding Path="UnitsPerSecond" />
+                </MultiBinding>
+            </Border.Margin>-->
 
-            <TextBlock Text="Test"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center"
-                       FontSize="20"
-                       Foreground="{DynamicResource MahApps.Brushes.Gray}"
-                       FontWeight="Bold" />
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="3" />
+                </Grid.ColumnDefinitions>
+                <Thumb Grid.Column="0" 
+                       Width="3" 
+                       dd:DragDrop.DragSourceIgnore="True"
+                       DragDelta="ThumbLeft_DragDelta"
+                       DragStarted="ThumbLeft_DragStarted"
+                       DragCompleted="ThumbLeft_DragCompleted"
+                       Cursor="SizeWE"
+                       />
+                <v:MacroInstructionTemplateView Grid.Column="1" 
+                                                
+                                                DataContext="{Binding InstructionTemplateViewModel}" />
+                <Thumb Grid.Column="3" 
+                       Width="3"
+                       dd:DragDrop.DragSourceIgnore="True"
+                       DragDelta="Thumb_DragDelta"
+                       DragStarted="Thumb_DragStarted"
+                       DragCompleted="Thumb_DragCompleted"
+                       Cursor="SizeWE"
+                       />
+
+            </Grid>
 
         </Border>
     </Grid>

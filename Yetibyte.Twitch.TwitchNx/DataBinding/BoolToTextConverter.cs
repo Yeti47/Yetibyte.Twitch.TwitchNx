@@ -5,6 +5,7 @@ using System.Windows.Data;
 
 namespace Yetibyte.Twitch.TwitchNx.DataBinding
 {
+
     [ValueConversion(typeof(bool), typeof(string))]
     internal class BoolToTextConverter : DependencyObject, IValueConverter
     {

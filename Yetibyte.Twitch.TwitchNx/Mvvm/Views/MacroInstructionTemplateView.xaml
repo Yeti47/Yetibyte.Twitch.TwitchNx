@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="Yetibyte.Twitch.TwitchNx.Mvvm.Views.MacroInstructionTemplateView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.Views"
+             xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:db="clr-namespace:Yetibyte.Twitch.TwitchNx.DataBinding"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <db:PercentageConverter x:Key="PercentageConverter" />
+        <db:MinPercentageMultiConveter x:Key="MinPercentageMultiConveter" />
+    </UserControl.Resources>
+    <Grid>
+        <Image x:Name="imgIcon"
+                   gif:AnimationBehavior.SourceUri="{Binding Path=ImageUri}"
+                   gif:AnimationBehavior.AutoStart="False"
+                   >
+            <Image.Width>
+                <MultiBinding Converter="{StaticResource MinPercentageMultiConveter}" ConverterParameter="90">
+                    <MultiBinding.Bindings>
+                        <Binding Path="ActualWidth" 
+                                 RelativeSource="{RelativeSource AncestorType={x:Type Border}}" />
+                        <Binding Path="ActualHeight" 
+                                 RelativeSource="{RelativeSource AncestorType={x:Type Border}}" />
+                    </MultiBinding.Bindings>
+                </MultiBinding>
+            </Image.Width>
+            <Image.Height>
+                <MultiBinding Converter="{StaticResource MinPercentageMultiConveter}" ConverterParameter="90">
+                    <MultiBinding.Bindings>
+                        <Binding Path="ActualWidth" 
+                                 RelativeSource="{RelativeSource AncestorType={x:Type Border}}" />
+                        <Binding Path="ActualHeight" 
+                                 RelativeSource="{RelativeSource AncestorType={x:Type Border}}" />
+                    </MultiBinding.Bindings>
+                </MultiBinding>
+            </Image.Height>
+        </Image>
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="MouseEnter">
+                <i:ChangePropertyAction TargetObject="{Binding}" PropertyName="IsAnimationPlaying" Value="True" />
+            </i:EventTrigger>
+            <i:EventTrigger EventName="MouseLeave">
+                <i:ChangePropertyAction TargetObject="{Binding}" PropertyName="IsAnimationPlaying" Value="False" />
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+    </Grid>
+</UserControl>

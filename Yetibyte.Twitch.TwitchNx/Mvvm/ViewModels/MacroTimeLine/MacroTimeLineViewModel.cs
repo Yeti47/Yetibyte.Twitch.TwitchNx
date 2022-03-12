@@ -11,6 +11,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 {
     public class MacroTimeLineViewModel : ObservableObject
     {
+        public const int TRACK_COUNT = 5;
+
         private readonly ObservableCollection<MacroTimeTrackViewModel> _tracks = new ObservableCollection<MacroTimeTrackViewModel>();
         private readonly Macro _macro;
 
@@ -32,9 +34,13 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 
         public MacroTimeLineViewModel(Macro macro)
         {
-            _tracks.Add(new MacroTimeTrackViewModel());
-            _tracks.Add(new MacroTimeTrackViewModel());
             _macro = macro;
+
+            for(int i = 0; i < TRACK_COUNT; i++)
+            {
+                MacroTimeTrackViewModel trackVm = new MacroTimeTrackViewModel();
+                _tracks.Add(trackVm);
+            }
         }
     }
 }

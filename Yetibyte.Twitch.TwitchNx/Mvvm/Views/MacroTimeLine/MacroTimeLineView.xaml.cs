@@ -24,5 +24,14 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.Views.MacroTimeLine
         {
             InitializeComponent();
         }
+
+        private void ctrlTrack_GotFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ctrlTrack_GotMouseCapture(object sender, MouseEventArgs e)
+        {
+        }
     }
 }
