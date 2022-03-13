@@ -6,37 +6,31 @@
              xmlns:local="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.Views.MacroTimeLine"
              xmlns:dd="urn:gong-wpf-dragdrop"
              xmlns:db="clr-namespace:Yetibyte.Twitch.TwitchNx.DataBinding"
+             xmlns:vm="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-        <db:MinPercentageMultiConveter x:Key="MinPercentageMultiConveter" />
-        <db:MaxPercentageMultiConverter x:Key="MaxPercentageMultiConverter" />
-    </UserControl.Resources>
+    <i:Interaction.Triggers>
+
+    </i:Interaction.Triggers>
     <Grid Height="50"
-          HorizontalAlignment="Stretch"
+          HorizontalAlignment="Left"
           Background="Transparent"
+          Width="{Binding TrackWidth}"
           >
-        <Grid.Width>
+        <!--<Grid.Width>
             <MultiBinding Converter="{StaticResource MaxPercentageMultiConverter}" ConverterParameter="100">
                 <Binding Path="TrackWidth" />
                 <Binding RelativeSource="{RelativeSource AncestorType={x:Type ItemsControl}}" Path="ActualWidth" />
             </MultiBinding>
-        </Grid.Width>
-        
-        <ItemsControl ItemsSource="{Binding Elements}">
+        </Grid.Width>-->
+
+        <ItemsControl ItemsSource="{Binding Elements}" >
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate >
-                    <Canvas HorizontalAlignment="Stretch" />
+                    <Canvas HorizontalAlignment="Left" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <local:MacroTimeTrackElementView DataContext="{Binding}" 
-                                                     GotFocus="MacroTimeTrackElementView_GotFocus"
-                                                     dd:DragDrop.DragHandler="{Binding}"
-                                                     dd:DragDrop.IsDragSource="True" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
         </ItemsControl>
     </Grid>
 </UserControl>

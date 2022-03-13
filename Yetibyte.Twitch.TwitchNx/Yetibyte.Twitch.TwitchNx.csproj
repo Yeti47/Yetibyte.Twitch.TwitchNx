@@ -12,8 +12,46 @@
     <None Remove="Images\Computer_lab_icon.png" />
     <None Remove="Images\joyconl.png" />
     <None Remove="Images\joyconr.png" />
-    <None Remove="Images\Macros\btn_A.gif" />
-    <None Remove="Images\Macros\btn_B.gif" />
+    <None Remove="Images\Macros\btn_A\frame_00_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_A\frame_01_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_A\frame_02_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_A\frame_03_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_A\frame_04_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_A\frame_05_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_A\frame_06_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_A\frame_07_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_A\frame_08_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_A\frame_09_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_A\frame_10_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_A\frame_11_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_A\frame_12_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_A\frame_13_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_A\frame_14_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_A\frame_15_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_A\frame_16_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_A\frame_17_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_A\frame_18_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_A\frame_19_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_B\frame_00_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_B\frame_01_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_B\frame_02_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_B\frame_03_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_B\frame_04_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_B\frame_05_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_B\frame_06_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_B\frame_07_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_B\frame_08_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_B\frame_09_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_B\frame_10_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_B\frame_11_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_B\frame_12_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_B\frame_13_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_B\frame_14_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_B\frame_15_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_B\frame_16_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_B\frame_17_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_B\frame_18_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_B\frame_19_delay-0.01s.gif" />
     <None Remove="Images\Macros\btn_capture.gif" />
     <None Remove="Images\Macros\btn_DPAD_DOWN.gif" />
     <None Remove="Images\Macros\btn_DPAD_LEFT.gif" />
@@ -48,12 +86,126 @@
     <Content Include="Images\joyconr.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Images\Macros\btn_A.gif">
+    <Content Include="Images\Macros\btn_A\frame_00_delay-0.01s.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\Macros\btn_B.gif">
+    </Content>
+    <Content Include="Images\Macros\btn_A\frame_01_delay-0.01s.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    </Content>
+    <Content Include="Images\Macros\btn_A\frame_02_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_A\frame_03_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_A\frame_04_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_A\frame_05_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_A\frame_06_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_A\frame_07_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_A\frame_08_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_A\frame_09_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_A\frame_10_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_A\frame_11_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_A\frame_12_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_A\frame_13_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_A\frame_14_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_A\frame_15_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_A\frame_16_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_A\frame_17_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_A\frame_18_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_A\frame_19_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_B\frame_00_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_B\frame_01_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_B\frame_02_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_B\frame_03_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_B\frame_04_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_B\frame_05_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_B\frame_06_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_B\frame_07_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_B\frame_08_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_B\frame_09_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_B\frame_10_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_B\frame_11_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_B\frame_12_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_B\frame_13_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_B\frame_14_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_B\frame_15_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_B\frame_16_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_B\frame_17_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_B\frame_18_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_B\frame_19_delay-0.01s.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Images\Macros\btn_capture.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -122,7 +274,6 @@
     <PackageReference Include="MahApps.Metro" Version="2.4.9" />
     <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
-    <PackageReference Include="XamlAnimatedGif" Version="2.0.2" />
   </ItemGroup>
 
   <ItemGroup>

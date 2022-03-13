@@ -26,6 +26,13 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.Views.MacroTimeLine
             InitializeComponent();
         }
 
+        protected override System.Windows.Automation.Peers.AutomationPeer OnCreateAutomationPeer()
+        {
+#pragma warning disable CS8603 // Possible null reference return.
+            return null;
+#pragma warning restore CS8603 // Possible null reference return.
+        }
+
         private void Thumb_DragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
             if (DataContext is MacroTimeTrackElementViewModel vm)
@@ -68,7 +75,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.Views.MacroTimeLine
         private void StartDrag(object sender)
         {
 
-            if (Mouse.Capture((IInputElement)sender) && DataContext is MacroTimeTrackElementViewModel vm)
+            //if (Mouse.Capture((IInputElement)sender) && DataContext is MacroTimeTrackElementViewModel vm)
+            if (DataContext is MacroTimeTrackElementViewModel vm)
             {
                 vm.IsDraggable = false;
 

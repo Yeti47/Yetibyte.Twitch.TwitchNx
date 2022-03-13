@@ -14,18 +14,17 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
         private TimeSpan _duration;
         private MacroTimeTrackViewModel? _timeTrack;
 
-        public Point HandlePosition { get; private set; }
-
         private MacroTimeTrackViewModel? _originalTimeTrack;
         private TimeSpan? _originalStartTime;
         private MacroInstructionTemplateViewModel _instructionTemplateViewModel;
+
+        public Point HandlePosition { get; private set; }
 
         public MacroInstructionTemplateViewModel InstructionTemplateViewModel
         {
             get { return _instructionTemplateViewModel; }
             set { _instructionTemplateViewModel = value; OnPropertyChanged(); }
         }
-
 
         public TimeSpan StartTime
         {
@@ -52,6 +51,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(EndTime));
+
             }
         }
 
@@ -69,7 +69,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 
         public string Name { get; set; } = "Henlo";
 
-        public float UnitsPerSecond => _timeTrack?.UnitsPerSecond ?? MacroTimeTrackViewModel.DEFAULT_UNITS_PER_SECOND;
+        public float UnitsPerSecond => _timeTrack?.UnitsPerSecond ?? MacroTimeLineViewModel.DEFAULT_UNITS_PER_SECOND;
 
 
         public MacroTimeTrackViewModel? TimeTrack
@@ -197,6 +197,11 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
             return 0;
         }
 
+        public void NotifyUnitsPerSecondChanged()
+        {
+            OnPropertyChanged(nameof(UnitsPerSecond));
+        }
+
         #region IDragSource Implementation
 
         bool IDragSource.CanStartDrag(IDragInfo dragInfo)
@@ -215,7 +220,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 
         void IDragSource.DragDropOperationFinished(DragDropEffects operationResult, IDragInfo dragInfo)
         {
-            
+            System.GC.Collect();
         }
 
         void IDragSource.Dropped(IDropInfo dropInfo)

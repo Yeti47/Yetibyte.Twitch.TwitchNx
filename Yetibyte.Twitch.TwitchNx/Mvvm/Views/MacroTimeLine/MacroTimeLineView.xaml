@@ -14,7 +14,8 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="30" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="40" />
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0"
@@ -30,39 +31,103 @@
                           HorizontalScrollBarVisibility="Auto"
                           >
 
-                <ItemsControl x:Name="itemsTracks"
-                              ItemsSource="{Binding Tracks}"
-                              AlternationCount="2"
-                              >
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid >
-                                <Grid.Style>
-                                    <Style TargetType="Grid">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}}, Path=(ItemsControl.AlternationIndex)}" Value="0">
-                                                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Gray8}"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}}, Path=(ItemsControl.AlternationIndex)}" Value="1">
-                                                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Gray6}"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Grid.Style>
+                <Grid>
 
-                                <local:MacroTimeTrackView x:Name="ctrlTrack" DataContext="{Binding}" 
-                                                          GotFocus="ctrlTrack_GotFocus"
-                                                          GotMouseCapture="ctrlTrack_GotMouseCapture"
-                                                          dd:DragDrop.IsDropTarget="True" 
-                                                          dd:DragDrop.DropHandler="{Binding}"/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
+                    <Grid Grid.Row="0" 
+                          Width="{Binding TimeLineWidth}"
+                          HorizontalAlignment="Left"
+                          Background="{DynamicResource MahApps.Brushes.Gray1}">
 
-                </ItemsControl>
-                
+                        <ItemsControl x:Name="itemsAxis"
+                                      ItemsSource="{Binding AxisLabels}"
+                                      >
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid FlowDirection="RightToLeft" Width="{Binding Path=Width}" Background="Transparent" >
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="7" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0"
+                                                   x:Name="txtAxisLabelText"
+                                                   Text="{Binding Path=Text}"
+                                                   HorizontalAlignment="Left"
+                                                   TextAlignment="Center"
+                                                   FontSize="8"
+                                                   Foreground="{DynamicResource MahApps.Brushes.Gray10}"
+                                                   Margin="-16,0,0,0"
+                                                 />
+                                        <Grid Grid.Row="1"
+                                                   Background="{DynamicResource MahApps.Brushes.Gray10}"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Stretch"
+                                                   Width="1" 
+                                                   Height="7" />
+
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        
+                    </Grid>
+
+                    <ItemsControl x:Name="itemsTracks"
+                                  Grid.Row="1"
+                                  ItemsSource="{Binding Tracks}"
+                                  AlternationCount="2"
+                                  >
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid >
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}}, Path=(ItemsControl.AlternationIndex)}" Value="0">
+                                                    <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Gray8}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}}, Path=(ItemsControl.AlternationIndex)}" Value="1">
+                                                    <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Gray6}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+
+                                    <local:MacroTimeTrackView x:Name="ctrlTrack" DataContext="{Binding}" 
+                                                              dd:DragDrop.IsDropTarget="True" 
+                                                              dd:DragDrop.DropHandler="{Binding}"/>
+
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+
+                    </ItemsControl>
+
+                </Grid>
+
             </ScrollViewer>
+
+            <StackPanel Orientation="Horizontal"
+                        FlowDirection="RightToLeft"
+                        Grid.Row="2">
+
+                <ComboBox ItemsSource="{Binding ZoomSteps}" 
+                          FlowDirection="LeftToRight"
+                          DisplayMemberPath="Text"
+                          Width="100"
+                          Height="30"
+                          SelectedItem="{Binding SelectedZoomStep}" />
+
+            </StackPanel>
             
         </Grid>
         

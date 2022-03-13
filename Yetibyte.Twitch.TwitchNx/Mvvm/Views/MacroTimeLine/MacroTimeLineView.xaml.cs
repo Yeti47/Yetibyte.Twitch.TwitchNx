@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -24,14 +25,11 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.Views.MacroTimeLine
         {
             InitializeComponent();
         }
-
-        private void ctrlTrack_GotFocus(object sender, RoutedEventArgs e)
+        protected override AutomationPeer OnCreateAutomationPeer()
         {
-
-        }
-
-        private void ctrlTrack_GotMouseCapture(object sender, MouseEventArgs e)
-        {
+#pragma warning disable CS8603 // Possible null reference return.
+            return null;
+#pragma warning restore CS8603 // Possible null reference return.
         }
     }
 }

@@ -9,14 +9,13 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 {
     public class MacroTimeTrackViewModel : ObservableObject, IDropTarget
     {
-        private const float LOOK_AHEAD_SECONDS = 3f;
         private const double DEFAULT_ELEMENT_DURATION = 0.5;
-        public const int DEFAULT_UNITS_PER_SECOND = 100;
         public const long MIN_SNAP_STEP_TICKS = 100000;
 
         private readonly ObservableCollection<MacroTimeTrackElementViewModel> _elements = new ObservableCollection<MacroTimeTrackElementViewModel>();
+        private readonly MacroTimeLineViewModel _timeLineViewModel;
 
-        private long _snapStepTicks = 100000 * 5;
+        private long _snapStepTicks = 100000 * 5 / 2;
 
         public long SnapStepTicks
         {
@@ -24,7 +23,6 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
             set
             {
                 _snapStepTicks = Math.Max(MIN_SNAP_STEP_TICKS, value);
-                OnPropertyChanged();
             }
         }
 
@@ -34,17 +32,26 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
         {
             get
             {
-                return (_elements.Any() ? _elements.Max(e => e.EndTime) : TimeSpan.Zero) + TimeSpan.FromSeconds(LOOK_AHEAD_SECONDS);   
+                return (_elements.Any() ? _elements.Max(e => e.EndTime) : TimeSpan.Zero);  
             }
         }
 
-        public double TrackWidth => EndTime.TotalSeconds * UnitsPerSecond;
+        public double TrackWidth => _timeLineViewModel.TimeLineWidth;
 
-        public float UnitsPerSecond { get; set; } = DEFAULT_UNITS_PER_SECOND;
+        public float UnitsPerSecond => _timeLineViewModel.UnitsPerSecond;
 
-        public MacroTimeTrackViewModel()
+        public MacroTimeTrackViewModel(MacroTimeLineViewModel timeLineViewModel)
         {
+            _timeLineViewModel = timeLineViewModel;
+            _timeLineViewModel.PropertyChanged += timeLineViewModel_PropertyChanged;
+        }
 
+        private void timeLineViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(MacroTimeLineViewModel.TimeLineWidth))
+            {
+                OnPropertyChanged(nameof(TrackWidth));
+            }
         }
 
         public TimeSpan SnapTimeSpan(TimeSpan input)
@@ -58,6 +65,14 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
             TimeSpan snappedTimeSpan = new TimeSpan(snappedTicks);
 
             return snappedTimeSpan;
+        }
+
+        public void NotifyUnitsPerSecondChanged()
+        {
+            OnPropertyChanged(nameof(UnitsPerSecond));
+
+            foreach (var element in _elements)
+                element.NotifyUnitsPerSecondChanged();
         }
 
         void IDropTarget.DragOver(IDropInfo dropInfo)
@@ -75,7 +90,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 
                 if (!PlaceInTimeLine(dropInfo, timeTrackElementVm))
                 {
-                    dropInfo.Effects = System.Windows.DragDropEffects.None;
+                    //dropInfo.Effects = System.Windows.DragDropEffects.None;
                 }
             }
             else if (dropInfo.Data is MacroToolBoxItemViewModel macroToolBoxItemViewModel)
@@ -126,7 +141,6 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
             timeTrackElementVm.TimeTrack = this;
 
             OnPropertyChanged(nameof(EndTime));
-            OnPropertyChanged(nameof(TrackWidth));
 
             return true;
 
@@ -138,13 +152,15 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
             {
                 if (!PlaceInTimeLine(dropInfo, timeTrackElementVm))
                 {
-                    dropInfo.Effects = System.Windows.DragDropEffects.None;
                 }
+
+                //OnPropertyChanged(nameof(TrackWidth));
             }
             else if (dropInfo.Data is MacroToolBoxItemViewModel macroToolBoxItemViewModel)
             {
                 MacroTimeTrackElementViewModel macroTimeTrackElementViewModel = new MacroTimeTrackElementViewModel(
-                    macroToolBoxItemViewModel.MacroInstructionTemplateViewModel.Clone()
+                    //macroToolBoxItemViewModel.MacroInstructionTemplateViewModel.Clone()
+                    macroToolBoxItemViewModel.MacroInstructionTemplateViewModel
                 );
 
                 macroTimeTrackElementViewModel.Duration = TimeSpan.FromSeconds(DEFAULT_ELEMENT_DURATION);
@@ -168,9 +184,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
         public bool RemoveElement(MacroTimeTrackElementViewModel timeTrackElementVm)
         {
             bool success = _elements.Remove(timeTrackElementVm);
-
+            
             OnPropertyChanged(nameof(EndTime));
-            OnPropertyChanged(nameof(TrackWidth));
 
             return success;
         }
@@ -179,5 +194,6 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
         {
             return _elements.Contains(timeTrackElementVm);
         }
+
     }
 }

@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using XamlAnimatedGif;
+using System.Windows.Media.Animation;
 using Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels;
 
 namespace Yetibyte.Twitch.TwitchNx.Mvvm.Views
@@ -22,48 +22,57 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.Views
     /// </summary>
     public partial class MacroInstructionTemplateView : UserControl
     {
+        private static readonly Dictionary<string, BitmapImage> _imageCache = new Dictionary<string, BitmapImage>();
+
         public MacroInstructionTemplateView()
         {
             InitializeComponent();
-            DataContextChanged += MacroToolBoxItemView_DataContextChanged;
+            DataContextChanged += MacroInstructionTemplateView_DataContextChanged;
         }
 
-        private void MacroToolBoxItemView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void MacroInstructionTemplateView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (e.OldValue is MacroInstructionTemplateViewModel oldVm)
-            {
-                oldVm.PropertyChanged -= ViewModel_PropertyChanged;
-            }
             if (e.NewValue is MacroInstructionTemplateViewModel newVm)
             {
-                newVm.PropertyChanged += ViewModel_PropertyChanged;
-            }
-        }
 
-        private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (sender is MacroInstructionTemplateViewModel vm && e.PropertyName == nameof(MacroInstructionTemplateViewModel.IsAnimationPlaying))
-            {
-                var animator = AnimationBehavior.GetAnimator(imgIcon);
-
-                if (animator is not null && animator.FrameCount > 0)
+                if (newVm != e.OldValue)
                 {
-                    animator.Rewind();
+                    int i = 0;
 
-                    if (vm.IsAnimationPlaying)
+                    imageSourceAnimation.KeyFrames.Clear();
+
+                    foreach (string keyFrameImagePath in newVm.GetKeyFrameImagePaths())
                     {
-                        animator.Play();
-                    }
-                    else
-                    {
-                        animator.Pause();
+                        if (i == 0)
+                        {
+                            newVm.ImagePath = keyFrameImagePath;
+                        }
+
+                        Uri imageUri = new Uri(keyFrameImagePath, UriKind.Relative);
+
+                        BitmapImage? image;
+
+                        if (!_imageCache.TryGetValue(imageUri.ToString(), out image))
+                        {
+                            image = new BitmapImage(imageUri) { CacheOption = BitmapCacheOption.OnDemand };
+                            _imageCache.Add(imageUri.ToString(), image);
+                        }
+
+                        imageSourceAnimation.KeyFrames.Add(new DiscreteObjectKeyFrame()
+                            {
+                                Value = image,
+                                KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromSeconds(i * newVm.KeyFrameDuration))                        
+                            }
+                        );
+
+                        i++;
                     }
 
                 }
+
             }
-
-
         }
+
     }
 
 

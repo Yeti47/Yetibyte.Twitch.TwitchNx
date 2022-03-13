@@ -6,23 +6,21 @@
              xmlns:local="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.Views.MacroTimeLine"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:dd="urn:gong-wpf-dragdrop"
-             xmlns:db="clr-namespace:Yetibyte.Twitch.TwitchNx.DataBinding"
              xmlns:v="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.Views"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="120" d:DesignWidth="400">
-    <UserControl.Resources>
-        <db:TimeSpanToThicknessMultiValueConverter x:Key="TimeSpanToThicknessMultiValueConverter" />
-        <db:TimeSpanToDoubleMultiValueConverter x:Key="TimeSpanToDoubleMultiValueConverter" />
-        <db:TimeSpanToSizeMultiValueConverter x:Key="TimeSpanToSizeMultiValueConverter" />
-    </UserControl.Resources>
     <Grid >
-        <!--<Rectangle Fill="Red" Width="60" Height="50" />-->
         <Border BorderBrush="{DynamicResource MahApps.Brushes.Accent4}"
                 Background="{DynamicResource MahApps.Brushes.Highlight}"
                 IsHitTestVisible="True"
                 Height="50" 
-                BorderThickness="1" RenderTransformOrigin="0.5,0.5">
-            <Border.RenderTransform>
+                BorderThickness="1" 
+                RenderTransformOrigin="0.5,0.5"
+                dd:DragDrop.DragHandler="{Binding}"
+                dd:DragDrop.IsDragSource="True" 
+                >
+            <!--<Border.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
                     <SkewTransform/>
@@ -36,20 +34,19 @@
                         </TranslateTransform.X>
                     </TranslateTransform>
                 </TransformGroup>
-            </Border.RenderTransform>
+            </Border.RenderTransform>-->
             <Border.Width>
                 <MultiBinding Converter="{StaticResource TimeSpanToDoubleMultiValueConverter}">
                     <Binding Path="Duration" />
                     <Binding Path="UnitsPerSecond" />
                 </MultiBinding>
             </Border.Width>
-            <!--<Border.Margin>
+            <Border.Margin>
                 <MultiBinding Converter="{StaticResource TimeSpanToThicknessMultiValueConverter}">
                     <Binding Path="StartTime" />
                     <Binding Path="UnitsPerSecond" />
                 </MultiBinding>
-            </Border.Margin>-->
-
+            </Border.Margin>
 
             <Grid>
                 <Grid.ColumnDefinitions>

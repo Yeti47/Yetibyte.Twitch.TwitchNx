@@ -3,8 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Yetibyte.Twitch.TwitchNx"
              xmlns:v="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.Views"
+             xmlns:vtl="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.Views.MacroTimeLine"
              xmlns:vm="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels"
+             xmlns:vmtl="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:db="clr-namespace:Yetibyte.Twitch.TwitchNx.DataBinding"
              >
     <Application.Resources>
         <ResourceDictionary>
@@ -47,6 +50,10 @@
                 <v:MacroToolBoxView />
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type vmtl:MacroTimeTrackElementViewModel}">
+                <vtl:MacroTimeTrackElementView />
+            </DataTemplate>
+
             <Style x:Key="FormDock" TargetType="DockPanel">
                 <Setter Property="Margin" Value="0,2"/>
             </Style>
@@ -59,6 +66,12 @@
                 <Setter Property="MaxWidth" Value="200"/>
             </Style>
 
+            <db:TimeSpanToThicknessMultiValueConverter x:Key="TimeSpanToThicknessMultiValueConverter" />
+            <db:TimeSpanToDoubleMultiValueConverter x:Key="TimeSpanToDoubleMultiValueConverter" />
+            <db:TimeSpanToSizeMultiValueConverter x:Key="TimeSpanToSizeMultiValueConverter" />
+            <db:MinPercentageMultiConveter x:Key="MinPercentageMultiConveter" />
+            <db:MaxPercentageMultiConverter x:Key="MaxPercentageMultiConverter" />
+            
         </ResourceDictionary>
     </Application.Resources>
 </Application>
