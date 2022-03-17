@@ -29,7 +29,7 @@
                         <DataTemplate>
                             <local:MacroToolBoxItemView DataContext="{Binding}" Margin="4,4" 
                                                         dd:DragDrop.IsDragSource="True" 
-                                                        dd:DragDrop.DragHandler="{Binding DataContext}" >
+                                                        dd:DragDrop.DragHandler="{Binding}" >
                             
                             </local:MacroToolBoxItemView>
                         </DataTemplate>
@@ -52,7 +52,7 @@
                         <DataTemplate>
                             <local:MacroToolBoxItemView DataContext="{Binding}" Margin="4,4"
                                                         dd:DragDrop.IsDragSource="True" 
-                                                        dd:DragDrop.DragHandler="{Binding DataContext}" >
+                                                        dd:DragDrop.DragHandler="{Binding}" >
                             </local:MacroToolBoxItemView>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

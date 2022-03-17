@@ -163,6 +163,9 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
                     macroToolBoxItemViewModel.MacroInstructionTemplateViewModel
                 );
 
+                _timeLineViewModel.DeselectAllCommand.Execute(null);
+                macroTimeTrackElementViewModel.IsSelected = true;
+
                 macroTimeTrackElementViewModel.Duration = TimeSpan.FromSeconds(DEFAULT_ELEMENT_DURATION);
 
                 PlaceInTimeLine(dropInfo, macroTimeTrackElementViewModel);

@@ -71,7 +71,11 @@
             <db:TimeSpanToSizeMultiValueConverter x:Key="TimeSpanToSizeMultiValueConverter" />
             <db:MinPercentageMultiConveter x:Key="MinPercentageMultiConveter" />
             <db:MaxPercentageMultiConverter x:Key="MaxPercentageMultiConverter" />
-            
+
+            <db:BooleanToBrushConverter x:Key="SelectionBooleanToBrushConverter" 
+                                        TrueBrush="{DynamicResource MahApps.Brushes.AccentBase}"
+                                        FalseBrush="{DynamicResource MahApps.Brushes.Highlight}" />
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

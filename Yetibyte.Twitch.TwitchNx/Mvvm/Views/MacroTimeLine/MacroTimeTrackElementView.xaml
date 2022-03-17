@@ -8,11 +8,12 @@
              xmlns:dd="urn:gong-wpf-dragdrop"
              xmlns:v="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.Views"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             
              mc:Ignorable="d" 
              d:DesignHeight="120" d:DesignWidth="400">
     <Grid >
-        <Border BorderBrush="{DynamicResource MahApps.Brushes.Accent4}"
-                Background="{DynamicResource MahApps.Brushes.Highlight}"
+        <Border BorderBrush="{DynamicResource MahApps.Brushes.Border.NonActive}"
+                Background="{Binding Path=IsSelected, Mode=OneWay, Converter={StaticResource SelectionBooleanToBrushConverter}}"
                 IsHitTestVisible="True"
                 Height="50" 
                 BorderThickness="1" 
@@ -20,6 +21,16 @@
                 dd:DragDrop.DragHandler="{Binding}"
                 dd:DragDrop.IsDragSource="True" 
                 >
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseDown" >
+                    <i:InvokeCommandAction Command="{Binding SelectCommand}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <Border.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Delete" Command="{Binding Path=DeleteCommand}" />
+                </ContextMenu>
+            </Border.ContextMenu>
             <!--<Border.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>

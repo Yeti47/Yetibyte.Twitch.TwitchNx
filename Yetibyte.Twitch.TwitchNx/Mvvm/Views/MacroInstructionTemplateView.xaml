@@ -13,13 +13,38 @@
         <db:PercentageConverter x:Key="PercentageConverter" />
         <db:MinPercentageMultiConveter x:Key="MinPercentageMultiConveter" />
     </UserControl.Resources>
-    <Grid>
+    <Grid MouseEnter="Grid_MouseEnter"
+          MouseLeave="Grid_MouseLeave">
+        <Image x:Name="imgIconStatic"
+               Source="{Binding InitialImagePath, Mode=OneWay}" >
+            <Image.Width>
+                <MultiBinding Converter="{StaticResource MinPercentageMultiConveter}" ConverterParameter="90">
+                    <MultiBinding.Bindings>
+                        <Binding Path="ActualWidth" 
+                                 RelativeSource="{RelativeSource AncestorType={x:Type Border}}" />
+                        <Binding Path="ActualHeight" 
+                                 RelativeSource="{RelativeSource AncestorType={x:Type Border}}" />
+                    </MultiBinding.Bindings>
+                </MultiBinding>
+            </Image.Width>
+            <Image.Height>
+                <MultiBinding Converter="{StaticResource MinPercentageMultiConveter}" ConverterParameter="90">
+                    <MultiBinding.Bindings>
+                        <Binding Path="ActualWidth" 
+                                 RelativeSource="{RelativeSource AncestorType={x:Type Border}}" />
+                        <Binding Path="ActualHeight" 
+                                 RelativeSource="{RelativeSource AncestorType={x:Type Border}}" />
+                    </MultiBinding.Bindings>
+                </MultiBinding>
+            </Image.Height>
+        </Image>
         <Image x:Name="imgIcon"
+               Visibility="Collapsed"
                >
             <Image.Triggers>
                 <EventTrigger RoutedEvent="Image.Loaded" x:Name="eventTriggerAnimation">
-                    <BeginStoryboard>
-                        <Storyboard x:Name="storyAnimation">
+                    <BeginStoryboard Name="beginStoryAnimation" >
+                        <Storyboard x:Name="storyAnimation" >
                             <ObjectAnimationUsingKeyFrames x:Name="imageSourceAnimation"
                                                            Storyboard.TargetProperty="Source"
                                                            Storyboard.TargetName="imgIcon"
@@ -30,6 +55,15 @@
                             </ObjectAnimationUsingKeyFrames>
                         </Storyboard>
                     </BeginStoryboard>
+                    <SeekStoryboard BeginStoryboardName="beginStoryAnimation" Offset="0:0:0" Origin="BeginTime" />
+                    <PauseStoryboard BeginStoryboardName="beginStoryAnimation" />
+                </EventTrigger>
+                <EventTrigger RoutedEvent="Mouse.MouseEnter" >
+                    <ResumeStoryboard BeginStoryboardName="beginStoryAnimation"/>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="Mouse.MouseLeave" >
+                    <SeekStoryboard BeginStoryboardName="beginStoryAnimation" Offset="0:0:0" Origin="BeginTime" />
+                    <PauseStoryboard BeginStoryboardName="beginStoryAnimation" />
                 </EventTrigger>
             </Image.Triggers>
             <Image.Width>

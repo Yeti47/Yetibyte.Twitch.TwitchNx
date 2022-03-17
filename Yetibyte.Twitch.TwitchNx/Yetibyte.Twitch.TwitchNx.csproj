@@ -12,46 +12,14 @@
     <None Remove="Images\Computer_lab_icon.png" />
     <None Remove="Images\joyconl.png" />
     <None Remove="Images\joyconr.png" />
-    <None Remove="Images\Macros\btn_A\frame_00_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_A\frame_01_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_A\frame_02_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_A\frame_03_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_A\frame_04_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_A\frame_05_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_A\frame_06_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_A\frame_07_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_A\frame_08_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_A\frame_09_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_A\frame_10_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_A\frame_11_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_A\frame_12_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_A\frame_13_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_A\frame_14_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_A\frame_15_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_A\frame_16_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_A\frame_17_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_A\frame_18_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_A\frame_19_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_B\frame_00_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_B\frame_01_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_B\frame_02_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_B\frame_03_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_B\frame_04_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_B\frame_05_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_B\frame_06_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_B\frame_07_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_B\frame_08_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_B\frame_09_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_B\frame_10_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_B\frame_11_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_B\frame_12_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_B\frame_13_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_B\frame_14_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_B\frame_15_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_B\frame_16_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_B\frame_17_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_B\frame_18_delay-0.01s.gif" />
-    <None Remove="Images\Macros\btn_B\frame_19_delay-0.01s.gif" />
+    <None Remove="Images\Macros\btn_A\A_1.png" />
+    <None Remove="Images\Macros\btn_A\A_2.png" />
+    <None Remove="Images\Macros\btn_A\A_3.png" />
+    <None Remove="Images\Macros\btn_A\A_4.png" />
+    <None Remove="Images\Macros\btn_B\B_1.png" />
+    <None Remove="Images\Macros\btn_B\B_2.png" />
+    <None Remove="Images\Macros\btn_B\B_3.png" />
+    <None Remove="Images\Macros\btn_B\B_4.png" />
     <None Remove="Images\Macros\btn_capture.gif" />
     <None Remove="Images\Macros\btn_DPAD_DOWN.gif" />
     <None Remove="Images\Macros\btn_DPAD_LEFT.gif" />
@@ -60,15 +28,103 @@
     <None Remove="Images\Macros\btn_home.gif" />
     <None Remove="Images\Macros\btn_L.gif" />
     <None Remove="Images\Macros\btn_minus.gif" />
+    <None Remove="Images\Macros\btn_Minus\Minus_1.png" />
+    <None Remove="Images\Macros\btn_Minus\Minus_2.png" />
+    <None Remove="Images\Macros\btn_Minus\Minus_3.png" />
+    <None Remove="Images\Macros\btn_Minus\Minus_4.png" />
     <None Remove="Images\Macros\btn_plus.gif" />
+    <None Remove="Images\Macros\btn_Plus\Plus_1.png" />
+    <None Remove="Images\Macros\btn_Plus\Plus_2.png" />
+    <None Remove="Images\Macros\btn_Plus\Plus_3.png" />
+    <None Remove="Images\Macros\btn_Plus\Plus_4.png" />
     <None Remove="Images\Macros\btn_R.gif" />
     <None Remove="Images\Macros\btn_SL.gif" />
     <None Remove="Images\Macros\btn_SR.gif" />
-    <None Remove="Images\Macros\btn_X.gif" />
-    <None Remove="Images\Macros\btn_Y.gif" />
+    <None Remove="Images\Macros\btn_X\X_1.png" />
+    <None Remove="Images\Macros\btn_X\X_2.png" />
+    <None Remove="Images\Macros\btn_X\X_3.png" />
+    <None Remove="Images\Macros\btn_X\X_4.png" />
+    <None Remove="Images\Macros\btn_Y\Y_1.png" />
+    <None Remove="Images\Macros\btn_Y\Y_2.png" />
+    <None Remove="Images\Macros\btn_Y\Y_3.png" />
+    <None Remove="Images\Macros\btn_Y\Y_4.png" />
     <None Remove="Images\Macros\btn_ZL.gif" />
     <None Remove="Images\Macros\btn_ZR.gif" />
     <None Remove="Images\Macros\stick_R.gif" />
+    <None Remove="Images\Macros\stick_R\Joy_R00.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R01.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R02.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R03.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R04.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R05.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R06.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R07.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R08.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R09.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R10.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R11.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R12.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R13.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R14.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R15.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R16.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R17.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R18.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R19.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R20.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R21.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R22.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R23.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R24.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R25.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R26.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R27.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R28.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R29.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R30.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R31.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R32.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R33.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R34.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R35.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R36.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R37.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R38.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R39.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R40.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R41.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R42.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R43.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R44.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R45.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R46.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R47.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R48.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R49.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R50.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R51.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R52.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R53.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R54.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R55.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R56.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R57.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R58.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R59.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R60.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R61.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R62.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R63.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R64.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R65.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R66.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R67.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R68.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R69.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R70.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R71.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R72.png" />
+    <None Remove="Images\Macros\stick_R\Joy_R_PreView.png" />
     <None Remove="Images\Nintendo_Switch_Logo.png" />
     <None Remove="Images\procon.png" />
   </ItemGroup>
@@ -86,124 +142,298 @@
     <Content Include="Images\joyconr.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_A\frame_00_delay-0.01s.gif">
+    <Content Include="Images\Macros\btn_A\A_1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_A\frame_01_delay-0.01s.gif">
+    <Content Include="Images\Macros\btn_A\A_2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_A\frame_02_delay-0.01s.gif">
+    <Content Include="Images\Macros\btn_A\A_3.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_A\frame_03_delay-0.01s.gif">
+    <Content Include="Images\Macros\btn_A\A_4.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_A\frame_04_delay-0.01s.gif">
+    <Content Include="Images\Macros\btn_B\B_1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_A\frame_05_delay-0.01s.gif">
+    <Content Include="Images\Macros\btn_B\B_2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_A\frame_06_delay-0.01s.gif">
+    <Content Include="Images\Macros\btn_B\B_3.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_A\frame_07_delay-0.01s.gif">
+    <Content Include="Images\Macros\btn_B\B_4.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_A\frame_08_delay-0.01s.gif">
+    <Content Include="Images\Macros\btn_Minus\Minus_1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_A\frame_09_delay-0.01s.gif">
+    <Content Include="Images\Macros\btn_Minus\Minus_2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_A\frame_10_delay-0.01s.gif">
+    <Content Include="Images\Macros\btn_Minus\Minus_3.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_A\frame_11_delay-0.01s.gif">
+    <Content Include="Images\Macros\btn_Minus\Minus_4.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_A\frame_12_delay-0.01s.gif">
+    <Content Include="Images\Macros\btn_Plus\Plus_1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_A\frame_13_delay-0.01s.gif">
+    <Content Include="Images\Macros\btn_Plus\Plus_2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_A\frame_14_delay-0.01s.gif">
+    <Content Include="Images\Macros\btn_Plus\Plus_3.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_A\frame_15_delay-0.01s.gif">
+    <Content Include="Images\Macros\btn_Plus\Plus_4.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_A\frame_16_delay-0.01s.gif">
+    <Content Include="Images\Macros\btn_X\X_1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_A\frame_17_delay-0.01s.gif">
+    <Content Include="Images\Macros\btn_X\X_2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_A\frame_18_delay-0.01s.gif">
+    <Content Include="Images\Macros\btn_X\X_3.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_A\frame_19_delay-0.01s.gif">
+    <Content Include="Images\Macros\btn_X\X_4.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_B\frame_00_delay-0.01s.gif">
+    <Content Include="Images\Macros\btn_Y\Y_1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_B\frame_01_delay-0.01s.gif">
+    <Content Include="Images\Macros\btn_Y\Y_2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_B\frame_02_delay-0.01s.gif">
+    <Content Include="Images\Macros\btn_Y\Y_3.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_B\frame_03_delay-0.01s.gif">
+    <Content Include="Images\Macros\btn_Y\Y_4.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_B\frame_04_delay-0.01s.gif">
+    <Content Include="Images\Macros\stick_R\Joy_R00.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_B\frame_05_delay-0.01s.gif">
+    <Content Include="Images\Macros\stick_R\Joy_R01.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_B\frame_06_delay-0.01s.gif">
+    <Content Include="Images\Macros\stick_R\Joy_R02.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_B\frame_07_delay-0.01s.gif">
+    <Content Include="Images\Macros\stick_R\Joy_R03.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_B\frame_08_delay-0.01s.gif">
+    <Content Include="Images\Macros\stick_R\Joy_R04.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_B\frame_09_delay-0.01s.gif">
+    <Content Include="Images\Macros\stick_R\Joy_R05.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_B\frame_10_delay-0.01s.gif">
+    <Content Include="Images\Macros\stick_R\Joy_R06.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_B\frame_11_delay-0.01s.gif">
+    <Content Include="Images\Macros\stick_R\Joy_R07.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_B\frame_12_delay-0.01s.gif">
+    <Content Include="Images\Macros\stick_R\Joy_R08.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_B\frame_13_delay-0.01s.gif">
+    <Content Include="Images\Macros\stick_R\Joy_R09.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_B\frame_14_delay-0.01s.gif">
+    <Content Include="Images\Macros\stick_R\Joy_R10.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_B\frame_15_delay-0.01s.gif">
+    <Content Include="Images\Macros\stick_R\Joy_R11.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_B\frame_16_delay-0.01s.gif">
+    <Content Include="Images\Macros\stick_R\Joy_R12.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_B\frame_17_delay-0.01s.gif">
+    <Content Include="Images\Macros\stick_R\Joy_R13.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_B\frame_18_delay-0.01s.gif">
+    <Content Include="Images\Macros\stick_R\Joy_R14.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_B\frame_19_delay-0.01s.gif">
+    <Content Include="Images\Macros\stick_R\Joy_R15.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R17.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R18.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R19.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R20.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R21.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R22.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R23.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R24.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R25.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R26.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R27.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R28.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R29.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R30.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R31.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R33.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R34.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R35.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R36.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R37.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R38.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R39.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R40.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R41.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R42.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R43.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R44.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R45.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R46.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R47.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R49.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R50.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R51.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R52.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R53.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R54.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R55.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R56.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R57.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R58.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R59.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R60.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R61.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R62.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R63.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R64.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R65.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R66.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R67.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R68.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R69.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R70.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R71.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R72.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\stick_R\Joy_R_PreView.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="Images\Macros\btn_capture.gif">
@@ -240,12 +470,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\Macros\btn_SR.gif">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\Macros\btn_X.gif">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\Macros\btn_Y.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\Macros\btn_ZL.gif">

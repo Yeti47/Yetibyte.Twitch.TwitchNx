@@ -8,15 +8,15 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 {
     public class MacroInstructionTemplateViewModel : ObservableObject
     {
+        public record AnimationFrame(string ImagePath, float Duration);
+
         private readonly Func<IMacroInstruction> _instructionFactory;
-        private readonly string _imageDirectory;
-        private readonly double _keyFrameDurationSeconds;
+        private readonly AnimationFrame[] _animationFrames;
+        private readonly string _defaultImagePath;
         private bool _isAnimationPlaying;
         private string _imagePath = string.Empty;
 
-        public double AnimationDuration => GetKeyFrameImagePaths().Count() * _keyFrameDurationSeconds;
-
-        public double KeyFrameDuration => _keyFrameDurationSeconds;
+        public double AnimationDuration => _animationFrames.Sum(f => f.Duration);
 
         public bool IsAnimationPlaying
         {
@@ -30,29 +30,33 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         public string ImagePath
         {
-            get => _imageDirectory;
+            get => _imagePath;
             set
             {
                 _imagePath = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(ImageUri));
             }
         }
 
-        //public Uri ImageUri
-        //{
-        //    get
-        //    {
-        //        Uri uri = new Uri("pack://application:,,,/Yetibyte.Twitch.TwitchNx;component/" + ImagePath.TrimStart('/'));
-        //        return uri;
-        //    }
-        //}
+        public string InitialImagePath => "/" + (!string.IsNullOrWhiteSpace(_defaultImagePath) ? _defaultImagePath : _animationFrames.First().ImagePath);
+
+        public Uri ImageUri => new Uri(ImagePath, UriKind.Relative);
+
+        public IEnumerable<AnimationFrame> AnimationFrames => _animationFrames;
 
         public MacroInstructionType MacroInstructionType { get; }
 
-        public MacroInstructionTemplateViewModel(string imageDirectory, double keyFrameDurationSeconds, MacroInstructionType macroInstructionType, Func<IMacroInstruction> instructionFactory)
+        public MacroInstructionTemplateViewModel(IEnumerable<AnimationFrame> animationFrames, MacroInstructionType macroInstructionType, Func<IMacroInstruction> instructionFactory, string defaultImagePath = "")
         {
-            _imageDirectory = imageDirectory;
-            _keyFrameDurationSeconds = keyFrameDurationSeconds;
+            _animationFrames = animationFrames.ToArray();
+
+            _defaultImagePath = defaultImagePath;
+
+            if (!string.IsNullOrWhiteSpace(defaultImagePath))
+                _imagePath = defaultImagePath;
+            else if (_animationFrames.Any())
+                _imagePath = _animationFrames.First().ImagePath;
 
             MacroInstructionType = macroInstructionType;
             _instructionFactory = instructionFactory;
@@ -62,23 +66,34 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         public MacroInstructionTemplateViewModel Clone()
         {
-            MacroInstructionTemplateViewModel clone = new MacroInstructionTemplateViewModel(_imageDirectory, _keyFrameDurationSeconds, MacroInstructionType, _instructionFactory);
+            MacroInstructionTemplateViewModel clone = new MacroInstructionTemplateViewModel(_animationFrames, MacroInstructionType, _instructionFactory, _defaultImagePath);
 
             return clone;
         }
 
-        public IEnumerable<string> GetKeyFrameImagePaths()
+        public static IEnumerable<AnimationFrame> BuildSimpleButtonAnimation(string basePath, string button, float longDuration, float shortDuration)
         {
-            List<string> keyFrameImagePaths = new List<string>();
-
-            foreach (string pngFilePath in System.IO.Directory.EnumerateFiles(_imageDirectory, "*.gif"))
+            for(int i = 1; i <= 4; i++)
             {
-                string relativePngFilePath = System.IO.Path.Combine(_imageDirectory, System.IO.Path.GetFileName(pngFilePath));
-
-                keyFrameImagePaths.Add(relativePngFilePath);
+                yield return new AnimationFrame($"{basePath}btn_{button}/{button}_{i}.png", i <= 1 ? longDuration : shortDuration);
             }
-
-            return keyFrameImagePaths;
         }
+
+        public static IEnumerable<AnimationFrame> BuildFullCircleAnimation(string stickImagePath, string stick, float longDuration, float shortDuration)
+        {
+            for(int i = 0; i < 30; i++)
+            {
+                int frameIndex = i < 3 ? i : (3 + (i - 3) * 3);
+
+                if (i >= 27)
+                {
+                    frameIndex = 3 - (i - 27);
+                }
+
+                float duration = i <= 0 ? longDuration : shortDuration;
+                yield return new AnimationFrame($"{stickImagePath}{stick}/Joy_{stick}{frameIndex.ToString("00")}.png", duration);
+            }
+        }
+
     }
 }

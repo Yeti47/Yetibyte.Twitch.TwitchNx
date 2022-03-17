@@ -34,45 +34,49 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.Views
         {
             if (e.NewValue is MacroInstructionTemplateViewModel newVm)
             {
-
                 if (newVm != e.OldValue)
                 {
                     int i = 0;
 
                     imageSourceAnimation.KeyFrames.Clear();
 
-                    foreach (string keyFrameImagePath in newVm.GetKeyFrameImagePaths())
+                    foreach (var animationFrame in newVm.AnimationFrames)
                     {
-                        if (i == 0)
-                        {
-                            newVm.ImagePath = keyFrameImagePath;
-                        }
-
-                        Uri imageUri = new Uri(keyFrameImagePath, UriKind.Relative);
+                        Uri imageUri = new Uri(animationFrame.ImagePath, UriKind.Relative);
 
                         BitmapImage? image;
 
                         if (!_imageCache.TryGetValue(imageUri.ToString(), out image))
                         {
-                            image = new BitmapImage(imageUri) { CacheOption = BitmapCacheOption.OnDemand };
+                            image = new BitmapImage(imageUri) { CacheOption = BitmapCacheOption.Default };
                             _imageCache.Add(imageUri.ToString(), image);
                         }
 
                         imageSourceAnimation.KeyFrames.Add(new DiscreteObjectKeyFrame()
                             {
                                 Value = image,
-                                KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromSeconds(i * newVm.KeyFrameDuration))                        
+                                KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromSeconds(newVm.AnimationFrames.Take(i).Sum(f => f.Duration)))                      
                             }
                         );
 
                         i++;
                     }
-
                 }
 
             }
         }
 
+        private void Grid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            imgIconStatic.Visibility = Visibility.Hidden;
+            imgIcon.Visibility = Visibility.Visible;
+        }
+
+        private void Grid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            imgIcon.Visibility = Visibility.Hidden;
+            imgIconStatic.Visibility = Visibility.Visible;
+        }
     }
 
 

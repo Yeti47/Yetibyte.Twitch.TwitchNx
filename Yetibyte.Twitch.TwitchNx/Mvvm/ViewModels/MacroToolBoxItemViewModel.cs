@@ -44,7 +44,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         void IDragSource.StartDrag(IDragInfo dragInfo)
         {
-            
+            dragInfo.Effects = DragDropEffects.Copy;
+            dragInfo.Data = this;
         }
 
         bool IDragSource.CanStartDrag(IDragInfo dragInfo)
@@ -54,7 +55,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         void IDragSource.Dropped(IDropInfo dropInfo)
         {
-            
+            dropInfo.VisualTarget.MoveFocus(new System.Windows.Input.TraversalRequest(System.Windows.Input.FocusNavigationDirection.Up));
         }
 
         void IDragSource.DragDropOperationFinished(DragDropEffects operationResult, IDragInfo dragInfo)

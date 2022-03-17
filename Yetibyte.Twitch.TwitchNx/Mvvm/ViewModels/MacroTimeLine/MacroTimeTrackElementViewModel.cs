@@ -1,14 +1,19 @@
 ﻿using GongSolutions.Wpf.DragDrop;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 {
     public class MacroTimeTrackElementViewModel : ObservableObject, IDragSource
     {
         public const float MINIMUM_DURATION_SECONDS = 0.1f;
+
+        private readonly RelayCommand _deleteCommand;
+        private readonly RelayCommand _selectCommand;
 
         private TimeSpan _startTime;
         private TimeSpan _duration;
@@ -17,6 +22,20 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
         private MacroTimeTrackViewModel? _originalTimeTrack;
         private TimeSpan? _originalStartTime;
         private MacroInstructionTemplateViewModel _instructionTemplateViewModel;
+        private bool _isSelected;
+
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set { 
+                _isSelected = value; 
+                OnPropertyChanged(); 
+            }
+        }
+
+        public ICommand DeleteCommand => _deleteCommand;
+
+        public ICommand SelectCommand => _selectCommand;
 
         public Point HandlePosition { get; private set; }
 
@@ -101,6 +120,9 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
             //{
             //    _timeTrack.AddElement(this);
             //}
+
+            _deleteCommand = new RelayCommand(() => this.TimeTrack = null);
+            _selectCommand = new RelayCommand(() => this.IsSelected = true);
         }
 
         public void AdjustDurationByUnits(double units)

@@ -17,6 +17,11 @@ namespace Yetibyte.Twitch.TwitchNx
     /// </summary>
     public partial class App : Application
     {
+        private const float BUTTON_FRAME_DURATION_SHORT = 0.08f;
+        private const float BUTTON_FRAME_DURATION_LONG = 0.4f;
+
+        private const string SIMPLE_BUTTON_IMAGE_BASE_PATH = "Images/Macros/";
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -31,118 +36,77 @@ namespace Yetibyte.Twitch.TwitchNx
                 List<MacroInstructionTemplateViewModel> macroInstructionTemplates = new List<MacroInstructionTemplateViewModel>
                 {
                     new MacroInstructionTemplateViewModel(
-                        "Images/Macros/btn_A/",
-                        0.1,
+                        MacroInstructionTemplateViewModel.BuildSimpleButtonAnimation(
+                            SIMPLE_BUTTON_IMAGE_BASE_PATH, 
+                            "A", 
+                            BUTTON_FRAME_DURATION_LONG, 
+                            BUTTON_FRAME_DURATION_SHORT
+                        ),
                         MacroInstructionType.Simple,
                         () => null
                     ),
                     new MacroInstructionTemplateViewModel(
-                        "Images/Macros/btn_B/",
-                        0.1,
+                        MacroInstructionTemplateViewModel.BuildSimpleButtonAnimation(
+                            SIMPLE_BUTTON_IMAGE_BASE_PATH,
+                            "B",
+                            BUTTON_FRAME_DURATION_LONG,
+                            BUTTON_FRAME_DURATION_SHORT
+                        ),
                         MacroInstructionType.Simple,
                         () => null
-                    )
-                    //new MacroInstructionTemplateViewModel(
-                    //    "/Images/Macros/btn_A.gif",
-                    //    MacroInstructionType.Simple,
-                    //    () => null
-                    //),
-                    //new MacroInstructionTemplateViewModel(
-                    //    "/Images/Macros/btn_B.gif",
-                    //    MacroInstructionType.Simple,
-                    //    () => null
-                    //),
-                    //new MacroInstructionTemplateViewModel(
-                    //    "/Images/Macros/btn_X.gif",
-                    //    MacroInstructionType.Simple,
-                    //    () => null
-                    //),
-                    //new MacroInstructionTemplateViewModel(
-                    //    "/Images/Macros/btn_Y.gif",
-                    //    MacroInstructionType.Simple,
-                    //    () => null
-                    //),
-                    //new MacroInstructionTemplateViewModel(
-                    //    "/Images/Macros/btn_L.gif",
-                    //    MacroInstructionType.Simple,
-                    //    () => null
-                    //),
-                    //new MacroInstructionTemplateViewModel(
-                    //    "/Images/Macros/btn_R.gif",
-                    //    MacroInstructionType.Simple,
-                    //    () => null
-                    //),
-                    //new MacroInstructionTemplateViewModel(
-                    //    "/Images/Macros/btn_ZL.gif",
-                    //    MacroInstructionType.Simple,
-                    //    () => null
-                    //),
-                    //new MacroInstructionTemplateViewModel(
-                    //    "/Images/Macros/btn_ZR.gif",
-                    //    MacroInstructionType.Simple,
-                    //    () => null
-                    //),
-                    //new MacroInstructionTemplateViewModel(
-                    //    "/Images/Macros/btn_SL.gif",
-                    //    MacroInstructionType.Simple,
-                    //    () => null
-                    //),
-                    //new MacroInstructionTemplateViewModel(
-                    //    "/Images/Macros/btn_SR.gif",
-                    //    MacroInstructionType.Simple,
-                    //    () => null
-                    //),
-                    //new MacroInstructionTemplateViewModel(
-                    //    "/Images/Macros/btn_plus.gif",
-                    //    MacroInstructionType.Simple,
-                    //    () => null
-                    //),
-                    //new MacroInstructionTemplateViewModel(
-                    //    "/Images/Macros/btn_minus.gif",
-                    //    MacroInstructionType.Simple,
-                    //    () => null
-                    //),
-                    //new MacroInstructionTemplateViewModel(
-                    //    "/Images/Macros/btn_minus.gif",
-                    //    MacroInstructionType.Simple,
-                    //    () => null
-                    //),
-                    //new MacroInstructionTemplateViewModel(
-                    //    "/Images/Macros/btn_home.gif",
-                    //    MacroInstructionType.Simple,
-                    //    () => null
-                    //),
-                    //new MacroInstructionTemplateViewModel(
-                    //    "/Images/Macros/btn_capture.gif",
-                    //    MacroInstructionType.Simple,
-                    //    () => null
-                    //),
-                    //new MacroInstructionTemplateViewModel(
-                    //    "/Images/Macros/btn_DPAD_UP.gif",
-                    //    MacroInstructionType.Simple,
-                    //    () => null
-                    //),
-                    //new MacroInstructionTemplateViewModel(
-                    //    "/Images/Macros/btn_DPAD_DOWN.gif",
-                    //    MacroInstructionType.Simple,
-                    //    () => null
-                    //),
-                    //new MacroInstructionTemplateViewModel(
-                    //    "/Images/Macros/btn_DPAD_LEFT.gif",
-                    //    MacroInstructionType.Simple,
-                    //    () => null
-                    //),
-                    //new MacroInstructionTemplateViewModel(
-                    //    "/Images/Macros/btn_DPAD_RIGHT.gif",
-                    //    MacroInstructionType.Simple,
-                    //    () => null
-                    //),
+                    ),
+                    new MacroInstructionTemplateViewModel(
+                        MacroInstructionTemplateViewModel.BuildSimpleButtonAnimation(
+                            SIMPLE_BUTTON_IMAGE_BASE_PATH,
+                            "X",
+                            BUTTON_FRAME_DURATION_LONG,
+                            BUTTON_FRAME_DURATION_SHORT
+                        ),
+                        MacroInstructionType.Simple,
+                        () => null
+                    ),
+                    new MacroInstructionTemplateViewModel(
+                        MacroInstructionTemplateViewModel.BuildSimpleButtonAnimation(
+                            SIMPLE_BUTTON_IMAGE_BASE_PATH,
+                            "Y",
+                            BUTTON_FRAME_DURATION_LONG,
+                            BUTTON_FRAME_DURATION_SHORT
+                        ),
+                        MacroInstructionType.Simple,
+                        () => null
+                    ),
+                    new MacroInstructionTemplateViewModel(
+                        MacroInstructionTemplateViewModel.BuildSimpleButtonAnimation(
+                            SIMPLE_BUTTON_IMAGE_BASE_PATH,
+                            "Minus",
+                            BUTTON_FRAME_DURATION_LONG,
+                            BUTTON_FRAME_DURATION_SHORT
+                        ),
+                        MacroInstructionType.Simple,
+                        () => null
+                    ),
+                    new MacroInstructionTemplateViewModel(
+                        MacroInstructionTemplateViewModel.BuildSimpleButtonAnimation(
+                            SIMPLE_BUTTON_IMAGE_BASE_PATH,
+                            "Plus",
+                            BUTTON_FRAME_DURATION_LONG,
+                            BUTTON_FRAME_DURATION_SHORT
+                        ),
+                        MacroInstructionType.Simple,
+                        () => null
+                    ),
                     //// --------------------------------------
-                    //new MacroInstructionTemplateViewModel(
-                    //    "/Images/Macros/stick_R.gif",
-                    //    MacroInstructionType.Animation,
-                    //    () => null
-                    //),
+                    new MacroInstructionTemplateViewModel(
+                        MacroInstructionTemplateViewModel.BuildFullCircleAnimation(
+                            "Images/Macros/stick_",
+                            "R",
+                            0.2f,
+                            0.04f
+                        ),
+                        MacroInstructionType.Animation,
+                        () => null,
+                        "Images/Macros/stick_R/Joy_R_PreView.png"
+                    )
                 };
 
                 return macroInstructionTemplates;

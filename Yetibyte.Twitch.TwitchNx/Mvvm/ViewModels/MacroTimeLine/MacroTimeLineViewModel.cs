@@ -50,6 +50,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 
         private readonly RelayCommand _zoomInCommand;
         private readonly RelayCommand _zoomOutCommand;
+        private readonly RelayCommand _deselectAllCommand;
+        private readonly RelayCommand _deleteSelectedElementsCommand;
         
         private readonly Macro _macro;
 
@@ -131,6 +133,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 
         public ICommand ZoomInCommand => _zoomInCommand;
         public ICommand ZoomOutCommand => _zoomOutCommand;
+        public ICommand DeselectAllCommand => _deselectAllCommand;
+        public ICommand DeleteSelectedElementsCommand => _deleteSelectedElementsCommand;
 
         public MacroTimeLineViewModel(Macro macro)
         {
@@ -146,6 +150,9 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
             _zoomInCommand = new RelayCommand(ExecuteZoomInCommand, CanExecuteZoomInCommand);
             _zoomOutCommand = new RelayCommand(ExecuteZoomOutCommand, CanExecuteZoomOutCommand);
 
+            _deselectAllCommand = new RelayCommand(ExecuteDeselectAllCommand);
+            _deleteSelectedElementsCommand = new RelayCommand(ExecuteDeleteSelectedElementsCommand);
+
             TargetDuration = TimeSpan.FromSeconds(DEFAULT_DURATION_SECONDS);
 
             for(int i = 0; i < TRACK_COUNT; i++)
@@ -154,6 +161,23 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
                 _tracks.Add(trackVm);
             }         
      
+        }
+
+        private void ExecuteDeleteSelectedElementsCommand()
+        {
+            var selectedElements = _tracks.SelectMany(t => t.Elements).Where(e => e.IsSelected).ToArray();
+
+            foreach (var element in selectedElements)
+            {
+                element.DeleteCommand.Execute(null);
+            }
+        }
+
+        private void ExecuteDeselectAllCommand()
+        {
+            foreach (var element in _tracks.SelectMany(t => t.Elements))
+                element.IsSelected = false;
+                
         }
 
         private bool CanExecuteZoomOutCommand() => _zoomlevel > ZoomLevels.Percent10;
@@ -219,5 +243,6 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
             foreach (var track in _tracks)
                 track.NotifyUnitsPerSecondChanged();
         }
+
     }
 }

@@ -87,6 +87,5 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.Views.MacroTimeLine
         {
             EndDrag();
         }
-
     }
 }
