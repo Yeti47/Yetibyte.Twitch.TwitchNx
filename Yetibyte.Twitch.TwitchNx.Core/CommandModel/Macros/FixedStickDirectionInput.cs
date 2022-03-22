@@ -11,18 +11,20 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros
             { ControllerStickDirection.South, new Point(0, -100) },
             { ControllerStickDirection.West, new Point(-100, 0) },
             { ControllerStickDirection.East, new Point(100, 0) },
-            { ControllerStickDirection.NorthEast, new Point(100, 100) },
-            { ControllerStickDirection.SouthEast, new Point(100, -100) },
-            { ControllerStickDirection.NorthWest, new Point(-100, 100) },
-            { ControllerStickDirection.SouthWest, new Point(-100, -100) }
+            { ControllerStickDirection.NorthEast, new Point(071, 071) },
+            { ControllerStickDirection.SouthEast, new Point(071, -071) },
+            { ControllerStickDirection.NorthWest, new Point(-071, 071) },
+            { ControllerStickDirection.SouthWest, new Point(-071, -071) }
         };
 
+        [Newtonsoft.Json.JsonIgnore]
         public ControllerInputType InputType => ControllerInputType.Stick;
 
         public ControllerStickDirection StickDirection { get; set; }
 
         public ControllerStick Stick { get; set; } = ControllerStick.Left;
 
+        [Newtonsoft.Json.JsonIgnore]
         public Point Position => _pointMap[StickDirection];
 
         public string GetMacro()

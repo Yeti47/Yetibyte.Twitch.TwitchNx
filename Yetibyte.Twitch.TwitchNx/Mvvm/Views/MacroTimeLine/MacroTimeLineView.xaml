@@ -136,6 +136,12 @@
                           Height="30"
                           SelectedItem="{Binding SelectedZoomStep}" />
 
+                <Button Content="Export to Clipboard"
+                        Height="30"
+                        Margin="04"
+                        Command="{Binding ExportToClipboardCommand}"
+                        />
+
             </StackPanel>
             
         </Grid>

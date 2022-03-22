@@ -1,5 +1,6 @@
 ﻿namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros
 {
+    [Serializable]
     public record ControllerButton(string Name, string Macro) : IControllerInput
     {
         public static ControllerButton A { get; } = new ControllerButton("A", "A");
@@ -31,6 +32,7 @@
         public static ControllerButton DpadLeft { get; } = new ControllerButton("D-Pad Left", "DPAD_LEFT");
         public static ControllerButton DpadRight { get; } = new ControllerButton("D-Pad Right", "DPAD_RIGHT");
 
+        [Newtonsoft.Json.JsonIgnore]
         public ControllerInputType InputType => ControllerInputType.Button;
 
         public override string ToString() => Name;

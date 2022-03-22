@@ -9,17 +9,24 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros
     {
         private static readonly CultureInfo SECONDS_FORMAT_CULTURE = new CultureInfo("en-US");
 
+        [Newtonsoft.Json.JsonIgnore]
         public ControllerInputType InputType => ControllerInputType.Stick;
 
         public bool IsCounterClockwise { get; set; }
 
+        [Newtonsoft.Json.JsonProperty]
         public ControllerStick Stick { get; private set; } = ControllerStick.Left;
 
+        [Newtonsoft.Json.JsonProperty]
         public ControllerStickDirection StartDirection { get; private set; }
+
+        [Newtonsoft.Json.JsonProperty]
         public ControllerStickDirection EndDirection { get; private set; }
 
-        public ControllerButton? Button { get; set; }
+        [Newtonsoft.Json.JsonIgnore]
+        public ControllerButton? Button => null;
 
+        [Newtonsoft.Json.JsonIgnore]
         public int StepDelta
         {
             get
@@ -28,7 +35,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros
 
                 if (delta == 0)
                 {
-                    delta = 8;
+                    delta = (int)Enum.GetValues<ControllerStickDirection>().Max() + 1;
                 }
 
                 return delta * (IsCounterClockwise ? -1 : 1);
@@ -36,13 +43,14 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros
 
         }
 
+        [Newtonsoft.Json.JsonIgnore]
         public IEnumerable<ControllerStickDirection> Steps
         {
             get
             {
                 int stepDelta = StepDelta;
 
-                for (int i = 0; i < Math.Abs(stepDelta); i++)
+                for (int i = 0; i <= Math.Abs(stepDelta); i++)
                 {
                     int stepValue = ((int)StartDirection + i * Math.Sign(stepDelta)) % 8;
 
@@ -51,9 +59,11 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros
             }
         }
 
-        public float Seconds { get; set; }
-
+        [Newtonsoft.Json.JsonIgnore]
         public MacroInstructionType InstructionType => MacroInstructionType.Animation;
+
+        [Newtonsoft.Json.JsonIgnore]
+        public ControllerInputType ControllerInputType => ControllerInputType.Stick;
 
         public StickRotationMacroInstruction(ControllerStickDirection startDirection, ControllerStickDirection endDirection, ControllerStick stick = ControllerStick.Left)
         {
@@ -75,40 +85,56 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros
             }
         }
 
+        //public override string ToString()
+        //{
+        //    StringBuilder macroBuilder = new StringBuilder();
+        //    double stepDuration = GetStepDuration();
 
-        public override string ToString()
+        //    int i = 0;
+
+        //    foreach (var stepDirectionInput in this)
+        //    {
+        //        if (i == 0 && Button is not null)
+        //        {
+        //            macroBuilder.Append(Button.GetMacro());
+        //            macroBuilder.Append(" ");
+        //        }
+
+        //        macroBuilder.Append(stepDirectionInput.GetMacro());
+        //        macroBuilder.Append(" ");
+        //        macroBuilder.Append(stepDuration.ToString("F4", SECONDS_FORMAT_CULTURE));
+        //        macroBuilder.Append("s");
+        //        macroBuilder.Append("\n");
+
+        //        i++;
+        //    }
+
+        //    return macroBuilder.ToString();
+        //}
+
+        private double GetStepDuration(TimeSpan totalDuration)
         {
-            StringBuilder macroBuilder = new StringBuilder();
-
-            double stepDuration = Steps.Count() != 0
-                ? Seconds / Steps.Count()
-                : 0;
-
-            int i = 0;
-
-            foreach (var stepDirectionInput in this)
-            {
-                if (i == 0 && Button is not null)
-                {
-                    macroBuilder.Append(Button.GetMacro());
-                    macroBuilder.Append(" ");
-                }
-
-                macroBuilder.Append(stepDirectionInput.GetMacro());
-                macroBuilder.Append(" ");
-                macroBuilder.Append(stepDuration.ToString(".4", SECONDS_FORMAT_CULTURE));
-                macroBuilder.Append("s");
-                macroBuilder.Append("\n");
-
-                i++;
-            }
-
-            return macroBuilder.ToString();
+            return Steps.Count() != 0
+                            ? totalDuration.TotalSeconds / Steps.Count()
+                            : 0;
         }
 
         public IEnumerable<TimeBoxedControllerInput> GetControllerInputs(TimeSpan parentStartTime, TimeSpan parentEndTime)
         {
-            throw new NotImplementedException();
+            double stepDuration = GetStepDuration(parentEndTime - parentStartTime);
+
+            int i = 0;
+
+            foreach(var stepDirectionInput in this)
+            {
+                TimeSpan relativeStartTime = TimeSpan.FromSeconds(i++ * stepDuration);
+                TimeSpan relativeEndTime = relativeStartTime + TimeSpan.FromSeconds(stepDuration);
+
+                TimeSpan absoluteStartTime = parentStartTime + relativeStartTime;
+                TimeSpan absoluteEndTime = absoluteStartTime + TimeSpan.FromSeconds(stepDuration);
+
+                yield return new TimeBoxedControllerInput(stepDirectionInput, relativeStartTime, relativeEndTime, absoluteStartTime, absoluteEndTime);
+            }
         }
     }
 }

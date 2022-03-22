@@ -52,6 +52,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
         private readonly RelayCommand _zoomOutCommand;
         private readonly RelayCommand _deselectAllCommand;
         private readonly RelayCommand _deleteSelectedElementsCommand;
+        private readonly RelayCommand _exportToClipboardCommand;
         
         private readonly Macro _macro;
 
@@ -135,6 +136,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
         public ICommand ZoomOutCommand => _zoomOutCommand;
         public ICommand DeselectAllCommand => _deselectAllCommand;
         public ICommand DeleteSelectedElementsCommand => _deleteSelectedElementsCommand;
+        public ICommand ExportToClipboardCommand => _exportToClipboardCommand;
 
         public MacroTimeLineViewModel(Macro macro)
         {
@@ -159,8 +161,21 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
             {
                 MacroTimeTrackViewModel trackVm = new MacroTimeTrackViewModel(this);
                 _tracks.Add(trackVm);
-            }         
-     
+            }
+
+            _exportToClipboardCommand = new RelayCommand(ExecuteExportToClipboardCommand, CanExecuteExportToClipboardCommand);
+
+
+        }
+
+        private bool CanExecuteExportToClipboardCommand()
+        {
+            return true;
+        }
+
+        private void ExecuteExportToClipboardCommand()
+        {
+            ExportToClipboard();
         }
 
         private void ExecuteDeleteSelectedElementsCommand()
@@ -242,6 +257,53 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 
             foreach (var track in _tracks)
                 track.NotifyUnitsPerSecondChanged();
+        }
+
+        private void PopulateMacro(Macro macro)
+        {
+            foreach (var timeTackVm in _tracks)
+            {
+                MacroTimeTrack macroTimeTrack = macro.AddNewTimeTrack();
+
+                foreach (var timeTrackElementVm in timeTackVm.Elements)
+                {
+                    IMacroInstruction macroInstruction = timeTrackElementVm.InstructionTemplateViewModel.CreateMacroInstruction();
+
+                    MacroTimeTrackElement macroTimeTrackElement = new MacroTimeTrackElement(
+                        timeTrackElementVm.Id,
+                        timeTrackElementVm.StartTime,
+                        timeTrackElementVm.EndTime,
+                        macroInstruction
+                    );
+
+                    macroTimeTrack.Add(macroTimeTrackElement);
+                }
+            }
+        }
+
+        public void ApplyChanges()
+        {
+            PopulateMacro(_macro);
+        }
+
+        public string BuildMacroString()
+        {
+            Macro macro = new Macro();
+
+            PopulateMacro(macro);
+
+            string macroString = macro.Build();
+
+            return macroString;
+        }
+
+        public string ExportToClipboard()
+        {
+            string macroString = BuildMacroString();
+
+            System.Windows.Clipboard.SetText(macroString);
+
+            return macroString;
         }
 
     }

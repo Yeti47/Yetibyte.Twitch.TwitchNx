@@ -4,7 +4,9 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros
 {
     public class MacroTimeTrack : IList<MacroTimeTrackElement>
     {
-        private readonly List<MacroTimeTrackElement> _elements = new List<MacroTimeTrackElement>();
+        [Newtonsoft.Json.JsonProperty("Elements")]
+        private List<MacroTimeTrackElement> _elements = new List<MacroTimeTrackElement>();
+
 
         #region IList implementation
 

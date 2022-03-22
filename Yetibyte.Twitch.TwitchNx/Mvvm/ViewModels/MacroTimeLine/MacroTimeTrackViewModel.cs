@@ -160,7 +160,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
             {
                 MacroTimeTrackElementViewModel macroTimeTrackElementViewModel = new MacroTimeTrackElementViewModel(
                     //macroToolBoxItemViewModel.MacroInstructionTemplateViewModel.Clone()
-                    macroToolBoxItemViewModel.MacroInstructionTemplateViewModel
+                    macroToolBoxItemViewModel.MacroInstructionTemplateViewModel,
+                    Guid.NewGuid().ToString()
                 );
 
                 _timeLineViewModel.DeselectAllCommand.Execute(null);

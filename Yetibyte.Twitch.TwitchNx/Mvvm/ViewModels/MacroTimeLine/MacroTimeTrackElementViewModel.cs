@@ -112,9 +112,12 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
             }
         }
 
-        public MacroTimeTrackElementViewModel(MacroInstructionTemplateViewModel instructionTemplateViewModel)
+        public string Id { get; }
+
+        public MacroTimeTrackElementViewModel(MacroInstructionTemplateViewModel instructionTemplateViewModel, string id)
         {
             _instructionTemplateViewModel = instructionTemplateViewModel;
+            Id = id;
 
             //if (!_timeTrack.ContainsElement(this))
             //{

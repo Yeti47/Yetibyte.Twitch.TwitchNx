@@ -2,13 +2,16 @@
 {
     public class MacroTimeTrackElement
     {
+        [Newtonsoft.Json.JsonProperty]
         public string Id { get; private set; }
 
+        [Newtonsoft.Json.JsonIgnore]
         public TimeSpan Duration => EndTime - StartTime;
 
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
 
+        [Newtonsoft.Json.JsonProperty]
         public IMacroInstruction Instruction { get; private set; }
 
         public MacroTimeTrackElement(string id, TimeSpan startTime, TimeSpan endTime, IMacroInstruction instruction)
@@ -23,9 +26,11 @@
 
         public TimeBoxedControllerInput Slice(TimeSpan relativeStartTime, TimeSpan relativeEndTime)
         {
-            TimeBoxedControllerInput sourceInput = GetControllerInputs()
+            IEnumerable<TimeBoxedControllerInput> controllerInputs = GetControllerInputs();
+
+            TimeBoxedControllerInput sourceInput = controllerInputs
                 .OrderBy(ti => ti.StartTime)
-                .First(ti => ti.StartTime <= relativeStartTime);
+                .Last(ti => ti.StartTime <= relativeStartTime);
 
             TimeBoxedControllerInput slicedInput = new TimeBoxedControllerInput(
                 sourceInput.ControllerInput,

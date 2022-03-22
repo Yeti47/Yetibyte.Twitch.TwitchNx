@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros
 {
+    [Serializable]
     public record TimeBoxedControllerInput(
         IControllerInput ControllerInput,  
         TimeSpan StartTime,

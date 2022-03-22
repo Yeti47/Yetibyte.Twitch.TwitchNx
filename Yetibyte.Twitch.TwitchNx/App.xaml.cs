@@ -43,7 +43,7 @@ namespace Yetibyte.Twitch.TwitchNx
                             BUTTON_FRAME_DURATION_SHORT
                         ),
                         MacroInstructionType.Simple,
-                        () => null
+                        () => new ButtonPressMacroInstruction(ControllerButton.A)
                     ),
                     new MacroInstructionTemplateViewModel(
                         MacroInstructionTemplateViewModel.BuildSimpleButtonAnimation(
@@ -53,7 +53,7 @@ namespace Yetibyte.Twitch.TwitchNx
                             BUTTON_FRAME_DURATION_SHORT
                         ),
                         MacroInstructionType.Simple,
-                        () => null
+                        () => new ButtonPressMacroInstruction(ControllerButton.B)
                     ),
                     new MacroInstructionTemplateViewModel(
                         MacroInstructionTemplateViewModel.BuildSimpleButtonAnimation(
@@ -63,7 +63,7 @@ namespace Yetibyte.Twitch.TwitchNx
                             BUTTON_FRAME_DURATION_SHORT
                         ),
                         MacroInstructionType.Simple,
-                        () => null
+                        () => new ButtonPressMacroInstruction(ControllerButton.X)
                     ),
                     new MacroInstructionTemplateViewModel(
                         MacroInstructionTemplateViewModel.BuildSimpleButtonAnimation(
@@ -73,7 +73,7 @@ namespace Yetibyte.Twitch.TwitchNx
                             BUTTON_FRAME_DURATION_SHORT
                         ),
                         MacroInstructionType.Simple,
-                        () => null
+                        () => new ButtonPressMacroInstruction(ControllerButton.Y)
                     ),
                     new MacroInstructionTemplateViewModel(
                         MacroInstructionTemplateViewModel.BuildSimpleButtonAnimation(
@@ -83,7 +83,7 @@ namespace Yetibyte.Twitch.TwitchNx
                             BUTTON_FRAME_DURATION_SHORT
                         ),
                         MacroInstructionType.Simple,
-                        () => null
+                        () => new ButtonPressMacroInstruction(ControllerButton.Minus)
                     ),
                     new MacroInstructionTemplateViewModel(
                         MacroInstructionTemplateViewModel.BuildSimpleButtonAnimation(
@@ -93,7 +93,7 @@ namespace Yetibyte.Twitch.TwitchNx
                             BUTTON_FRAME_DURATION_SHORT
                         ),
                         MacroInstructionType.Simple,
-                        () => null
+                        () => new ButtonPressMacroInstruction(ControllerButton.Plus)
                     ),
                     //// --------------------------------------
                     new MacroInstructionTemplateViewModel(
@@ -104,7 +104,11 @@ namespace Yetibyte.Twitch.TwitchNx
                             0.04f
                         ),
                         MacroInstructionType.Animation,
-                        () => null,
+                        () => new StickRotationMacroInstruction(
+                            Core.CommandModel.ControllerStickDirection.North, 
+                            Core.CommandModel.ControllerStickDirection.North, 
+                            Core.CommandModel.ControllerStick.Right
+                        ),
                         "Images/Macros/stick_R/Joy_R_PreView.png"
                     )
                 };
