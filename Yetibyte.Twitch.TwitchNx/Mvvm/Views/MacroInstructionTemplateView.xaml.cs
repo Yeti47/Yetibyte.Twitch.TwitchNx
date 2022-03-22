@@ -39,6 +39,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.Views
                     int i = 0;
 
                     imageSourceAnimation.KeyFrames.Clear();
+                    imageSourceAnimation.Duration = new Duration(TimeSpan.FromSeconds(newVm.AnimationDuration));
 
                     foreach (var animationFrame in newVm.AnimationFrames)
                     {
@@ -55,7 +56,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.Views
                         imageSourceAnimation.KeyFrames.Add(new DiscreteObjectKeyFrame()
                             {
                                 Value = image,
-                                KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromSeconds(newVm.AnimationFrames.Take(i).Sum(f => f.Duration)))                      
+                                KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromSeconds(newVm.AnimationFrames.Take(i).Sum(f => f.Duration)))   
                             }
                         );
 

@@ -28,6 +28,8 @@
     <None Remove="Images\Macros\btn_Home\Home_2.png" />
     <None Remove="Images\Macros\btn_Home\Home_3.png" />
     <None Remove="Images\Macros\btn_Home\Home_4.png" />
+    <None Remove="Images\Macros\btn_L\L_1.png" />
+    <None Remove="Images\Macros\btn_L\L_2.png" />
     <None Remove="Images\Macros\btn_Minus\Minus_1.png" />
     <None Remove="Images\Macros\btn_Minus\Minus_2.png" />
     <None Remove="Images\Macros\btn_Minus\Minus_3.png" />
@@ -36,6 +38,8 @@
     <None Remove="Images\Macros\btn_Plus\Plus_2.png" />
     <None Remove="Images\Macros\btn_Plus\Plus_3.png" />
     <None Remove="Images\Macros\btn_Plus\Plus_4.png" />
+    <None Remove="Images\Macros\btn_R\R_1.png" />
+    <None Remove="Images\Macros\btn_R\R_2.png" />
     <None Remove="Images\Macros\btn_X\X_1.png" />
     <None Remove="Images\Macros\btn_X\X_2.png" />
     <None Remove="Images\Macros\btn_X\X_3.png" />
@@ -44,6 +48,15 @@
     <None Remove="Images\Macros\btn_Y\Y_2.png" />
     <None Remove="Images\Macros\btn_Y\Y_3.png" />
     <None Remove="Images\Macros\btn_Y\Y_4.png" />
+    <None Remove="Images\Macros\btn_ZL\ZL_1.png" />
+    <None Remove="Images\Macros\btn_ZL\ZL_2.png" />
+    <None Remove="Images\Macros\btn_ZR\ZR_1.png" />
+    <None Remove="Images\Macros\btn_ZR\ZR_2.png" />
+    <None Remove="Images\Macros\dpad\Dpad_1.png" />
+    <None Remove="Images\Macros\dpad\Dpad_2.png" />
+    <None Remove="Images\Macros\dpad\Dpad_3.png" />
+    <None Remove="Images\Macros\dpad\Dpad_4.png" />
+    <None Remove="Images\Macros\dpad\Dpad_5.png" />
     <None Remove="Images\Macros\stick_L\Joy_L00.png" />
     <None Remove="Images\Macros\stick_L\Joy_L01.png" />
     <None Remove="Images\Macros\stick_L\Joy_L02.png" />
@@ -257,6 +270,12 @@
     <Content Include="Images\Macros\btn_Home\Home_4.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Macros\btn_L\L_1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_L\L_2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\Macros\btn_Minus\Minus_1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -281,6 +300,12 @@
     <Content Include="Images\Macros\btn_Plus\Plus_4.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Macros\btn_R\R_1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_R\R_2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\Macros\btn_X\X_1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -303,6 +328,33 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Macros\btn_Y\Y_4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_ZL\ZL_1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_ZL\ZL_2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_ZR\ZR_1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\btn_ZR\ZR_2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\dpad\Dpad_1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\dpad\Dpad_2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\dpad\Dpad_3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\dpad\Dpad_4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Macros\dpad\Dpad_5.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Macros\stick_L\Joy_L00.png">

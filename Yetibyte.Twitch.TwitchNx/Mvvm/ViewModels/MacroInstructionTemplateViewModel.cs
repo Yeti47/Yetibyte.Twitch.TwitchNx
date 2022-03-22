@@ -15,6 +15,13 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         private readonly string _defaultImagePath;
         private bool _isAnimationPlaying;
         private string _imagePath = string.Empty;
+        private string _toolTip = string.Empty;
+
+        public string ToolTip
+        {
+            get { return _toolTip; }
+            set { _toolTip = value; OnPropertyChanged(); }
+        }
 
         public double AnimationDuration => _animationFrames.Sum(f => f.Duration);
 

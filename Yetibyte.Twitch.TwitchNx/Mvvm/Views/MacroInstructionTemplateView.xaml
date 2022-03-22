@@ -14,7 +14,8 @@
         <db:MinPercentageMultiConveter x:Key="MinPercentageMultiConveter" />
     </UserControl.Resources>
     <Grid MouseEnter="Grid_MouseEnter"
-          MouseLeave="Grid_MouseLeave">
+          MouseLeave="Grid_MouseLeave"
+          ToolTip="{Binding ToolTip}">
         <Image x:Name="imgIconStatic"
                Source="{Binding InitialImagePath, Mode=OneWay}" >
             <Image.Width>
