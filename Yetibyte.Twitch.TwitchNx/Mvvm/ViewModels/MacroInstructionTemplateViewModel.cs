@@ -71,29 +71,5 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             return clone;
         }
 
-        public static IEnumerable<AnimationFrame> BuildSimpleButtonAnimation(string basePath, string button, float longDuration, float shortDuration)
-        {
-            for(int i = 1; i <= 4; i++)
-            {
-                yield return new AnimationFrame($"{basePath}btn_{button}/{button}_{i}.png", i <= 1 ? longDuration : shortDuration);
-            }
-        }
-
-        public static IEnumerable<AnimationFrame> BuildFullCircleAnimation(string stickImagePath, string stick, float longDuration, float shortDuration)
-        {
-            for(int i = 0; i < 30; i++)
-            {
-                int frameIndex = i < 3 ? i : (3 + (i - 3) * 3);
-
-                if (i >= 27)
-                {
-                    frameIndex = 3 - (i - 27);
-                }
-
-                float duration = i <= 0 ? longDuration : shortDuration;
-                yield return new AnimationFrame($"{stickImagePath}{stick}/Joy_{stick}{frameIndex.ToString("00")}.png", duration);
-            }
-        }
-
     }
 }
