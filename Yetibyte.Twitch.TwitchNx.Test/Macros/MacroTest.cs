@@ -25,10 +25,10 @@ namespace Yetibyte.Twitch.TwitchNx.Test.Macros
             {
                 MacroTimeTrack timeTrack = macro.AddNewTimeTrack();
 
-                timeTrack.Add(new MacroTimeTrackElement($"T{i}E1", TimeSpan.Zero, TimeSpan.FromSeconds(1.5), new ButtonPressMacroInstruction(ControllerButton.X)));
-                timeTrack.Add(new MacroTimeTrackElement($"T{i}E2", TimeSpan.FromSeconds(1.5), TimeSpan.FromSeconds(2), new ButtonPressMacroInstruction(ControllerButton.Y)));
-                timeTrack.Add(new MacroTimeTrackElement($"T{i}E3", TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(4.25), new StickRotationMacroInstruction(ControllerStickDirection.North, ControllerStickDirection.South, ControllerStick.Right)));
-                timeTrack.Add(new MacroTimeTrackElement($"T{i}E4", TimeSpan.FromSeconds(4.25), TimeSpan.FromSeconds(6), new StickRotationMacroInstruction(ControllerStickDirection.East, ControllerStickDirection.East, ControllerStick.Left)));
+                timeTrack.Add(new MacroTimeTrackElement($"T{i}E0", TimeSpan.Zero, TimeSpan.FromSeconds(1.5), new ButtonPressMacroInstruction(ControllerButton.X)));
+                timeTrack.Add(new MacroTimeTrackElement($"T{i}E1", TimeSpan.FromSeconds(1.5), TimeSpan.FromSeconds(2), new ButtonPressMacroInstruction(ControllerButton.Y)));
+                timeTrack.Add(new MacroTimeTrackElement($"T{i}E2", TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(4.25), new StickRotationMacroInstruction(ControllerStickDirection.North, ControllerStickDirection.South, ControllerStick.Right)));
+                timeTrack.Add(new MacroTimeTrackElement($"T{i}E3", TimeSpan.FromSeconds(4.25), TimeSpan.FromSeconds(6), new StickRotationMacroInstruction(ControllerStickDirection.East, ControllerStickDirection.East, ControllerStick.Left)));
                 timeTrack.Add(new MacroTimeTrackElement($"T{i}E4", TimeSpan.FromSeconds(7), TimeSpan.FromSeconds(8), new FixedStickDirectionMacroInstruction(new FixedStickDirectionInput { Stick = ControllerStick.Right, StickDirection = ControllerStickDirection.West })));
             
             }
