@@ -15,6 +15,9 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros
         public bool IsCounterClockwise { get; set; }
 
         [Newtonsoft.Json.JsonProperty]
+        ControllerStick? IMacroInstruction.Stick => this.Stick;
+
+        [Newtonsoft.Json.JsonProperty]
         public ControllerStick Stick { get; private set; } = ControllerStick.Left;
 
         [Newtonsoft.Json.JsonProperty]

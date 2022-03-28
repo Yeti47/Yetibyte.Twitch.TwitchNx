@@ -12,7 +12,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros
 
         ControllerInputType ControllerInputType { get; }
 
-        ControllerStick Stick { get; }
+        ControllerStick? Stick { get; }
         ControllerButton? Button { get; }
 
         IEnumerable<TimeBoxedControllerInput> GetControllerInputs(TimeSpan parentStartTime, TimeSpan parentEndTime);

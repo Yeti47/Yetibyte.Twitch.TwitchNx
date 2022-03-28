@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Newtonsoft.Json;
+using Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros;
 
 namespace Yetibyte.Twitch.TwitchNx.Core.ProjectManagement
 {

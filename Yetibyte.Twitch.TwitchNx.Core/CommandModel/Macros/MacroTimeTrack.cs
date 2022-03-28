@@ -2,6 +2,7 @@
 
 namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros
 {
+    [Serializable]
     public class MacroTimeTrack : IList<MacroTimeTrackElement>
     {
         [Newtonsoft.Json.JsonProperty("Elements")]
@@ -10,13 +11,16 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros
 
         #region IList implementation
 
+        [Newtonsoft.Json.JsonIgnore]
         public MacroTimeTrackElement this[int index] { 
             get => ((IList<MacroTimeTrackElement>)_elements)[index]; 
             set => ((IList<MacroTimeTrackElement>)_elements)[index] = value; 
         }
 
+        [Newtonsoft.Json.JsonIgnore]
         public int Count => ((ICollection<MacroTimeTrackElement>)_elements).Count;
 
+        [Newtonsoft.Json.JsonIgnore]
         public bool IsReadOnly => false;
 
         public void Add(MacroTimeTrackElement item)
@@ -70,5 +74,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros
         }
 
         #endregion
+
+        public TimeSpan GetTotalDuration() => !_elements.Any() ? TimeSpan.Zero : _elements.Max(e => e.EndTime);
     }
 }

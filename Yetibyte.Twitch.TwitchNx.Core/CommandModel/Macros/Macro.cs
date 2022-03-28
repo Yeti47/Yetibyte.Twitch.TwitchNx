@@ -18,7 +18,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros
         private List<MacroTimeTrack> _timeTracks = new List<MacroTimeTrack>();
 
         [Newtonsoft.Json.JsonIgnore]
-        public double TotalSeconds => throw new NotImplementedException();
+        public double TotalSeconds => !_timeTracks.Any() ? 0 : _timeTracks.Max(t => t.GetTotalDuration().TotalSeconds);
 
         [Newtonsoft.Json.JsonIgnore]
         public IEnumerable<MacroTimeTrack> TimeTracks => new ReadOnlyCollection<MacroTimeTrack>(_timeTracks);

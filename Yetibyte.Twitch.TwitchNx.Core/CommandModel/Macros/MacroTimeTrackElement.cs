@@ -1,5 +1,6 @@
 ﻿namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros
 {
+    [Serializable]
     public class MacroTimeTrackElement
     {
         [Newtonsoft.Json.JsonProperty]
@@ -11,7 +12,7 @@
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
 
-        [Newtonsoft.Json.JsonProperty]
+        [Newtonsoft.Json.JsonProperty(TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects)]
         public IMacroInstruction Instruction { get; private set; }
 
         public MacroTimeTrackElement(string id, TimeSpan startTime, TimeSpan endTime, IMacroInstruction instruction)

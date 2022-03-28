@@ -13,7 +13,7 @@
         public ControllerInputType ControllerInputType => ControllerInputType.Button;
 
         [Newtonsoft.Json.JsonIgnore]
-        public ControllerStick Stick => ControllerStick.Left;
+        public ControllerStick? Stick => null;
 
         [Newtonsoft.Json.JsonIgnore]
         public ControllerButton? Button => _controllerButton;
