@@ -9,7 +9,7 @@ using Yetibyte.Twitch.TwitchNx.Core.ProjectManagement;
 using Yetibyte.Twitch.TwitchNx.Core.SwitchBridge;
 using Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels;
 using Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros;
-using Yetibyte.Twitch.TwitchNx.Util;
+using Yetibyte.Twitch.TwitchNx.Services;
 
 namespace Yetibyte.Twitch.TwitchNx
 {
@@ -18,8 +18,6 @@ namespace Yetibyte.Twitch.TwitchNx
     /// </summary>
     public partial class App : Application
     {
-
-
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -29,7 +27,11 @@ namespace Yetibyte.Twitch.TwitchNx
 
             IProjectManager projectManager = new ProjectManager();
 
-            var mainWindow = new MainWindow(projectManager, switchConnector, MacroInstructionTemplateHelper.CreateMacroInstructionTemplateViewModels);
+            IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade = new MacroInstructionTemplateFactoryFacade();
+
+            IMacroInstructionTemplateProvider macroInstructionTemplateProvider = new DefaultMacroInstructionTemplateProvider(macroInstructionTemplateFactoryFacade);
+
+            var mainWindow = new MainWindow(projectManager, switchConnector, macroInstructionTemplateProvider, macroInstructionTemplateFactoryFacade);
 
             this.MainWindow = mainWindow;
             this.MainWindow.Show();

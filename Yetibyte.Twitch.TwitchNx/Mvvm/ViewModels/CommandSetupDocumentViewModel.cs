@@ -9,6 +9,7 @@ using Yetibyte.Twitch.TwitchNx.Core.CommandModel;
 using Yetibyte.Twitch.TwitchNx.Mvvm.Models;
 using Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.Layout;
 using Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine;
+using Yetibyte.Twitch.TwitchNx.Services;
 
 namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 {
@@ -92,14 +93,14 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         public MacroTimeLineViewModel MacroTimeLineViewModel { get; private set; }
 
-        public CommandSetupDocumentViewModel(IDocumentManager documentManager, CommandSetup commandSetup) : base(documentManager)
+        public CommandSetupDocumentViewModel(IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, IDocumentManager documentManager, CommandSetup commandSetup) : base(documentManager)
         {
             _commandSetup = commandSetup;
             _commandName = commandSetup.Name;
             _description = commandSetup.Description;
             _permissionLevel = commandSetup.PermissionLevel;
 
-            MacroTimeLineViewModel = new MacroTimeLineViewModel(commandSetup.Macro);
+            MacroTimeLineViewModel = new MacroTimeLineViewModel(macroInstructionTemplateFactoryFacade, commandSetup.Macro);
 
             Title = _commandName;
 
@@ -121,6 +122,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             _commandSetup.Name = _commandName.Trim();
             _commandSetup.Description = _description.Trim();
             _commandSetup.PermissionLevel = _permissionLevel;
+
+            MacroTimeLineViewModel.ApplyChanges();
 
             IsDirty = false;
 

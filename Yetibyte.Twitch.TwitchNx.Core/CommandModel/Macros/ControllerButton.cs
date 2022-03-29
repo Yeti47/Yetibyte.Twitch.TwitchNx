@@ -19,8 +19,8 @@
         public static ControllerButton Home { get; } = new ControllerButton("Home", "Home");
         public static ControllerButton Capture { get; } = new ControllerButton("Capture", "CAPTURE");
 
-        public static ControllerButton RightStickPress { get; } = new ControllerButton("Right Stick Press", "R_STICK_PRESS");
-        public static ControllerButton LeftStickPress { get; } = new ControllerButton("Left Stick Press", "L_STICK_PRESS");
+        public static ControllerButton RightStickPress { get; } = new ControllerButton("Right Stick", "R_STICK_PRESS");
+        public static ControllerButton LeftStickPress { get; } = new ControllerButton("Left Stick", "L_STICK_PRESS");
 
         public static ControllerButton JoyConLeftSr { get; } = new ControllerButton("JoyCon Left SR", "JCL_SR");
         public static ControllerButton JoyConRightSr { get; } = new ControllerButton("JoyCon Right SR", "JCR_SR");
@@ -32,11 +32,21 @@
         public static ControllerButton DpadLeft { get; } = new ControllerButton("D-Pad Left", "DPAD_LEFT");
         public static ControllerButton DpadRight { get; } = new ControllerButton("D-Pad Right", "DPAD_RIGHT");
 
+        private static ControllerButton[] Triggers = new[] { L, R, ZL, ZR, JoyConLeftSl, JoyConLeftSr, JoyConRightSl, JoyConRightSr };
+
         [Newtonsoft.Json.JsonIgnore]
         public ControllerInputType InputType => ControllerInputType.Button;
+
+        [Newtonsoft.Json.JsonIgnore]
+        public bool IsDpad => this == DpadUp || this == DpadDown || this == DpadLeft || this == DpadRight;
+
+        [Newtonsoft.Json.JsonIgnore]
+        public bool IsTrigger => Triggers.Contains(this);
 
         public override string ToString() => Name;
 
         public string GetMacro() => Macro;
+
+        
     }
 }

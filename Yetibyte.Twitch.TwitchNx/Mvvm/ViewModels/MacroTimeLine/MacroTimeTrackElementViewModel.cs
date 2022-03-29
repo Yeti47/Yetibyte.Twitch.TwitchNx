@@ -86,8 +86,6 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 
         public bool IsDraggable { get; set; } = true;
 
-        public string Name { get; set; } = "Henlo";
-
         public float UnitsPerSecond => _timeTrack?.UnitsPerSecond ?? MacroTimeLineViewModel.DEFAULT_UNITS_PER_SECOND;
 
 
@@ -118,11 +116,6 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
         {
             _instructionTemplateViewModel = instructionTemplateViewModel;
             Id = id;
-
-            //if (!_timeTrack.ContainsElement(this))
-            //{
-            //    _timeTrack.AddElement(this);
-            //}
 
             _deleteCommand = new RelayCommand(() => this.TimeTrack = null);
             _selectCommand = new RelayCommand(() => this.IsSelected = true);

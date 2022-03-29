@@ -16,7 +16,10 @@
         public ControllerStick? Stick => null;
 
         [Newtonsoft.Json.JsonIgnore]
-        public ControllerButton? Button => _controllerButton;
+        ControllerButton? IMacroInstruction.Button => _controllerButton;
+
+        [Newtonsoft.Json.JsonIgnore]
+        public ControllerButton Button => _controllerButton;
 
         private ButtonPressMacroInstruction()
         {

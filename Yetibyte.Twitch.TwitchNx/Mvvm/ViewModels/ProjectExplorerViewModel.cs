@@ -12,6 +12,7 @@ using Yetibyte.Twitch.TwitchNx.Core.Common;
 using Yetibyte.Twitch.TwitchNx.Core.ProjectManagement;
 using Yetibyte.Twitch.TwitchNx.Mvvm.Models;
 using Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.Layout;
+using Yetibyte.Twitch.TwitchNx.Services;
 using Yetibyte.Twitch.TwitchNx.Styling;
 
 namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
@@ -48,7 +49,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
             public CommandSetup CommandSetup => _commandSetup;
 
-            public CommandViewModel(IDocumentManager documentManager, CommandSetup commandSetup)
+            public CommandViewModel(IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, IDocumentManager documentManager, CommandSetup commandSetup)
             {
                 _documentManager = documentManager;
                 _commandSetup = commandSetup;
@@ -59,7 +60,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
                 {
                     if (!_documentManager.IsDocumentOpen(typeof(CommandSetup), _commandSetup.Name))
                     {
-                        _documentManager.OpenDocument(new CommandSetupDocumentViewModel(_documentManager, _commandSetup));
+                        _documentManager.OpenDocument(new CommandSetupDocumentViewModel(macroInstructionTemplateFactoryFacade, _documentManager, _commandSetup));
                     }
                     _documentManager.TrySelect(typeof(CommandSetup), _commandSetup.Name);
                 });
@@ -69,7 +70,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         private readonly ObservableCollection<CommandViewModel> _commands = new ObservableCollection<CommandViewModel>();
         private readonly ObservableCollection<CooldownGroupViewModel> _cooldownGroups = new ObservableCollection<CooldownGroupViewModel>();
         private readonly RelayCommand _newCommandSetupCommand;
-        
+        private readonly IMacroInstructionTemplateFactoryFacade _macroInstructionTemplateFactoryFacade;
         private readonly IProjectManager _projectManager;
         private readonly IDocumentManager _documentManager;
         private CommandViewModel? _selectedCommand;
@@ -92,8 +93,9 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         public IEnumerable<CommandViewModel> Commands => _commands;
         public IEnumerable<CooldownGroupViewModel> CooldownGroups => _cooldownGroups;
 
-        public ProjectExplorerViewModel(IProjectManager projectManager, IDocumentManager documentManager) : base("Project Explorer")
+        public ProjectExplorerViewModel(IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, IProjectManager projectManager, IDocumentManager documentManager) : base("Project Explorer")
         {
+            _macroInstructionTemplateFactoryFacade = macroInstructionTemplateFactoryFacade;
             _projectManager = projectManager;
             _documentManager = documentManager;
             _projectManager.ProjectChanging += ProjectManager_ProjectChanging;
@@ -194,7 +196,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         private void CommandSettings_CommandSetupAdded(object? sender, Core.CommandModel.CommandSetupAddedEventArgs e)
         {
-            _commands.Add(new CommandViewModel(_documentManager, e.CommandSetup));
+            _commands.Add(new CommandViewModel(_macroInstructionTemplateFactoryFacade, _documentManager, e.CommandSetup));
 
         }
 
@@ -217,7 +219,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             _commands.Clear(); 
             _cooldownGroups.Clear(); 
 
-            foreach(var commandVm in _projectManager.CurrentProject.CommandSettings.CommandSetups.Select(cs => new CommandViewModel(_documentManager, cs)))
+            foreach(var commandVm in _projectManager.CurrentProject.CommandSettings.CommandSetups.Select(cs => new CommandViewModel(_macroInstructionTemplateFactoryFacade, _documentManager, cs)))
             {
                 _commands.Add(commandVm);
 

@@ -18,6 +18,7 @@ using Yetibyte.Twitch.TwitchNx.Core.ProjectManagement;
 using Yetibyte.Twitch.TwitchNx.Core.SwitchBridge;
 using Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels;
 using Yetibyte.Twitch.TwitchNx.Mvvm.Views;
+using Yetibyte.Twitch.TwitchNx.Services;
 
 namespace Yetibyte.Twitch.TwitchNx
 {
@@ -32,11 +33,11 @@ namespace Yetibyte.Twitch.TwitchNx
 
         public MainViewModel ViewModel { get; private set; }
 
-        public MainWindow(IProjectManager projectManager, SwitchConnector switchConnector, Func<IEnumerable<MacroInstructionTemplateViewModel>> macroInstructionTemplateFactory)
+        public MainWindow(IProjectManager projectManager, SwitchConnector switchConnector, IMacroInstructionTemplateProvider macroInstructionTemplateProvider, IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade)
         {
             InitializeComponent();
 
-            DataContext = ViewModel = new MainViewModel(projectManager, switchConnector, macroInstructionTemplateFactory);
+            DataContext = ViewModel = new MainViewModel(macroInstructionTemplateFactoryFacade, projectManager, switchConnector, macroInstructionTemplateProvider);
             _projectManager = projectManager;
         }
 

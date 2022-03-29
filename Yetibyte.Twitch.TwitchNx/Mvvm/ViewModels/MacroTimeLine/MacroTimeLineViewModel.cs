@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros;
+using Yetibyte.Twitch.TwitchNx.Services;
 
 namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 {
@@ -53,7 +54,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
         private readonly RelayCommand _deselectAllCommand;
         private readonly RelayCommand _deleteSelectedElementsCommand;
         private readonly RelayCommand _exportToClipboardCommand;
-        
+        private readonly IMacroInstructionTemplateFactoryFacade _macroInstructionTemplateFactoryFacade;
         private readonly Macro _macro;
 
         private ZoomLevels _zoomlevel = ZoomLevels.Percent100;
@@ -138,8 +139,9 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
         public ICommand DeleteSelectedElementsCommand => _deleteSelectedElementsCommand;
         public ICommand ExportToClipboardCommand => _exportToClipboardCommand;
 
-        public MacroTimeLineViewModel(Macro macro)
+        public MacroTimeLineViewModel(IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, Macro macro)
         {
+            _macroInstructionTemplateFactoryFacade = macroInstructionTemplateFactoryFacade;
             _macro = macro;
             _zoomlevel = ZoomLevels.Percent100;
 
@@ -157,15 +159,47 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 
             TargetDuration = TimeSpan.FromSeconds(DEFAULT_DURATION_SECONDS);
 
-            for(int i = 0; i < TRACK_COUNT; i++)
-            {
-                MacroTimeTrackViewModel trackVm = new MacroTimeTrackViewModel(this);
-                _tracks.Add(trackVm);
-            }
+            InitializeTimeLine();
 
             _exportToClipboardCommand = new RelayCommand(ExecuteExportToClipboardCommand, CanExecuteExportToClipboardCommand);
+        }
 
+        private void InitializeTimeLine()
+        {
+            for (int i = 0; i < TRACK_COUNT; i++)
+            {
+                if (_macro.TimeTrackCount > i)
+                {
+                    AddTrackFromModel(_macro.TimeTracks.ElementAt(i));
+                }
+                else
+                {
+                    MacroTimeTrackViewModel trackVm = new MacroTimeTrackViewModel(this);
+                    _tracks.Add(trackVm);
+                }
 
+            }
+        }
+
+        private MacroTimeTrackViewModel AddTrackFromModel(MacroTimeTrack macroTimeTrack)
+        {
+            MacroTimeTrackViewModel timeTrackViewModel = new MacroTimeTrackViewModel(this);
+
+            _tracks.Add(timeTrackViewModel);
+
+            foreach (var trackElement in macroTimeTrack)
+            {
+                MacroInstructionTemplateViewModel macroInstructionTemplateViewModel = _macroInstructionTemplateFactoryFacade.CreateFor(trackElement.Instruction);
+
+                MacroTimeTrackElementViewModel trackElementViewModel = new MacroTimeTrackElementViewModel(macroInstructionTemplateViewModel, trackElement.Id);
+                
+                timeTrackViewModel.AddElement(trackElementViewModel);
+
+                trackElementViewModel.StartTime = trackElement.StartTime;
+                trackElementViewModel.Duration = trackElement.Duration;
+            }
+
+            return timeTrackViewModel;
         }
 
         private bool CanExecuteExportToClipboardCommand()
@@ -261,6 +295,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 
         private void PopulateMacro(Macro macro)
         {
+            macro.Clear();
+
             foreach (var timeTackVm in _tracks)
             {
                 MacroTimeTrack macroTimeTrack = macro.AddNewTimeTrack();

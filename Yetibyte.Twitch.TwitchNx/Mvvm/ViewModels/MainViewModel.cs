@@ -12,6 +12,7 @@ using System.Windows.Input;
 using Yetibyte.Twitch.TwitchNx.Core.ProjectManagement;
 using Yetibyte.Twitch.TwitchNx.Core.SwitchBridge;
 using Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.Layout;
+using Yetibyte.Twitch.TwitchNx.Services;
 
 namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 {
@@ -60,7 +61,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             }
         }
 
-        public MainViewModel(IProjectManager projectManager, SwitchConnector switchConnector, Func<IEnumerable<MacroInstructionTemplateViewModel>> macroInstructionTemplateFactory)
+        public MainViewModel(IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, IProjectManager projectManager, SwitchConnector switchConnector, IMacroInstructionTemplateProvider macroInstructionTemplateProvider)
         {
             _projectManager = projectManager;
             _switchConnector = switchConnector;
@@ -69,10 +70,10 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
             DocumentManagerViewModel = new DocumentManagerViewModel();
             SwitchControlViewModel = new SwitchControlViewModel(switchConnector);
-            ProjectExplorerViewModel = new ProjectExplorerViewModel(projectManager, DocumentManagerViewModel);
+            ProjectExplorerViewModel = new ProjectExplorerViewModel(macroInstructionTemplateFactoryFacade, projectManager, DocumentManagerViewModel);
             MacroTesterViewModel = new MacroTesterViewModel(switchConnector, SwitchControlViewModel);
 
-            IEnumerable<MacroInstructionTemplateViewModel> macroInstructionTemplateViewModels = macroInstructionTemplateFactory.Invoke();
+            IEnumerable<MacroInstructionTemplateViewModel> macroInstructionTemplateViewModels = macroInstructionTemplateProvider.GetMacroInstructionTemplates();
 
             MacroToolBoxViewModel = new MacroToolBoxViewModel(macroInstructionTemplateViewModels);
 

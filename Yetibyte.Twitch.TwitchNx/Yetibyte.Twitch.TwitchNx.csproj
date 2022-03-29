@@ -30,10 +30,10 @@
     <None Remove="Images\Macros\btn_Home\Home_4.png" />
     <None Remove="Images\Macros\btn_L\L_1.png" />
     <None Remove="Images\Macros\btn_L\L_2.png" />
-    <None Remove="Images\Macros\btn_Minus\Minus_1.png" />
-    <None Remove="Images\Macros\btn_Minus\Minus_2.png" />
-    <None Remove="Images\Macros\btn_Minus\Minus_3.png" />
-    <None Remove="Images\Macros\btn_Minus\Minus_4.png" />
+    <None Remove="Images\Macros\btn_MINUS\Minus_1.png" />
+    <None Remove="Images\Macros\btn_MINUS\Minus_2.png" />
+    <None Remove="Images\Macros\btn_MINUS\Minus_3.png" />
+    <None Remove="Images\Macros\btn_MINUS\Minus_4.png" />
     <None Remove="Images\Macros\btn_Plus\Plus_1.png" />
     <None Remove="Images\Macros\btn_Plus\Plus_2.png" />
     <None Remove="Images\Macros\btn_Plus\Plus_3.png" />
@@ -246,28 +246,28 @@
     <Content Include="Images\Macros\btn_B\B_4.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_Capture\Capture_1.png">
+    <Content Include="Images\Macros\btn_Capture\CAPTURE_1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_Capture\Capture_2.png">
+    <Content Include="Images\Macros\btn_Capture\CAPTURE_2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_Capture\Capture_3.png">
+    <Content Include="Images\Macros\btn_Capture\CAPTURE_3.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_Capture\Capture_4.png">
+    <Content Include="Images\Macros\btn_Capture\CAPTURE_4.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_Home\Home_1.png">
+    <Content Include="Images\Macros\btn_Home\HOME_1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_Home\Home_2.png">
+    <Content Include="Images\Macros\btn_Home\HOME_2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_Home\Home_3.png">
+    <Content Include="Images\Macros\btn_Home\HOME_3.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_Home\Home_4.png">
+    <Content Include="Images\Macros\btn_Home\HOME_4.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Macros\btn_L\L_1.png">
@@ -276,28 +276,28 @@
     <Content Include="Images\Macros\btn_L\L_2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_Minus\Minus_1.png">
+    <Content Include="Images\Macros\btn_MINUS\MINUS_1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_Minus\Minus_2.png">
+    <Content Include="Images\Macros\btn_MINUS\MINUS_2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_Minus\Minus_3.png">
+    <Content Include="Images\Macros\btn_MINUS\MINUS_3.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_Minus\Minus_4.png">
+    <Content Include="Images\Macros\btn_MINUS\MINUS_4.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_Plus\Plus_1.png">
+    <Content Include="Images\Macros\btn_Plus\PLUS_1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_Plus\Plus_2.png">
+    <Content Include="Images\Macros\btn_Plus\PLUS_2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_Plus\Plus_3.png">
+    <Content Include="Images\Macros\btn_Plus\PLUS_3.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Macros\btn_Plus\Plus_4.png">
+    <Content Include="Images\Macros\btn_Plus\PLUS_4.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Macros\btn_R\R_1.png">
@@ -822,6 +822,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Yetibyte.Twitch.TwitchNx.Core\Yetibyte.Twitch.TwitchNx.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Util\" />
   </ItemGroup>
 
 </Project>
