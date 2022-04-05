@@ -142,6 +142,11 @@
                         Command="{Binding ExportToClipboardCommand}"
                         />
 
+                <Button Content="Test Macro"
+                        Height="30"
+                        Command="{Binding TestMacroCommand}"
+                        />
+
             </StackPanel>
             
         </Grid>

@@ -40,18 +40,22 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 
         public float UnitsPerSecond => _timeLineViewModel.UnitsPerSecond;
 
+        public event EventHandler? ElementCollectionChanged;
+
         public MacroTimeTrackViewModel(MacroTimeLineViewModel timeLineViewModel)
         {
             _timeLineViewModel = timeLineViewModel;
-            _timeLineViewModel.PropertyChanged += timeLineViewModel_PropertyChanged;
+            _elements.CollectionChanged += elements_CollectionChanged;
         }
 
-        private void timeLineViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void elements_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(MacroTimeLineViewModel.TimeLineWidth))
-            {
-                OnPropertyChanged(nameof(TrackWidth));
-            }
+            OnElementCollectionChanged();
+        }
+
+        public void NotifyTrackWidthChanged()
+        {
+            OnPropertyChanged(nameof(TrackWidth));
         }
 
         public TimeSpan SnapTimeSpan(TimeSpan input)
@@ -197,6 +201,12 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
         public bool ContainsElement(MacroTimeTrackElementViewModel timeTrackElementVm)
         {
             return _elements.Contains(timeTrackElementVm);
+        }
+
+        protected virtual void OnElementCollectionChanged()
+        {
+            var handler = ElementCollectionChanged;
+            handler?.Invoke(this, EventArgs.Empty);
         }
 
     }

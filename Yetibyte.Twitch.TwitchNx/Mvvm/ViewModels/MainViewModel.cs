@@ -70,7 +70,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
             DocumentManagerViewModel = new DocumentManagerViewModel();
             SwitchControlViewModel = new SwitchControlViewModel(switchConnector);
-            ProjectExplorerViewModel = new ProjectExplorerViewModel(macroInstructionTemplateFactoryFacade, projectManager, DocumentManagerViewModel);
+            ProjectExplorerViewModel = new ProjectExplorerViewModel(macroInstructionTemplateFactoryFacade, projectManager, DocumentManagerViewModel, switchConnector, SwitchControlViewModel);
             MacroTesterViewModel = new MacroTesterViewModel(switchConnector, SwitchControlViewModel);
 
             IEnumerable<MacroInstructionTemplateViewModel> macroInstructionTemplateViewModels = macroInstructionTemplateProvider.GetMacroInstructionTemplates();

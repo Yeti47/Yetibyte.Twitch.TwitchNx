@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros;
+using Yetibyte.Twitch.TwitchNx.Core.SwitchBridge;
 using Yetibyte.Twitch.TwitchNx.Services;
 
 namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
@@ -54,9 +55,12 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
         private readonly RelayCommand _deselectAllCommand;
         private readonly RelayCommand _deleteSelectedElementsCommand;
         private readonly RelayCommand _exportToClipboardCommand;
+        private readonly RelayCommand _testMacroCommand;
+
         private readonly IMacroInstructionTemplateFactoryFacade _macroInstructionTemplateFactoryFacade;
         private readonly Macro _macro;
-
+        private readonly ISwitchControllerSelector _switchControllerSelector;
+        private readonly SwitchConnector _switchConnector;
         private ZoomLevels _zoomlevel = ZoomLevels.Percent100;
 
         private TimeSpan _targetDuration;
@@ -83,7 +87,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
                 RegenerateAxis();
 
                 NotifyUnitsPerSecondChanged();
-                OnPropertyChanged(nameof(TimeLineWidth));
+                NotifyTimeLineWidthChanged();
             }
         }
 
@@ -100,7 +104,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
                 RegenerateAxis();
 
                 NotifyUnitsPerSecondChanged();
-                OnPropertyChanged(nameof(TimeLineWidth));
+                NotifyTimeLineWidthChanged();
                 OnPropertyChanged(nameof(Scale));
 
                 _zoomInCommand.NotifyCanExecuteChanged();
@@ -111,13 +115,14 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
         public TimeSpan TargetDuration
         {
             get { return _targetDuration; }
-            set { 
+            set
+            {
                 _targetDuration = value;
 
                 RegenerateAxis();
 
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(TimeLineWidth));   
+                NotifyTimeLineWidthChanged();
             }
         }
 
@@ -138,11 +143,14 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
         public ICommand DeselectAllCommand => _deselectAllCommand;
         public ICommand DeleteSelectedElementsCommand => _deleteSelectedElementsCommand;
         public ICommand ExportToClipboardCommand => _exportToClipboardCommand;
+        public ICommand TestMacroCommand => _testMacroCommand;
 
-        public MacroTimeLineViewModel(IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, Macro macro)
+        public MacroTimeLineViewModel(IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, Macro macro, ISwitchControllerSelector switchControllerSelector, SwitchConnector switchConnector)
         {
             _macroInstructionTemplateFactoryFacade = macroInstructionTemplateFactoryFacade;
             _macro = macro;
+            _switchControllerSelector = switchControllerSelector;
+            _switchConnector = switchConnector;
             _zoomlevel = ZoomLevels.Percent100;
 
             _zoomSteps = Enum.GetValues<ZoomLevels>()
@@ -162,6 +170,62 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
             InitializeTimeLine();
 
             _exportToClipboardCommand = new RelayCommand(ExecuteExportToClipboardCommand, CanExecuteExportToClipboardCommand);
+            _testMacroCommand = new RelayCommand(ExecuteTestMacroCommand, CanExecuteTestMacroCommand);
+
+            _tracks.CollectionChanged += tracks_CollectionChanged;
+        }
+
+        private void tracks_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems is not null)
+            {
+                foreach(MacroTimeTrackViewModel track in e.OldItems)
+                    track.ElementCollectionChanged -= Track_ElementCollectionChanged;
+            }
+
+            if (e.NewItems is not null)
+            {
+                foreach (MacroTimeTrackViewModel track in e.NewItems)
+                    track.ElementCollectionChanged += Track_ElementCollectionChanged;
+            }
+
+        }
+
+        private void Track_ElementCollectionChanged(object? sender, EventArgs e)
+        {
+            _testMacroCommand.NotifyCanExecuteChanged();
+        }
+
+        private void NotifyTimeLineWidthChanged()
+        {
+            OnPropertyChanged(nameof(TimeLineWidth));
+
+            foreach (var track in _tracks)
+                track.NotifyTrackWidthChanged();
+        }
+
+        private bool CanExecuteTestMacroCommand()
+        {
+            return _tracks.Any(t => t.Elements.Any());
+        }
+
+        private void ExecuteTestMacroCommand()
+        {
+            if (_switchControllerSelector.SelectedController is null)
+            {
+                // TODO: Display error message either by using an injected service or by raising an event.
+                return;
+            }
+
+            if (_switchConnector.State != SwitchConnectorState.Connected || !_switchConnector.IsConnectedToSwitch)
+            {
+                // TODO: Display error message either by using an injected service or by raising an event.
+                return;
+            }
+
+            string macroText = BuildMacroString();
+
+            _switchConnector.ExecuteMacro(macroText, _switchControllerSelector.SelectedController.Id);
         }
 
         private void InitializeTimeLine()

@@ -14,7 +14,7 @@ using Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.Layout;
 
 namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 {
-    public class SwitchControlViewModel : ToolViewModel
+    public class SwitchControlViewModel : ToolViewModel, ISwitchControllerSelector
     {
         private readonly SwitchConnector _switchConnector;
         private readonly ObservableCollection<ControllerViewModel> _controllers = new ObservableCollection<ControllerViewModel>();
@@ -47,6 +47,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
                 OnPropertyChanged();
                 _unselectCommand.NotifyCanExecuteChanged();
                 _removeControllerCommand.NotifyCanExecuteChanged();
+
+                OnSelectedControllerChanged();
             }
         }
 
@@ -67,6 +69,12 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             get { return _isJoyConRightChecked; }
             set { _isJoyConRightChecked = value; OnPropertyChanged(); }
         }
+
+        SwitchController? ISwitchControllerSelector.SelectedController => _switchConnector.Controllers.FirstOrDefault(c => c.Id == SelectedController?.Id);
+
+        bool ISwitchControllerSelector.HasSelectedController => SelectedController is not null;
+
+        public event EventHandler? SelectedControllerChanged;
 
         public SwitchControlViewModel(SwitchConnector switchConnector) : base("Switch Control Panel")
         {
@@ -228,6 +236,12 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         private ControllerViewModel? FindViewModelForController(int controllerId)
         {
             return _controllers.FirstOrDefault(c => c.Id == controllerId);
+        }
+
+        protected virtual void OnSelectedControllerChanged()
+        {
+            var handler = SelectedControllerChanged;
+            handler?.Invoke(this, EventArgs.Empty);
         }
     }
 }
