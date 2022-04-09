@@ -40,7 +40,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 
         public record ZoomStep(ZoomLevels ZoomLevel, string Text);
 
-        private const string ERROR_MESSAGE_NO_CONTROLLER = "No controller selected. Make sure to create and select a controller in the Switch Control view.";
+        private const string ERROR_MESSAGE_NO_CONTROLLER = "No controller selected. Make sure to create and select a controller in the Switch Control Panel.";
         private const string ERROR_MESSAGE_NOT_CONNECTED = "Connection to Nintendo Switch console has not been established.";
         
         public const int DEFAULT_UNITS_PER_SECOND = 100;
