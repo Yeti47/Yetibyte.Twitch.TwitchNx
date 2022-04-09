@@ -13,6 +13,7 @@ using Yetibyte.Twitch.TwitchNx.Core.ProjectManagement;
 using Yetibyte.Twitch.TwitchNx.Core.SwitchBridge;
 using Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.Layout;
 using Yetibyte.Twitch.TwitchNx.Services;
+using Yetibyte.Twitch.TwitchNx.Services.Dialog;
 
 namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 {
@@ -20,6 +21,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
     {
         private readonly IProjectManager _projectManager;
         private readonly SwitchConnector _switchConnector;
+        private readonly IDialogService _dialogService;
         private readonly ObservableCollection<ToolViewModel> _tools;
 
         private SwitchConnectionViewModel _switchConnectionViewModel;
@@ -61,16 +63,17 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             }
         }
 
-        public MainViewModel(IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, IProjectManager projectManager, SwitchConnector switchConnector, IMacroInstructionTemplateProvider macroInstructionTemplateProvider)
+        public MainViewModel(IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, IProjectManager projectManager, SwitchConnector switchConnector, IMacroInstructionTemplateProvider macroInstructionTemplateProvider, IDialogService dialogService)
         {
             _projectManager = projectManager;
             _switchConnector = switchConnector;
+            _dialogService = dialogService;
 
             _switchConnectionViewModel = new SwitchConnectionViewModel(switchConnector, projectManager.CurrentProject?.SwitchBridgeClientConnectionSettings ?? SwitchBridgeClientConnectionSettings.CreateEmpty());
 
             DocumentManagerViewModel = new DocumentManagerViewModel();
             SwitchControlViewModel = new SwitchControlViewModel(switchConnector);
-            ProjectExplorerViewModel = new ProjectExplorerViewModel(macroInstructionTemplateFactoryFacade, projectManager, DocumentManagerViewModel, switchConnector, SwitchControlViewModel);
+            ProjectExplorerViewModel = new ProjectExplorerViewModel(macroInstructionTemplateFactoryFacade, projectManager, DocumentManagerViewModel, switchConnector, SwitchControlViewModel, dialogService);
             MacroTesterViewModel = new MacroTesterViewModel(switchConnector, SwitchControlViewModel);
 
             IEnumerable<MacroInstructionTemplateViewModel> macroInstructionTemplateViewModels = macroInstructionTemplateProvider.GetMacroInstructionTemplates();

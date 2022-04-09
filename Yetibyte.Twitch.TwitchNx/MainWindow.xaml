@@ -8,10 +8,12 @@
         xmlns:st="clr-namespace:Yetibyte.Twitch.TwitchNx.Styling"
         xmlns:db="clr-namespace:Yetibyte.Twitch.TwitchNx.DataBinding"
         xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+        xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
         mc:Ignorable="d"
         TitleCharacterCasing="Normal"
         GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
-        Title="TwitchNX" Height="720" Width="1280">
+        Title="TwitchNX" Height="720" Width="1280"
+        Dialog:DialogParticipation.Register="{Binding}">
     <Window.Resources>
         <sys:Boolean x:Key="TRUE">True</sys:Boolean>
         <sys:Boolean x:Key="FALSE">False</sys:Boolean>

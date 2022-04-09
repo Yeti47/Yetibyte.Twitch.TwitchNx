@@ -10,6 +10,7 @@ using System.Windows.Input;
 using Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros;
 using Yetibyte.Twitch.TwitchNx.Core.SwitchBridge;
 using Yetibyte.Twitch.TwitchNx.Services;
+using Yetibyte.Twitch.TwitchNx.Services.Dialog;
 
 namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 {
@@ -39,12 +40,14 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 
         public record ZoomStep(ZoomLevels ZoomLevel, string Text);
 
+        private const string ERROR_MESSAGE_NO_CONTROLLER = "No controller selected. Make sure to create and select a controller in the Switch Control view.";
+        private const string ERROR_MESSAGE_NOT_CONNECTED = "Connection to Nintendo Switch console has not been established.";
+        
         public const int DEFAULT_UNITS_PER_SECOND = 100;
         public const int MIN_LABEL_DISTANCE = 50;
         public const int TRACK_COUNT = 5;
         private const int DEFAULT_DURATION_SECONDS = 60;
         private const ZoomLevels MIN_ZOOM_LEVEL = ZoomLevels.Percent50;
-
         private readonly ZoomStep[] _zoomSteps;
 
         private readonly ObservableCollection<MacroTimeTrackViewModel> _tracks = new ObservableCollection<MacroTimeTrackViewModel>();
@@ -61,6 +64,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
         private readonly Macro _macro;
         private readonly ISwitchControllerSelector _switchControllerSelector;
         private readonly SwitchConnector _switchConnector;
+        private readonly IDialogService _dialogService;
         private ZoomLevels _zoomlevel = ZoomLevels.Percent100;
 
         private TimeSpan _targetDuration;
@@ -145,12 +149,13 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
         public ICommand ExportToClipboardCommand => _exportToClipboardCommand;
         public ICommand TestMacroCommand => _testMacroCommand;
 
-        public MacroTimeLineViewModel(IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, Macro macro, ISwitchControllerSelector switchControllerSelector, SwitchConnector switchConnector)
+        public MacroTimeLineViewModel(IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, Macro macro, ISwitchControllerSelector switchControllerSelector, SwitchConnector switchConnector, IDialogService dialogService)
         {
             _macroInstructionTemplateFactoryFacade = macroInstructionTemplateFactoryFacade;
             _macro = macro;
             _switchControllerSelector = switchControllerSelector;
             _switchConnector = switchConnector;
+            _dialogService = dialogService;
             _zoomlevel = ZoomLevels.Percent100;
 
             _zoomSteps = Enum.GetValues<ZoomLevels>()
@@ -167,12 +172,14 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 
             TargetDuration = TimeSpan.FromSeconds(DEFAULT_DURATION_SECONDS);
 
-            InitializeTimeLine();
-
-            _exportToClipboardCommand = new RelayCommand(ExecuteExportToClipboardCommand, CanExecuteExportToClipboardCommand);
             _testMacroCommand = new RelayCommand(ExecuteTestMacroCommand, CanExecuteTestMacroCommand);
 
             _tracks.CollectionChanged += tracks_CollectionChanged;
+
+            InitializeTimeLine();
+
+            _exportToClipboardCommand = new RelayCommand(ExecuteExportToClipboardCommand, CanExecuteExportToClipboardCommand);
+
         }
 
         private void tracks_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -213,13 +220,13 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
         {
             if (_switchControllerSelector.SelectedController is null)
             {
-                // TODO: Display error message either by using an injected service or by raising an event.
+                _dialogService.ShowErrorDialog("Error", ERROR_MESSAGE_NO_CONTROLLER);
                 return;
             }
 
             if (_switchConnector.State != SwitchConnectorState.Connected || !_switchConnector.IsConnectedToSwitch)
             {
-                // TODO: Display error message either by using an injected service or by raising an event.
+                _dialogService.ShowErrorDialog("Error", ERROR_MESSAGE_NOT_CONNECTED);
                 return;
             }
 

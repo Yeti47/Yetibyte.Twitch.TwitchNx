@@ -11,6 +11,7 @@ using Yetibyte.Twitch.TwitchNx.Mvvm.Models;
 using Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.Layout;
 using Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine;
 using Yetibyte.Twitch.TwitchNx.Services;
+using Yetibyte.Twitch.TwitchNx.Services.Dialog;
 
 namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 {
@@ -94,14 +95,14 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         public MacroTimeLineViewModel MacroTimeLineViewModel { get; private set; }
 
-        public CommandSetupDocumentViewModel(IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, IDocumentManager documentManager, CommandSetup commandSetup, SwitchConnector switchConnector, ISwitchControllerSelector switchControllerSelector) : base(documentManager)
+        public CommandSetupDocumentViewModel(IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, IDocumentManager documentManager, CommandSetup commandSetup, SwitchConnector switchConnector, ISwitchControllerSelector switchControllerSelector, IDialogService dialogService) : base(documentManager)
         {
             _commandSetup = commandSetup;
             _commandName = commandSetup.Name;
             _description = commandSetup.Description;
             _permissionLevel = commandSetup.PermissionLevel;
 
-            MacroTimeLineViewModel = new MacroTimeLineViewModel(macroInstructionTemplateFactoryFacade, commandSetup.Macro, switchControllerSelector, switchConnector);
+            MacroTimeLineViewModel = new MacroTimeLineViewModel(macroInstructionTemplateFactoryFacade, commandSetup.Macro, switchControllerSelector, switchConnector, dialogService);
 
             Title = _commandName;
 

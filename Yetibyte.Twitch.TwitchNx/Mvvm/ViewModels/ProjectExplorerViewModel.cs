@@ -14,6 +14,7 @@ using Yetibyte.Twitch.TwitchNx.Core.SwitchBridge;
 using Yetibyte.Twitch.TwitchNx.Mvvm.Models;
 using Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.Layout;
 using Yetibyte.Twitch.TwitchNx.Services;
+using Yetibyte.Twitch.TwitchNx.Services.Dialog;
 using Yetibyte.Twitch.TwitchNx.Styling;
 
 namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
@@ -50,7 +51,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
             public CommandSetup CommandSetup => _commandSetup;
 
-            public CommandViewModel(IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, IDocumentManager documentManager, CommandSetup commandSetup, SwitchConnector switchConnector, ISwitchControllerSelector switchControllerSelector)
+            public CommandViewModel(IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, IDocumentManager documentManager, CommandSetup commandSetup, SwitchConnector switchConnector, ISwitchControllerSelector switchControllerSelector, IDialogService dialogService)
             {
                 _documentManager = documentManager;
                 _commandSetup = commandSetup;
@@ -61,7 +62,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
                 {
                     if (!_documentManager.IsDocumentOpen(typeof(CommandSetup), _commandSetup.Name))
                     {
-                        _documentManager.OpenDocument(new CommandSetupDocumentViewModel(macroInstructionTemplateFactoryFacade, _documentManager, _commandSetup, switchConnector, switchControllerSelector));
+                        _documentManager.OpenDocument(new CommandSetupDocumentViewModel(macroInstructionTemplateFactoryFacade, _documentManager, _commandSetup, switchConnector, switchControllerSelector, dialogService));
                     }
                     _documentManager.TrySelect(typeof(CommandSetup), _commandSetup.Name);
                 });
@@ -75,6 +76,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         private readonly IProjectManager _projectManager;
         private readonly IDocumentManager _documentManager;
         private readonly SwitchConnector _switchConnector;
+        private readonly IDialogService _dialogService;
         private readonly ISwitchControllerSelector _switchControllerSelector;
         private CommandViewModel? _selectedCommand;
         private CooldownGroupViewModel? _selectedCooldownGroup;
@@ -96,12 +98,13 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         public IEnumerable<CommandViewModel> Commands => _commands;
         public IEnumerable<CooldownGroupViewModel> CooldownGroups => _cooldownGroups;
 
-        public ProjectExplorerViewModel(IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, IProjectManager projectManager, IDocumentManager documentManager, SwitchConnector switchConnector, ISwitchControllerSelector switchControllerSelector) : base("Project Explorer")
+        public ProjectExplorerViewModel(IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, IProjectManager projectManager, IDocumentManager documentManager, SwitchConnector switchConnector, ISwitchControllerSelector switchControllerSelector, IDialogService dialogService) : base("Project Explorer")
         {
             _macroInstructionTemplateFactoryFacade = macroInstructionTemplateFactoryFacade;
             _projectManager = projectManager;
             _documentManager = documentManager;
             _switchConnector = switchConnector;
+            _dialogService = dialogService;
             _switchControllerSelector = switchControllerSelector;
             _projectManager.ProjectChanging += ProjectManager_ProjectChanging;
             _projectManager.ProjectChanged += ProjectManager_ProjectChanged;
@@ -201,7 +204,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         private void CommandSettings_CommandSetupAdded(object? sender, Core.CommandModel.CommandSetupAddedEventArgs e)
         {
-            _commands.Add(new CommandViewModel(_macroInstructionTemplateFactoryFacade, _documentManager, e.CommandSetup, _switchConnector, _switchControllerSelector));
+            _commands.Add(new CommandViewModel(_macroInstructionTemplateFactoryFacade, _documentManager, e.CommandSetup, _switchConnector, _switchControllerSelector, _dialogService));
 
         }
 
@@ -224,7 +227,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             _commands.Clear(); 
             _cooldownGroups.Clear(); 
 
-            foreach(var commandVm in _projectManager.CurrentProject.CommandSettings.CommandSetups.Select(cs => new CommandViewModel(_macroInstructionTemplateFactoryFacade, _documentManager, cs, _switchConnector, _switchControllerSelector)))
+            foreach(var commandVm in _projectManager.CurrentProject.CommandSettings.CommandSetups.Select(cs => new CommandViewModel(_macroInstructionTemplateFactoryFacade, _documentManager, cs, _switchConnector, _switchControllerSelector, _dialogService)))
             {
                 _commands.Add(commandVm);
 

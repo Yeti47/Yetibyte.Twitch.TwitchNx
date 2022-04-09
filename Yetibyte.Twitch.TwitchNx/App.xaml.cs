@@ -10,6 +10,7 @@ using Yetibyte.Twitch.TwitchNx.Core.SwitchBridge;
 using Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels;
 using Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros;
 using Yetibyte.Twitch.TwitchNx.Services;
+using Yetibyte.Twitch.TwitchNx.Services.Dialog;
 
 namespace Yetibyte.Twitch.TwitchNx
 {
@@ -31,7 +32,9 @@ namespace Yetibyte.Twitch.TwitchNx
 
             IMacroInstructionTemplateProvider macroInstructionTemplateProvider = new DefaultMacroInstructionTemplateProvider(macroInstructionTemplateFactoryFacade);
 
-            var mainWindow = new MainWindow(projectManager, switchConnector, macroInstructionTemplateProvider, macroInstructionTemplateFactoryFacade);
+            IDialogService dialogService = new DialogService();
+
+            var mainWindow = new MainWindow(projectManager, switchConnector, macroInstructionTemplateProvider, macroInstructionTemplateFactoryFacade, dialogService);
 
             this.MainWindow = mainWindow;
             this.MainWindow.Show();
