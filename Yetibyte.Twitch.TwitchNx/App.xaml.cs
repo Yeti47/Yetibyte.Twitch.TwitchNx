@@ -11,6 +11,8 @@ using Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels;
 using Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros;
 using Yetibyte.Twitch.TwitchNx.Services;
 using Yetibyte.Twitch.TwitchNx.Services.Dialog;
+using Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources;
+using Yetibyte.Twitch.TwitchNx.Core.Irc;
 
 namespace Yetibyte.Twitch.TwitchNx
 {
@@ -34,11 +36,25 @@ namespace Yetibyte.Twitch.TwitchNx
 
             IDialogService dialogService = new DialogService();
 
-            var mainWindow = new MainWindow(projectManager, switchConnector, macroInstructionTemplateProvider, macroInstructionTemplateFactoryFacade, dialogService);
+            ICommandSourceProvider commandSourceProvider = CreateCommandSourceProvider();
+
+            var mainWindow = new MainWindow(projectManager, switchConnector, macroInstructionTemplateProvider, macroInstructionTemplateFactoryFacade, dialogService, commandSourceProvider);
 
             this.MainWindow = mainWindow;
             this.MainWindow.Show();
 
+        }
+
+        private ICommandSourceProvider CreateCommandSourceProvider()
+        {
+            IrcCommandSourceFactory ircCommandSourceFactory = new IrcCommandSourceFactory("Twitch IRC", new TwitchIrcClient());
+
+            CommandSourceProvider commandSourceProvider = new CommandSourceProvider(new []
+            {
+                ircCommandSourceFactory
+            });
+
+            return commandSourceProvider;
         }
 
         

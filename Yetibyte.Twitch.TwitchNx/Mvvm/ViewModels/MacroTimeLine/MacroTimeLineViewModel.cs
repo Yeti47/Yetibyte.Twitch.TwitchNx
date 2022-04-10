@@ -218,15 +218,15 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 
         private void ExecuteTestMacroCommand()
         {
-            if (_switchControllerSelector.SelectedController is null)
-            {
-                _dialogService.ShowErrorDialog("Error", ERROR_MESSAGE_NO_CONTROLLER);
-                return;
-            }
-
             if (_switchConnector.State != SwitchConnectorState.Connected || !_switchConnector.IsConnectedToSwitch)
             {
                 _dialogService.ShowErrorDialog("Error", ERROR_MESSAGE_NOT_CONNECTED);
+                return;
+            }
+
+            if (_switchControllerSelector.SelectedController is null)
+            {
+                _dialogService.ShowErrorDialog("Error", ERROR_MESSAGE_NO_CONTROLLER);
                 return;
             }
 

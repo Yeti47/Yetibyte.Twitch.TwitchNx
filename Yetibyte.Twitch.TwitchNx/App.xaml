@@ -6,6 +6,8 @@
              xmlns:vtl="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.Views.MacroTimeLine"
              xmlns:vm="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels"
              xmlns:vmtl="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine"
+             xmlns:commandsources="clr-namespace:Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources;assembly=Yetibyte.Twitch.TwitchNx.Core"
+             xmlns:commandsourcesViews="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.Views.CommandSourceSettings"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:db="clr-namespace:Yetibyte.Twitch.TwitchNx.DataBinding"
              >
@@ -52,6 +54,14 @@
 
             <DataTemplate DataType="{x:Type vmtl:MacroTimeTrackElementViewModel}">
                 <vtl:MacroTimeTrackElementView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type commandsources:IrcCommandSourceSettings}">
+                <commandsourcesViews:IrcCommandSourceSettingsView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vm:CommandSourceViewModel}">
+                <v:CommandSourceView />
             </DataTemplate>
 
             <Style x:Key="FormDock" TargetType="DockPanel">

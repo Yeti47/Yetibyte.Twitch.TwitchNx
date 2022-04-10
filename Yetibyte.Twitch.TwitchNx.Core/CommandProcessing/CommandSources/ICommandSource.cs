@@ -18,6 +18,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
     /// </summary>
     public interface ICommandSource : IRunnable
     {
+
         event EventHandler<CommandReceivedEventArgs>? CommandReceived;
 
         void NotifyCommandProcessed(CommandProcessingResult commandProcessingResult);

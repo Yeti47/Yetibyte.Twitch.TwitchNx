@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources;
 using Yetibyte.Twitch.TwitchNx.Core.ProjectManagement;
 using Yetibyte.Twitch.TwitchNx.Core.SwitchBridge;
 using Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels;
@@ -34,11 +35,11 @@ namespace Yetibyte.Twitch.TwitchNx
 
         public MainViewModel ViewModel { get; private set; }
 
-        public MainWindow(IProjectManager projectManager, SwitchConnector switchConnector, IMacroInstructionTemplateProvider macroInstructionTemplateProvider, IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, IDialogService dialogService)
+        public MainWindow(IProjectManager projectManager, SwitchConnector switchConnector, IMacroInstructionTemplateProvider macroInstructionTemplateProvider, IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, IDialogService dialogService, ICommandSourceProvider commandSourceProvider)
         {
             InitializeComponent();
             
-            DataContext = ViewModel = new MainViewModel(macroInstructionTemplateFactoryFacade, projectManager, switchConnector, macroInstructionTemplateProvider, dialogService);
+            DataContext = ViewModel = new MainViewModel(macroInstructionTemplateFactoryFacade, projectManager, switchConnector, macroInstructionTemplateProvider, dialogService, commandSourceProvider);
 
             dialogService.MainContext = ViewModel;
             
