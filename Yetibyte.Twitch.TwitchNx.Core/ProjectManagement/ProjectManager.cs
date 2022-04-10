@@ -9,9 +9,6 @@ namespace Yetibyte.Twitch.TwitchNx.Core.ProjectManagement
         private Project? _currentProject;
         private string _projectFilePath = string.Empty;
 
-        public ICommandSource? CommandSource { get; set; }
-
-        public bool HasCommandSource => CommandSource is not null;
 
         public Project? CurrentProject
         {

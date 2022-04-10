@@ -206,7 +206,9 @@
     <None Remove="Images\Macros\stick_R\Joy_R72.png" />
     <None Remove="Images\Macros\stick_R\Joy_R_PreView.png" />
     <None Remove="Images\Nintendo_Switch_Logo.png" />
+    <None Remove="Images\play.png" />
     <None Remove="Images\procon.png" />
+    <None Remove="Images\stop.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -804,7 +806,13 @@
     <Content Include="Images\Nintendo_Switch_Logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\play.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\procon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\stop.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

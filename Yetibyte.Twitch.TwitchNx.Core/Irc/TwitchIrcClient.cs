@@ -104,6 +104,8 @@ namespace Yetibyte.Twitch.TwitchNx.Core.Irc
             UserName = userName;
             ChannelName = channelName;
             AuthToken = authToken;
+
+            _client.Initialize(new ConnectionCredentials(UserName, AuthToken), ChannelName, autoReListenOnExceptions: false);
         }
 
         public bool Connect()
@@ -111,7 +113,12 @@ namespace Yetibyte.Twitch.TwitchNx.Core.Irc
             if (IsConnected)
                 return false;
 
-            return _client.Connect();
+            bool success = _client.Connect();
+
+            if (success)
+                _client.JoinChannel(ChannelName);
+
+            return success;
         }
 
         public bool Disconnect()
@@ -142,7 +149,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.Irc
 
         protected virtual void OnMessageReceived(IrcMessage ircMessage)
         {
-            var handler = MessageSent;
+            var handler = MessageReceived;
             handler?.Invoke(this, new IrcMessageEventArgs(ircMessage));
         }
 

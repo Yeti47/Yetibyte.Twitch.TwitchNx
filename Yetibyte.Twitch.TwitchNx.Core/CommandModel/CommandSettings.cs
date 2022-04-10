@@ -22,7 +22,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
 
         public string CommandPrefix { get; set; } = DEFAULT_COMMAND_PREFIX;
 
-        public int MaxQueueCapacity { get; set; }
+        public int MaxQueueCapacity { get; set; } = 10;
 
         public string QueueFullMessage { get; set; } = "{USER}, the command queue is already full. Please wait before submitting any more commands.";
 

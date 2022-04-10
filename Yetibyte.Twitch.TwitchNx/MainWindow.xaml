@@ -22,6 +22,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="28" />
+            <RowDefinition Height="32" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -46,7 +47,11 @@
             </Menu>
         </WrapPanel>
 
-        <DockingManager x:Name="dockManager" Grid.Row="1"
+        <ContentControl Grid.Row="1"
+                        IsEnabled="{Binding Path=CanEditProject}"
+                        Content="{Binding SessionToolbarViewModel}" Height="32" />
+
+        <DockingManager x:Name="dockManager" Grid.Row="2"
                         AnchorablesSource="{Binding Path=Tools}"
                         Theme="{Binding Path=Theme}"
                         IsEnabled="{Binding Path=CanEditProject}"

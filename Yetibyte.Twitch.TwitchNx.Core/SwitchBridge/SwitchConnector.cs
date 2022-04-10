@@ -260,7 +260,13 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
 
         private void ProcessMacroCompleteMessage(MacroCompleteSwitchBridgeMessage macroCompleteSwitchBridgeMessage)
         {
-            
+            if (macroCompleteSwitchBridgeMessage.IsError)
+            {
+                // TODO: proper error handling!
+                return;
+            }
+
+            OnMacroCompleted(macroCompleteSwitchBridgeMessage.Payload.OriginalMessageId);
         }
 
         private void ProcessCreateControllerMessage(CreateControllerSwitchBridgeMessage message)

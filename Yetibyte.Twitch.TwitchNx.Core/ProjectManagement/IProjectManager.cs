@@ -9,10 +9,6 @@ namespace Yetibyte.Twitch.TwitchNx.Core.ProjectManagement
 {
     public interface IProjectManager
     {
-        ICommandSource? CommandSource { get; set; }
-
-        bool HasCommandSource { get; }
-
         Project? CurrentProject { get; }
 
         bool IsProjectOpen { get; }

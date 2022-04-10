@@ -64,6 +64,10 @@
                 <v:CommandSourceView />
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type vm:SessionToolbarViewModel}">
+                <v:SessionToolbarView />
+            </DataTemplate>
+
             <Style x:Key="FormDock" TargetType="DockPanel">
                 <Setter Property="Margin" Value="0,2"/>
             </Style>

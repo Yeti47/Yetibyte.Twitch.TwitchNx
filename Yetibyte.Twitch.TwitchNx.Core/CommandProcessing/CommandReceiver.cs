@@ -74,7 +74,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
             SwitchConnector switchConnector, 
             SwitchBridgeClientConnectionSettings connectionSettings, 
             CommandSettings commandSettings, 
-            ILogger<CommandReceiver>? logger)
+            ILogger<CommandReceiver>? logger = null)
         {
             _commandSource = commandSource;
             _switchConnector = switchConnector;
@@ -165,6 +165,8 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
                 _logger?.LogInformation($"No matching command processor found for command '{e.Command.Name}'.");
                 return;
             }
+
+            matchingProcessor.Process(e.Command);
         }
 
         private void commandSource_Stopped(object? sender, EventArgs e)
@@ -270,7 +272,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
 
             try
             {
-                queueItem.MacroMessageId = _switchConnector.ExecuteMacro(queueItem.Command.CommandSetup.Macro.ToString(), controllerId);
+                queueItem.MacroMessageId = _switchConnector.ExecuteMacro(queueItem.Command.CommandSetup.Macro.Build(), controllerId);
             }
             catch (Exception ex)
             {

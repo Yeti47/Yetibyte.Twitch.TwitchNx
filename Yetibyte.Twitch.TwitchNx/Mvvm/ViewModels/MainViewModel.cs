@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources;
 using Yetibyte.Twitch.TwitchNx.Core.ProjectManagement;
+using Yetibyte.Twitch.TwitchNx.Core.SessionManagement;
 using Yetibyte.Twitch.TwitchNx.Core.SwitchBridge;
 using Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.Layout;
 using Yetibyte.Twitch.TwitchNx.Services;
@@ -51,6 +52,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         public MacroToolBoxViewModel MacroToolBoxViewModel { get; private set; }
 
         public CommandSourceViewModel CommandSourceViewModel { get; private set; }
+        public SessionToolbarViewModel SessionToolbarViewModel { get; private set; }
 
         public IEnumerable<ToolViewModel> Tools => _tools;
 
@@ -80,6 +82,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             MacroTesterViewModel = new MacroTesterViewModel(switchConnector, SwitchControlViewModel);
 
             CommandSourceViewModel = new CommandSourceViewModel(_projectManager, commandSourceProvider);
+
+            SessionToolbarViewModel = new SessionToolbarViewModel(new SessionManager(_projectManager, _switchConnector));
 
             IEnumerable<MacroInstructionTemplateViewModel> macroInstructionTemplateViewModels = macroInstructionTemplateProvider.GetMacroInstructionTemplates();
 

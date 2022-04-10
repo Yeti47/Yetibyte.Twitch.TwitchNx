@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Yetibyte.Twitch.TwitchNx.Core.CommandModel;
+using Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources;
 using Yetibyte.Twitch.TwitchNx.Core.Common;
 using Yetibyte.Twitch.TwitchNx.Core.SwitchBridge;
 
@@ -35,6 +36,10 @@ namespace Yetibyte.Twitch.TwitchNx.Core.ProjectManagement
                 }
             }
         }
+
+        public ICommandSource? CommandSource { get; set; }
+
+        public bool HasCommandSource => CommandSource is not null;
 
         public CommandSettings CommandSettings { get; } = new CommandSettings();
 
