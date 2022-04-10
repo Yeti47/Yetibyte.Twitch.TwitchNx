@@ -10,13 +10,13 @@ using Yetibyte.Twitch.TwitchNx.Core.Irc;
 
 namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
 {
-    public class IrcCommandSourceSettings : INotifyPropertyChanged
+    public class IrcCommandSourceSettingsViewModel : ICommandSourceSettingsViewModel
     {
         class ToggleAuthTokenCommand : ICommand
         {
-            private readonly IrcCommandSourceSettings _ircCommandSourceSettings;
+            private readonly IrcCommandSourceSettingsViewModel _ircCommandSourceSettings;
 
-            public ToggleAuthTokenCommand(IrcCommandSourceSettings ircCommandSourceSettings)
+            public ToggleAuthTokenCommand(IrcCommandSourceSettingsViewModel ircCommandSourceSettings)
             {
                 _ircCommandSourceSettings = ircCommandSourceSettings;
             }
@@ -64,7 +64,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
         public event PropertyChangedEventHandler? PropertyChanged;
 
 
-        public IrcCommandSourceSettings(IIrcClient ircClient)
+        public IrcCommandSourceSettingsViewModel(IIrcClient ircClient)
         {
             IrcClient = ircClient;
             ToggleAuthTokenVisibilityCommand = new ToggleAuthTokenCommand(this);

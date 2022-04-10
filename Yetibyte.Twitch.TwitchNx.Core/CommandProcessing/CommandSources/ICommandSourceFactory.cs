@@ -6,9 +6,9 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
     {
         string SourceDisplayName { get; }
 
-        ICommandSource CreateCommandSource(CommandSettings commandSettings, object settingsViewModel);
+        ICommandSource CreateCommandSource(CommandSettings commandSettings, ICommandSourceSettingsViewModel settingsViewModel);
 
-        object CreateSettingsViewModel();
+        ICommandSourceSettingsViewModel CreateSettingsViewModel();
 
     }
 }

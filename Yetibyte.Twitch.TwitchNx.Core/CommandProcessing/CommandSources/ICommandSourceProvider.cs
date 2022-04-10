@@ -8,6 +8,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
 {
     public interface ICommandSourceProvider
     {
+        void Load();
         IEnumerable<ICommandSourceFactory> GetCommandSourceFactories();
     }
 }

@@ -43,11 +43,9 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         private readonly RelayCommand _saveCommand;
 
         private CommandSourceItem _selectedCommandSource;
-        private object _settingsViewModel;
+        private ICommandSourceSettingsViewModel _settingsViewModel;
 
-
-
-        public object SettingsViewModel
+        public ICommandSourceSettingsViewModel SettingsViewModel
         {
             get => _settingsViewModel;
             private set

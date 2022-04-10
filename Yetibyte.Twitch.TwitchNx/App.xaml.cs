@@ -36,25 +36,15 @@ namespace Yetibyte.Twitch.TwitchNx
 
             IDialogService dialogService = new DialogService();
 
-            ICommandSourceProvider commandSourceProvider = CreateCommandSourceProvider();
+            ICommandSourceProvider commandSourceProvider = new DefaultCommandSourceProvider();
+
+            commandSourceProvider.Load();
 
             var mainWindow = new MainWindow(projectManager, switchConnector, macroInstructionTemplateProvider, macroInstructionTemplateFactoryFacade, dialogService, commandSourceProvider);
 
             this.MainWindow = mainWindow;
             this.MainWindow.Show();
 
-        }
-
-        private ICommandSourceProvider CreateCommandSourceProvider()
-        {
-            IrcCommandSourceFactory ircCommandSourceFactory = new IrcCommandSourceFactory("Twitch IRC", new TwitchIrcClient());
-
-            CommandSourceProvider commandSourceProvider = new CommandSourceProvider(new []
-            {
-                ircCommandSourceFactory
-            });
-
-            return commandSourceProvider;
         }
 
         
