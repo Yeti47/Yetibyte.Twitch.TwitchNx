@@ -56,7 +56,6 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
             get { return _userName; }
             set { _userName = value; OnPropertyChanged(); }
         }
-        public IIrcClient IrcClient { get; }
 
         public ICommand ToggleAuthTokenVisibilityCommand { get; }
 
@@ -64,9 +63,8 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
         public event PropertyChangedEventHandler? PropertyChanged;
 
 
-        public IrcCommandSourceSettingsViewModel(IIrcClient ircClient)
+        public IrcCommandSourceSettingsViewModel()
         {
-            IrcClient = ircClient;
             ToggleAuthTokenVisibilityCommand = new ToggleAuthTokenCommand(this);
         }
 

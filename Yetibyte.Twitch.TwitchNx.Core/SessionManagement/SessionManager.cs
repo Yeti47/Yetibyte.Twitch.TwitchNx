@@ -44,7 +44,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SessionManagement
                 throw new InvalidOperationException("No project loaded.");
             }
 
-            if(_projectManager.CurrentProject.CommandSource is null)
+            if(_projectManager.CurrentProject.CommandSourceFactory is null)
             {
                 throw new InvalidOperationException("No command source provided.");
             }
@@ -62,6 +62,9 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SessionManagement
             //        return false;
             //}
 
+            if (!_projectManager.CurrentProject.CommandSourceFactory.IsReady)
+                throw new InvalidOperationException("Command Source Factory not ready.");
+
             if (_commandReceiver is not null)
             {
                 _commandReceiver.Started -= _commandReceiver_Started;
@@ -71,8 +74,10 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SessionManagement
                     _commandReceiver.Stop();
             }
 
+            var commandSource = _projectManager.CurrentProject.CommandSourceFactory.CreateCommandSource(_projectManager.CurrentProject.CommandSettings);
+
             _commandReceiver = new CommandReceiver(
-                _projectManager.CurrentProject.CommandSource,
+                commandSource,
                 _switchConnector,
                 _projectManager.CurrentProject.SwitchBridgeClientConnectionSettings,
                 _projectManager.CurrentProject.CommandSettings,

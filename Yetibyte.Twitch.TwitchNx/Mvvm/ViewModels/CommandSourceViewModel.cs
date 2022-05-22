@@ -90,9 +90,10 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             if (_projectManager.CurrentProject is null)
                 return;
 
-            var commandSource = SelectedCommandSource.Factory.CreateCommandSource(_projectManager.CurrentProject.CommandSettings, SettingsViewModel);
+            //var commandSource = SelectedCommandSource.Factory.CreateCommandSource(_projectManager.CurrentProject.CommandSettings, SettingsViewModel);
 
-            _projectManager.CurrentProject.CommandSource = commandSource; 
+            _projectManager.CurrentProject.CommandSourceFactory = SelectedCommandSource.Factory;
+            _projectManager.CurrentProject.CommandSourceFactory.ApplySettings(SettingsViewModel);
         }
 
         private void PopulateCommandSources()

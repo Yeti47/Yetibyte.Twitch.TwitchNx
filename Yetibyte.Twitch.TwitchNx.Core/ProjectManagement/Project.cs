@@ -37,9 +37,9 @@ namespace Yetibyte.Twitch.TwitchNx.Core.ProjectManagement
             }
         }
 
-        public ICommandSource? CommandSource { get; set; }
+        //public ICommandSource? CommandSource { get; set; }
+        public ICommandSourceFactory? CommandSourceFactory { get; set; }
 
-        public bool HasCommandSource => CommandSource is not null;
 
         public CommandSettings CommandSettings { get; } = new CommandSettings();
 

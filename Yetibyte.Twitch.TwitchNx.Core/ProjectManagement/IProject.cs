@@ -7,9 +7,8 @@ namespace Yetibyte.Twitch.TwitchNx.Core.ProjectManagement
 {
     public interface IProject
     {
-        ICommandSource? CommandSource { get; set; }
-
-        bool HasCommandSource { get; }
+        //ICommandSource? CommandSource { get; set; }
+        ICommandSourceFactory? CommandSourceFactory { get; set; }
 
         CommandSettings CommandSettings { get; }
         string Name { get; set; }

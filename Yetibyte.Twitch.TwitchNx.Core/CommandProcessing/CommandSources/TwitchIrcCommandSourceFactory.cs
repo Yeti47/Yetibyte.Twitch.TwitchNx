@@ -5,21 +5,34 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
 {
     public class TwitchIrcCommandSourceFactory : ICommandSourceFactory
     {
+        private ICommandSourceSettingsViewModel? _settings;
+
         public string SourceDisplayName => "Twitch IRC";
 
-        public ICommandSource CreateCommandSource(CommandSettings commandSettings, ICommandSourceSettingsViewModel settingsViewModel)
+        public bool IsReady => _settings is not null;
+
+        public void ApplySettings(ICommandSourceSettingsViewModel settingsViewModel)
         {
-            if (settingsViewModel is not IrcCommandSourceSettingsViewModel settings)
-                throw new ArgumentException($"Argument must be of type {nameof(IrcCommandSourceSettingsViewModel)}.");
+            _settings = settingsViewModel;
+        }
 
-            settings.IrcClient.Initialize(settings.UserName, settings.ChannelName, settings.AuthToken);
+        public ICommandSource CreateCommandSource(CommandSettings commandSettings)
+        {
+            IrcCommandSourceSettingsViewModel? settings = _settings as IrcCommandSourceSettingsViewModel;
 
-            return new IrcCommandSource(settings.IrcClient, commandSettings);
+            if (settings is null)
+                throw new InvalidOperationException("No valid settings have been applied to the command source.");
+
+            TwitchIrcClient ircClient = new TwitchIrcClient();
+
+            ircClient.Initialize(settings.UserName, settings.ChannelName, settings.AuthToken);
+
+            return new IrcCommandSource(ircClient, commandSettings);
         }
 
         public ICommandSourceSettingsViewModel CreateSettingsViewModel()
         {
-            return new IrcCommandSourceSettingsViewModel(new TwitchIrcClient());
+            return new IrcCommandSourceSettingsViewModel();
         }
     }
 
