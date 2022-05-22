@@ -21,7 +21,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
             IrcCommandSourceSettingsViewModel? settings = _settings as IrcCommandSourceSettingsViewModel;
 
             if (settings is null)
-                throw new InvalidOperationException("No valid settings have been applied to the command source.");
+                throw new InvalidOperationException("No valid settings have been supplied for the command source.");
 
             TwitchIrcClient ircClient = new TwitchIrcClient();
 
