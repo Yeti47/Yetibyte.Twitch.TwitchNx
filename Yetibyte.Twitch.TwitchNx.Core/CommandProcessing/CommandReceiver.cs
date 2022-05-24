@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +7,7 @@ using Yetibyte.Twitch.TwitchNx.Core.CommandModel;
 using Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources;
 using Yetibyte.Twitch.TwitchNx.Core.Common;
 using Yetibyte.Twitch.TwitchNx.Core.SwitchBridge;
+using log4net;
 
 namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
 {
@@ -52,7 +52,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
         private readonly SwitchConnector _switchConnector;
         private readonly SwitchBridgeClientConnectionSettings _connectionSettings;
         private readonly List<CommandProcessor> _commandProcessors = new List<CommandProcessor>();
-        private readonly ILogger<CommandReceiver>? _logger;
+        private readonly ILog? _logger;
 
         public event EventHandler? Started;
         public event EventHandler? Stopped;
@@ -74,7 +74,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
             SwitchConnector switchConnector, 
             SwitchBridgeClientConnectionSettings connectionSettings, 
             CommandSettings commandSettings, 
-            ILogger<CommandReceiver>? logger = null)
+            ILog? logger = null)
         {
             _commandSource = commandSource;
             _switchConnector = switchConnector;
@@ -133,7 +133,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
                 {
                     queueItem.State = QueueItemState.Error;
 
-                    _logger?.LogError($"Macro completion for of command '{queueItem.Command.Name}' timed out.");
+                    _logger?.Error($"Macro completion for of command '{queueItem.Command.Name}' timed out.");
 
                     _commandQueue.Remove(queueItem);
 
@@ -162,7 +162,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
 
             if (matchingProcessor is null)
             {
-                _logger?.LogInformation($"No matching command processor found for command '{e.Command.Name}'.");
+                _logger?.Info($"No matching command processor found for command '{e.Command.Name}'.");
                 return;
             }
 
@@ -181,7 +181,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
 
         protected virtual void OnStarted()
         {
-            _logger?.LogInformation("Command Receiver started.");
+            _logger?.Info("Command Receiver started.");
 
             var handler = Started;
             handler?.Invoke(this, EventArgs.Empty);
@@ -189,7 +189,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
 
         protected virtual void OnStopped()
         {
-            _logger?.LogInformation("Command Receiver stopped.");
+            _logger?.Info("Command Receiver stopped.");
 
             var handler = Stopped;
             handler?.Invoke(this, EventArgs.Empty);
@@ -233,18 +233,18 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
 
         public bool Enqueue(Command command)
         {
-            _logger?.LogInformation($"Trying to enqueue command '{command.Name}' from user {command.User.DisplayName}'...");
+            _logger?.Info($"Trying to enqueue command '{command.Name}' from user {command.User.DisplayName}'...");
 
             if (IsQueueFull)
             {
-                _logger?.LogInformation($"Queue already full. Cannot enqueue command '{command.Name}' by user {command.User.DisplayName}.");
+                _logger?.Info($"Queue already full. Cannot enqueue command '{command.Name}' by user {command.User.DisplayName}.");
 
                 return false;
             }
 
             _commandQueue.Add(new QueueItem(command));
 
-            _logger?.LogInformation($"Command '{command.Name}' enqueued.");
+            _logger?.Info($"Command '{command.Name}' enqueued.");
 
             if (_commandQueue.Count == 1)
             {
@@ -264,7 +264,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
 
             if (_switchConnector.Controllers.Count < queueItem.Command.CommandSetup.ControllerIndex)
             {
-                _logger?.LogError($"Cannot process command '{queueItem.Command.Name}'. No controller with index {queueItem.Command.CommandSetup.ControllerIndex} available.");
+                _logger?.Error($"Cannot process command '{queueItem.Command.Name}'. No controller with index {queueItem.Command.CommandSetup.ControllerIndex} available.");
                 return;
             }
 
@@ -276,13 +276,13 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
             }
             catch (Exception ex)
             {
-                _logger?.LogError($"Error processing command '{queueItem.Command.Name}'. Details: {ex.Message}.");
+                _logger?.Error($"Error processing command '{queueItem.Command.Name}'. Details: {ex.Message}.");
 
                 _commandQueue.Remove(queueItem);
                 return;
             }
 
-            _logger?.LogInformation($"Requested macro execution for command '{queueItem.Command.Name}' by user {queueItem.Command.User.DisplayName}.");
+            _logger?.Info($"Requested macro execution for command '{queueItem.Command.Name}' by user {queueItem.Command.User.DisplayName}.");
 
             OnCommandExecutionRequested(queueItem);
 
@@ -294,7 +294,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
                 {
                     queueItem.State = QueueItemState.Error;
 
-                    _logger?.LogError($"Execution of command '{queueItem.Command.Name}' timed out.");
+                    _logger?.Error($"Execution of command '{queueItem.Command.Name}' timed out.");
 
                     _commandQueue.Remove(queueItem);
 

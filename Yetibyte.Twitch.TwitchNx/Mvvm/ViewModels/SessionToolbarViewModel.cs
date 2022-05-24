@@ -1,4 +1,5 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using log4net;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
     {
         private readonly RelayCommand _startSessionCommand;
         private readonly RelayCommand _stopSessionCommand;
+        private readonly ILog _logger;
 
         public ISessionManager SessionManager { get; }
 
@@ -22,9 +24,10 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         public ICommand StartSessionCommand => _startSessionCommand;
         public ICommand StopSessionCommand => _stopSessionCommand;
 
-        public SessionToolbarViewModel(ISessionManager sessionManager)
+        public SessionToolbarViewModel(ISessionManager sessionManager, ILog logger)
         {
             SessionManager = sessionManager;
+            _logger = logger;
 
             _startSessionCommand = new RelayCommand(ExecuteStartSessionCommand, CanExecuteStartSessionCommand);
             _stopSessionCommand = new RelayCommand(ExecuteStopSessionCommand, CanExecuteStopSessionCommand);
@@ -56,7 +59,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             }
             catch(Exception ex)
             {
-                // TODO: proper error handling!
+                _logger.Error(ex.Message, ex);
             }
         }
 

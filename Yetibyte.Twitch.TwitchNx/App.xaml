@@ -68,6 +68,9 @@
                 <v:SessionToolbarView />
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type vm:AppLoggerViewModel}">
+                <v:AppLoggerView />
+            </DataTemplate>
             <Style x:Key="FormDock" TargetType="DockPanel">
                 <Setter Property="Margin" Value="0,2"/>
             </Style>

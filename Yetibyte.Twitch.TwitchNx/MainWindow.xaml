@@ -99,9 +99,15 @@
                     <!--<LayoutAnchorablePaneGroup x:Name="MainCenter">
 
                     </LayoutAnchorablePaneGroup>-->
-                    <LayoutDocumentPaneGroup x:Name="MainCenter" DockWidth="*">
-                        <LayoutDocumentPane />
-                    </LayoutDocumentPaneGroup>
+                    <LayoutPanel Orientation="Vertical" x:Name="ContainerCenter" >
+                        <LayoutDocumentPaneGroup x:Name="MainCenter" DockWidth="*">
+                            <LayoutDocumentPane />
+                        </LayoutDocumentPaneGroup>
+                        <LayoutAnchorablePane Name="MainBottom" DockMinHeight="150" >
+                            
+                        </LayoutAnchorablePane>
+                    </LayoutPanel>
+                    
 
                     <LayoutAnchorablePane Name="MainRight" DockMinWidth="100" DockWidth="300">
 
