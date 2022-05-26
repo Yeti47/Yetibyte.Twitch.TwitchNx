@@ -124,17 +124,34 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros
 
         public IEnumerable<TimeBoxedControllerInput> GetControllerInputs(TimeSpan parentStartTime, TimeSpan parentEndTime)
         {
-            double stepDuration = GetStepDuration(parentEndTime - parentStartTime);
+            TimeSpan targetTotalDuration = parentEndTime - parentStartTime;
+            TimeSpan totalDuration = TimeSpan.Zero;
+
+            double stepDurationSeconds = GetStepDuration(targetTotalDuration);
 
             int i = 0;
 
+            int stepCount = Steps.Count();
+
             foreach(var stepDirectionInput in this)
             {
-                TimeSpan relativeStartTime = TimeSpan.FromSeconds(i++ * stepDuration);
-                TimeSpan relativeEndTime = relativeStartTime + TimeSpan.FromSeconds(stepDuration);
+                bool isLastStep = i == (stepCount - 1);
+
+                TimeSpan stepDuration = TimeSpan.FromSeconds(stepDurationSeconds);
+
+                totalDuration += stepDuration;
+
+                TimeSpan relativeStartTime = i++ * stepDuration;
+
+                if (isLastStep)
+                {
+                    stepDuration += (targetTotalDuration - totalDuration);
+                }
+
+                TimeSpan relativeEndTime = relativeStartTime + stepDuration;
 
                 TimeSpan absoluteStartTime = parentStartTime + relativeStartTime;
-                TimeSpan absoluteEndTime = absoluteStartTime + TimeSpan.FromSeconds(stepDuration);
+                TimeSpan absoluteEndTime = absoluteStartTime + stepDuration;
 
                 yield return new TimeBoxedControllerInput(stepDirectionInput, relativeStartTime, relativeEndTime, absoluteStartTime, absoluteEndTime);
             }

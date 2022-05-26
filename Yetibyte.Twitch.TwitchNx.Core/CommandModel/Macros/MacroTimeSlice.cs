@@ -38,7 +38,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros
             macroBuilder.Append(Duration.TotalSeconds.ToString("F4", SECONDS_FORMAT_CULTURE));
             macroBuilder.Append('s');
 
-            return macroBuilder.ToString();
+            return macroBuilder.ToString().Trim();
         }
 
     }

@@ -26,7 +26,8 @@ namespace Yetibyte.Twitch.TwitchNx.Services
             new ButtonPressMacroInstruction(ControllerButton.DpadDown),
             new ButtonPressMacroInstruction(ControllerButton.DpadLeft),
             new StickRotationMacroInstruction(ControllerStickDirection.North, ControllerStickDirection.North, ControllerStick.Left),
-            new StickRotationMacroInstruction(ControllerStickDirection.North, ControllerStickDirection.North, ControllerStick.Right)
+            new StickRotationMacroInstruction(ControllerStickDirection.North, ControllerStickDirection.North, ControllerStick.Right),
+            new KeyFrameMacroInstruction()
         };
 
         private readonly IMacroInstructionTemplateFactoryFacade _macroInstructionTemplateFactoryFacade;

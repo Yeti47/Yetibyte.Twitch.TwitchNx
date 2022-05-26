@@ -46,7 +46,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             }
         }
 
-        public string InitialImagePath => "/" + (!string.IsNullOrWhiteSpace(_defaultImagePath) ? _defaultImagePath : _animationFrames.First().ImagePath);
+        public string InitialImagePath => "/" + (!string.IsNullOrWhiteSpace(_defaultImagePath) ? _defaultImagePath : _animationFrames.FirstOrDefault()?.ImagePath);
 
         public Uri ImageUri => new Uri(ImagePath, UriKind.Relative);
 
