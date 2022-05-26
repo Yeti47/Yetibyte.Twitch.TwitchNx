@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using log4net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
     {
         private readonly IIrcClient _ircClient;
         private readonly CommandSettings _commandSettings;
-        private readonly ILogger<ICommandSource>? _logger;
+        private readonly ILog? _logger;
 
         public bool IsRunning { get; private set; }
 
@@ -22,7 +22,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
         public event EventHandler? Started;
         public event EventHandler? Stopped;
 
-        public IrcCommandSource(IIrcClient ircClient, CommandSettings commandSettings, ILogger<ICommandSource>? logger = null)
+        public IrcCommandSource(IIrcClient ircClient, CommandSettings commandSettings, ILog? logger = null)
         {
             _ircClient = ircClient;
             _commandSettings = commandSettings;
@@ -36,22 +36,22 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
 
         private void ircClient_Disconnected(object? sender, IrcDisconnectedEventArgs e)
         {
-            _logger?.LogInformation("IRC client disconnected.");
+            _logger?.Info("IRC client disconnected.");
         }
 
         private void ircClient_Connected(object? sender, IrcConnectedEventArgs e)
         {
-            _logger?.LogInformation($"IRC client successfully connected to channel '{e.Channel}'.");
+            _logger?.Info($"IRC client successfully connected to channel '{e.Channel}'.");
         }
 
         private void ircClient_ConnectionErrorOccurred(object? sender, IrcErrorEventArgs e)
         {
-            _logger?.LogError($"IRC connection error. Details: {e.ErrorMessage}");
+            _logger?.Error($"IRC connection error. Details: {e.ErrorMessage}");
         }
 
         private void ircClient_ErrorOccurred(object? sender, IrcErrorEventArgs e)
         {
-            _logger?.LogError($"The IRC client threw an error. Details: {e.ErrorMessage}");
+            _logger?.Error($"The IRC client threw an error. Details: {e.ErrorMessage}");
         }
 
         private void ircClient_MessageReceived(object? sender, IrcMessageEventArgs e)
@@ -62,7 +62,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
 
             if (!words.Any())
             {
-                _logger?.LogWarning("Unable to process empty message.");
+                _logger?.Warn("Unable to process empty message.");
                 return;
             }
 
@@ -76,7 +76,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
 
                 if (commandSetup is null)
                 {
-                    _logger?.LogInformation($"Unrecognized command '{commandWord}' received from user '{e.Message.Author.DisplayName}'.");
+                    _logger?.Info($"Unrecognized command '{commandWord}' received from user '{e.Message.Author.DisplayName}'.");
 
                     OnInvalidCommandReceived(new InvalidCommandReceivedEventArgs(commandName, message, e.Message.Author));
                     
@@ -87,7 +87,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
 
                 Command command = new Command(commandId, e.Message.Author, commandSetup, message, e.Message.Timestamp);
 
-                _logger?.LogInformation($"Received command '{commandWord}' from user '{e.Message.Author.DisplayName}'. Command-ID: {commandId}");
+                _logger?.Info($"Received command '{commandWord}' from user '{e.Message.Author.DisplayName}'. Command-ID: {commandId}");
 
                 CommandReceivedEventArgs commandReceivedEventArgs = new CommandReceivedEventArgs(command);
 
@@ -110,12 +110,12 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
             }
             catch (Exception ex)
             {
-                _logger?.LogError(ex, "An error occurred trying to connect to the IRC.");
+                _logger?.Error("An error occurred trying to connect to the IRC.", ex);
             }
 
             if (success)
             {
-                _logger?.LogInformation("IRC Command Source started.");
+                _logger?.Info("IRC Command Source started.");
 
                 OnStarted();
             }
@@ -134,13 +134,13 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
 
             if (success)
             {
-                _logger?.LogInformation("IRC Command Source stopped.");
+                _logger?.Info("IRC Command Source stopped.");
 
                 OnStopped();
             }
             else
             {
-                _logger?.LogError("Could not stop IRC client.");
+                _logger?.Error("Could not stop IRC client.");
             }
 
             return success;
@@ -175,7 +175,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
             {
                 if (!commandProcessingResult.WasEnqueued)
                 {
-                    _logger?.LogInformation($"Informing user '{commandProcessingResult.Command.User.DisplayName}' about queue being full.");
+                    _logger?.Info($"Informing user '{commandProcessingResult.Command.User.DisplayName}' about queue being full.");
 
                     _ircClient.SendMessage(_commandSettings.GetQueueFullMessage(commandProcessingResult.Command.User.DisplayName));
                 }
@@ -197,7 +197,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
                 }
                 catch (Exception ex)
                 {
-                    _logger?.LogError(ex, "An error occurred while trying to send a cooldown message.");
+                    _logger?.Error("An error occurred while trying to send a cooldown message.", ex);
                 }
             }
             else if(commandProcessingResult.TimeRemaining > TimeSpan.Zero)
@@ -216,7 +216,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
                 }
                 catch (Exception ex)
                 {
-                    _logger?.LogError(ex, "An error occurred while trying to send a cooldown message.");
+                    _logger?.Error("An error occurred while trying to send a cooldown message.", ex);
                 }
             }
         }

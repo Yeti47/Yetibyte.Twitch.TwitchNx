@@ -1,4 +1,5 @@
 ﻿using AvalonDock.Themes;
+using log4net;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
@@ -10,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources;
+using Yetibyte.Twitch.TwitchNx.Core.Logging;
 using Yetibyte.Twitch.TwitchNx.Core.ProjectManagement;
 using Yetibyte.Twitch.TwitchNx.Core.SessionManagement;
 using Yetibyte.Twitch.TwitchNx.Core.SwitchBridge;
@@ -21,6 +23,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 {
     public class MainViewModel : ObservableObject
     {
+        private static readonly ILog _logger = log4net.LogManager.GetLogger("root");
+
         private readonly IProjectManager _projectManager;
         private readonly SwitchConnector _switchConnector;
         private readonly IDialogService _dialogService;
@@ -53,6 +57,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         public CommandSourceViewModel CommandSourceViewModel { get; private set; }
         public SessionToolbarViewModel SessionToolbarViewModel { get; private set; }
+        public AppLoggerViewModel AppLoggerViewModel { get; private set; }
 
         public IEnumerable<ToolViewModel> Tools => _tools;
 
@@ -68,12 +73,18 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             }
         }
 
-        public MainViewModel(IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, IProjectManager projectManager, SwitchConnector switchConnector, IMacroInstructionTemplateProvider macroInstructionTemplateProvider, IDialogService dialogService, ICommandSourceProvider commandSourceProvider)
+        public MainViewModel(
+            IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, 
+            IProjectManager projectManager, 
+            SwitchConnector switchConnector, 
+            IMacroInstructionTemplateProvider macroInstructionTemplateProvider, 
+            IDialogService dialogService, 
+            ICommandSourceProvider commandSourceProvider,
+            EventLogAppender eventLogAppender)
         {
             _projectManager = projectManager;
             _switchConnector = switchConnector;
             _dialogService = dialogService;
-
             _switchConnectionViewModel = new SwitchConnectionViewModel(switchConnector, projectManager.CurrentProject?.SwitchBridgeClientConnectionSettings ?? SwitchBridgeClientConnectionSettings.CreateEmpty());
 
             DocumentManagerViewModel = new DocumentManagerViewModel();
@@ -83,7 +94,9 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
             CommandSourceViewModel = new CommandSourceViewModel(_projectManager, commandSourceProvider);
 
-            SessionToolbarViewModel = new SessionToolbarViewModel(new SessionManager(_projectManager, _switchConnector));
+            SessionToolbarViewModel = new SessionToolbarViewModel(new SessionManager(_projectManager, _switchConnector), _logger);
+
+            AppLoggerViewModel = new AppLoggerViewModel(eventLogAppender);
 
             IEnumerable<MacroInstructionTemplateViewModel> macroInstructionTemplateViewModels = macroInstructionTemplateProvider.GetMacroInstructionTemplates();
 
@@ -98,7 +111,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
                 ProjectExplorerViewModel, 
                 MacroTesterViewModel,
                 MacroToolBoxViewModel,
-                CommandSourceViewModel
+                CommandSourceViewModel,
+                AppLoggerViewModel
             };
 
             _closeProjectCommand = new RelayCommand(() => _projectManager.CloseProject(), () => _projectManager.IsProjectOpen);
