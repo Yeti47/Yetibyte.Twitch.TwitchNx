@@ -17,6 +17,7 @@ using log4net;
 using log4net.Config;
 using Yetibyte.Twitch.TwitchNx.Core.Logging;
 using log4net.Core;
+using Yetibyte.Twitch.TwitchNx.Core.Common;
 
 namespace Yetibyte.Twitch.TwitchNx
 {
@@ -27,7 +28,7 @@ namespace Yetibyte.Twitch.TwitchNx
     {
         private const string LOG_FILE_PATH = "twitchnx.log";
 
-        private static readonly ILog _logger = LogManager.GetLogger("root");
+        private static readonly ILog _logger = LogManager.GetLogger(ApplicationConstants.ROOT_LOGGER_NAME);
         private EventLogAppender _eventLogAppender;
 
         protected override void OnStartup(StartupEventArgs e)

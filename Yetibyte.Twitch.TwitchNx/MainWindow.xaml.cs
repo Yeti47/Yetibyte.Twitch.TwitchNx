@@ -19,6 +19,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources;
+using Yetibyte.Twitch.TwitchNx.Core.Common;
 using Yetibyte.Twitch.TwitchNx.Core.Logging;
 using Yetibyte.Twitch.TwitchNx.Core.ProjectManagement;
 using Yetibyte.Twitch.TwitchNx.Core.SwitchBridge;
@@ -36,7 +37,7 @@ namespace Yetibyte.Twitch.TwitchNx
     {
         private const string PROJECT_FILE_FILTER = $"TwitchNX Projects|*{ProjectManager.PROJECT_FILE_EXTENSION}";
 
-        private static readonly ILog _logger = LogManager.GetLogger("root");
+        private static readonly ILog _logger = LogManager.GetLogger(ApplicationConstants.ROOT_LOGGER_NAME);
 
         private readonly IProjectManager _projectManager;
         private readonly XmlLayoutSerializer _xmlLayoutSerializer;
@@ -163,8 +164,7 @@ namespace Yetibyte.Twitch.TwitchNx
             }
             catch (Exception ex)
             {
-                ILog logger = LogManager.GetLogger("root");
-                logger.Error("Error serializing default docking layout.", ex);
+                _logger.Error("Error serializing default docking layout.", ex);
             }
 
             _hasSerializedDefaultLayout = true;
@@ -205,8 +205,7 @@ namespace Yetibyte.Twitch.TwitchNx
             }
             catch (Exception ex)
             {
-                ILog logger = LogManager.GetLogger("root");
-                logger.Error("Error deserializing default docking layout.", ex);
+                _logger.Error("Error deserializing default docking layout.", ex);
 
                 success = false;
             }

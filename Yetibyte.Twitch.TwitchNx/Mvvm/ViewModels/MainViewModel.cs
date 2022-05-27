@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources;
+using Yetibyte.Twitch.TwitchNx.Core.Common;
 using Yetibyte.Twitch.TwitchNx.Core.Logging;
 using Yetibyte.Twitch.TwitchNx.Core.ProjectManagement;
 using Yetibyte.Twitch.TwitchNx.Core.SessionManagement;
@@ -23,7 +24,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 {
     public class MainViewModel : ObservableObject
     {
-        private static readonly ILog _logger = log4net.LogManager.GetLogger("root");
+        private static readonly ILog _logger = log4net.LogManager.GetLogger(ApplicationConstants.ROOT_LOGGER_NAME);
 
         private readonly IProjectManager _projectManager;
         private readonly SwitchConnector _switchConnector;

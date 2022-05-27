@@ -37,7 +37,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
 
             ircClient.Initialize(settings.UserName,settings.ChannelName,settings.AuthToken);
 
-            var logger = log4net.LogManager.GetLogger("root");
+            var logger = log4net.LogManager.GetLogger(ApplicationConstants.ROOT_LOGGER_NAME);
 
             return new IrcCommandSource(ircClient, project.CommandSettings, logger);
         }

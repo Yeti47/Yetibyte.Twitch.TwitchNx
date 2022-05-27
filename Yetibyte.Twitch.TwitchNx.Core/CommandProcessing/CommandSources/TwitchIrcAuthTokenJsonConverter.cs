@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.Security.Cryptography;
 using System.Text;
+using Yetibyte.Twitch.TwitchNx.Core.Common;
 
 namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
 {
@@ -28,7 +29,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
             }
             catch (Exception ex)
             {
-                ILog logger = LogManager.GetLogger("root");
+                ILog logger = LogManager.GetLogger(ApplicationConstants.ROOT_LOGGER_NAME);
 
                 logger.Error("Auth token cannot be restored due to a decryption error.", ex);
             }
@@ -53,7 +54,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
             }
             catch (Exception ex)
             {
-                ILog logger = LogManager.GetLogger("root");
+                ILog logger = LogManager.GetLogger(ApplicationConstants.ROOT_LOGGER_NAME);
 
                 logger.Error("Auth token will not be saved due to an encryption error.", ex);
 
