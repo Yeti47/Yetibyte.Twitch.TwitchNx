@@ -111,10 +111,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             Validate();
         }
 
-        private bool CanExecuteApplyCommand()
-        {
-            return IsValid;
-        }
+        private bool CanExecuteApplyCommand() => IsValid;
 
         private void ExecuteApplyCommand()
         {

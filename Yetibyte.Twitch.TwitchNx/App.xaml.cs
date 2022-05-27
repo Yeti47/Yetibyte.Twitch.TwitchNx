@@ -39,17 +39,16 @@ namespace Yetibyte.Twitch.TwitchNx
             ISwitchBridgeClientFactory switchBridgeClientFactory = new WebSocketSwitchBridgeClientFactory();
             SwitchConnector switchConnector = new SwitchConnector(switchBridgeClientFactory);
 
-            IProjectManager projectManager = new ProjectManager();
+            ICommandSourceProvider commandSourceProvider = new DefaultCommandSourceProvider();
+            commandSourceProvider.Load();
+
+            IProjectManager projectManager = new ProjectManager(commandSourceProvider);
 
             IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade = new MacroInstructionTemplateFactoryFacade();
 
             IMacroInstructionTemplateProvider macroInstructionTemplateProvider = new DefaultMacroInstructionTemplateProvider(macroInstructionTemplateFactoryFacade);
 
             IDialogService dialogService = new DialogService();
-
-            ICommandSourceProvider commandSourceProvider = new DefaultCommandSourceProvider();
-
-            commandSourceProvider.Load();
 
             var mainWindow = new MainWindow(
                 projectManager, 

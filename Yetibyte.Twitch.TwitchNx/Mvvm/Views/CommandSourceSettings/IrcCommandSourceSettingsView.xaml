@@ -13,23 +13,26 @@
             <RowDefinition Height="30" />
             <RowDefinition Height="30" />
             <RowDefinition Height="30" />
+            <RowDefinition Height="80" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="130" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Label Grid.Column="0" Grid.Row="0">User Name:</Label>
-        <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding UserName}" />
+        <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Path=UserName, UpdateSourceTrigger=PropertyChanged}" />
         <Label Grid.Column="0" Grid.Row="1">Channel:</Label>
-        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding ChannelName}" />
-        <Label Grid.Column="0" Grid.Row="2">Auth Token:</Label>
-        <Grid Grid.Column="1" Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="80" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Command="{Binding ToggleAuthTokenVisibilityCommand}">Toggle</Button>
-            <TextBox Grid.Column="1" Text="{Binding AuthToken}" Visibility="{Binding IsAuthTokenVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
-        </Grid>
+        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=ChannelName, UpdateSourceTrigger=PropertyChanged}" />
+        <Button Grid.Column="0" Grid.Row="2" Command="{Binding ToggleAuthTokenVisibilityCommand}" HorizontalContentAlignment="Left">Auth Token</Button>
+        <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Path=AuthToken, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding IsAuthTokenVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <TextBlock Grid.Column="0" 
+                   Grid.Row="3" 
+                   Grid.ColumnSpan="2"
+                   Margin="8,8"
+                   HorizontalAlignment="Center"
+                   TextAlignment="Center"
+                   MaxWidth="180"
+                   TextWrapping="Wrap"
+                   FontWeight="SemiBold">Please be sure to keep your auth token secret. Never share your auth token with anyone.</TextBlock>
     </Grid>
 </UserControl>

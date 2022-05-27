@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SessionManagement
     {
         private readonly IProjectManager _projectManager;
         private readonly SwitchConnector _switchConnector;
+        private readonly ILog _logger;
 
         private CommandReceiver? _commandReceiver;
 
@@ -26,10 +28,11 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SessionManagement
         public event EventHandler<SessionStartedEventArgs>? SessionStarted;
         public event EventHandler<SessionStoppedEventArgs>? SessionStopped;
 
-        public SessionManager(IProjectManager projectManager, SwitchConnector switchConnector)
+        public SessionManager(IProjectManager projectManager, SwitchConnector switchConnector, ILog logger)
         {
             _projectManager = projectManager;
             _switchConnector = switchConnector;
+            _logger = logger;
         }
 
         public bool StartSession()
@@ -62,8 +65,17 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SessionManagement
             //        return false;
             //}
 
-            if (!_projectManager.CurrentProject.CommandSourceFactory.IsReady)
-                throw new InvalidOperationException("Command Source Factory not ready.");
+            ICommandSource commandSource;
+            
+            try
+            {
+                commandSource = _projectManager.CurrentProject.CommandSourceFactory.CreateCommandSource(_projectManager.CurrentProject);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Could not create command source: " + ex.Message, ex);
+                return false;
+            }
 
             if (_commandReceiver is not null)
             {
@@ -73,8 +85,6 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SessionManagement
                 if(_commandReceiver.IsRunning)
                     _commandReceiver.Stop();
             }
-
-            var commandSource = _projectManager.CurrentProject.CommandSourceFactory.CreateCommandSource(_projectManager.CurrentProject.CommandSettings);
 
             _commandReceiver = new CommandReceiver(
                 commandSource,

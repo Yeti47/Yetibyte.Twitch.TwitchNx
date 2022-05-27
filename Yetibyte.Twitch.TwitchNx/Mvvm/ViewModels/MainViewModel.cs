@@ -94,7 +94,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
             CommandSourceViewModel = new CommandSourceViewModel(_projectManager, commandSourceProvider);
 
-            SessionToolbarViewModel = new SessionToolbarViewModel(new SessionManager(_projectManager, _switchConnector), _logger);
+            SessionToolbarViewModel = new SessionToolbarViewModel(new SessionManager(_projectManager, _switchConnector, _logger), _logger);
 
             AppLoggerViewModel = new AppLoggerViewModel(eventLogAppender);
 

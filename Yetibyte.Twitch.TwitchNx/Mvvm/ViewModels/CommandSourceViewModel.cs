@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources;
+using Yetibyte.Twitch.TwitchNx.Core.Common;
 using Yetibyte.Twitch.TwitchNx.Core.ProjectManagement;
 using Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.Layout;
 using Yetibyte.Twitch.TwitchNx.Styling;
@@ -15,7 +16,7 @@ using Yetibyte.Twitch.TwitchNx.Styling;
 namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 {
     [DefaultPane("MainRight")]
-    public class CommandSourceViewModel : ToolViewModel
+    public class CommandSourceViewModel : ToolViewModel, IDirtiable
     {
         public class CommandSourceItem : ObservableObject
         {
@@ -37,6 +38,9 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         }
 
+        private const string TOOL_TITLE = "Command Source";
+        private const string DIRTY_INDICATION = "*";
+
         private readonly ObservableCollection<CommandSourceItem> _commandSources = new ObservableCollection<CommandSourceItem>();
         private readonly IProjectManager _projectManager;
         private readonly ICommandSourceProvider _commandSourceProvider;
@@ -44,6 +48,20 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         private CommandSourceItem _selectedCommandSource;
         private ICommandSourceSettingsViewModel _settingsViewModel;
+
+        private bool _isDirty = false;
+
+        public event EventHandler? IsDirtyChanged;
+
+        public bool IsDirty
+        {
+            get => _isDirty;
+            set { 
+                _isDirty = value; 
+                OnPropertyChanged();
+                OnIsDirtyChanged();
+            }
+        }
 
         public ICommandSourceSettingsViewModel SettingsViewModel
         {
@@ -58,10 +76,11 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         public CommandSourceItem SelectedCommandSource
         {
             get { return _selectedCommandSource; }
-            set { 
-                _selectedCommandSource = value; 
+            set {
+                _selectedCommandSource = value;
                 OnPropertyChanged();
-                SettingsViewModel = SelectedCommandSource.Factory.CreateSettingsViewModel();
+                SettingsViewModel = SelectedCommandSource.Factory.CreateSettingsViewModel(this, _projectManager.CurrentProject);
+                MarkDirty();
             }
         }
 
@@ -72,7 +91,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         public ICommand SaveCommand => _saveCommand;
 
 
-        public CommandSourceViewModel(IProjectManager projectManager, ICommandSourceProvider commandSourceProvider) :base("Command Source")
+        public CommandSourceViewModel(IProjectManager projectManager, ICommandSourceProvider commandSourceProvider) :base(TOOL_TITLE)
         {
             _projectManager = projectManager;
             _commandSourceProvider = commandSourceProvider;
@@ -80,9 +99,25 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             PopulateCommandSources();
 
             _selectedCommandSource = _commandSources.First();
-            _settingsViewModel = _commandSources.First().Factory.CreateSettingsViewModel();
+            _settingsViewModel = _commandSources.First().Factory.CreateSettingsViewModel(this, _projectManager.CurrentProject);
 
             _saveCommand = new RelayCommand(ExecuteSaveCommand);
+
+            _projectManager.ProjectChanged += _projectManager_ProjectChanged;
+        }
+
+        private void _projectManager_ProjectChanged(object? sender, EventArgs e)
+        {
+            if (_projectManager.CurrentProject is null) 
+                return;
+
+            var persistedCommandSource = _commandSources.FirstOrDefault(cs => cs.Factory.Id == _projectManager.CurrentProject?.CommandSourceFactory?.Id);
+
+            if (persistedCommandSource != null)
+            {
+                SelectedCommandSource = persistedCommandSource;
+                UnmarkDirty(); // We just loaded the project, so obviously the command source should not be marked as dirty.
+            }
         }
 
         private void ExecuteSaveCommand()
@@ -90,10 +125,13 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             if (_projectManager.CurrentProject is null)
                 return;
 
-            //var commandSource = SelectedCommandSource.Factory.CreateCommandSource(_projectManager.CurrentProject.CommandSettings, SettingsViewModel);
-
             _projectManager.CurrentProject.CommandSourceFactory = SelectedCommandSource.Factory;
-            _projectManager.CurrentProject.CommandSourceFactory.ApplySettings(SettingsViewModel);
+
+            var commandSourceSettings = _projectManager.CurrentProject.CommandSourceFactory.ApplySettings(SettingsViewModel);
+
+            _projectManager.CurrentProject.WriteCommandSourceSettings(commandSourceSettings);
+
+            UnmarkDirty();
         }
 
         private void PopulateCommandSources()
@@ -106,6 +144,18 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
                 _commandSources.Add(commandSourceVm);
             }
+        }
+
+        public void MarkDirty() => IsDirty = true;
+
+        public void UnmarkDirty() => IsDirty = false;
+
+        protected virtual void OnIsDirtyChanged()
+        {
+            var handler = IsDirtyChanged;
+            handler?.Invoke(this, EventArgs.Empty);
+
+            Title = TOOL_TITLE + (IsDirty ? DIRTY_INDICATION : string.Empty);
         }
     }
 }

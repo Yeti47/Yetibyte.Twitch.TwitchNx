@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Yetibyte.Twitch.TwitchNx.Core.Common;
 using Yetibyte.Twitch.TwitchNx.Core.Irc;
 
 namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
@@ -33,28 +34,44 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
         private string _authToken = string.Empty;
 
         private bool _isAuthTokenVisible;
+        private readonly IDirtiable _parentViewModel;
 
         public bool IsAuthTokenVisible
         {
             get { return _isAuthTokenVisible; }
-            set { _isAuthTokenVisible = value; OnPropertyChanged(); }
+            set { 
+                _isAuthTokenVisible = value; 
+                OnPropertyChanged();
+            }
         }
 
         public string AuthToken
         {
             get { return _authToken; }
-            set { _authToken = value; OnPropertyChanged(); }
+            set { 
+                _authToken = value; 
+                OnPropertyChanged(); 
+                _parentViewModel.MarkDirty(); 
+            }
         }
 
         public string ChannelName
         {
             get { return _channelName; }
-            set { _channelName = value; OnPropertyChanged(); }
+            set { 
+                _channelName = value; 
+                OnPropertyChanged();
+                _parentViewModel.MarkDirty();
+            }
         }
         public string UserName
         {
             get { return _userName; }
-            set { _userName = value; OnPropertyChanged(); }
+            set { 
+                _userName = value; 
+                OnPropertyChanged();
+                _parentViewModel.MarkDirty();
+            }
         }
 
         public ICommand ToggleAuthTokenVisibilityCommand { get; }
@@ -63,9 +80,10 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
         public event PropertyChangedEventHandler? PropertyChanged;
 
 
-        public IrcCommandSourceSettingsViewModel()
+        public IrcCommandSourceSettingsViewModel(IDirtiable parentViewModel)
         {
             ToggleAuthTokenVisibilityCommand = new ToggleAuthTokenCommand(this);
+            _parentViewModel = parentViewModel;
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName]string propertyName = "")

@@ -14,6 +14,8 @@ namespace Yetibyte.Twitch.TwitchNx.Core.ProjectManagement
     {
         public const string UNTITLED_PROJECT_NAME = "Untitled";
 
+        private readonly List<ICommandSourceSettings> _commandSourceSettings = new List<ICommandSourceSettings>();
+
         private string _name = string.Empty;
 
         public string Name
@@ -37,9 +39,9 @@ namespace Yetibyte.Twitch.TwitchNx.Core.ProjectManagement
             }
         }
 
-        //public ICommandSource? CommandSource { get; set; }
         public ICommandSourceFactory? CommandSourceFactory { get; set; }
 
+        public IEnumerable<ICommandSourceSettings> CommandSourceSettings => _commandSourceSettings;
 
         public CommandSettings CommandSettings { get; } = new CommandSettings();
 
@@ -66,5 +68,25 @@ namespace Yetibyte.Twitch.TwitchNx.Core.ProjectManagement
             handler?.Invoke(this, new NameChangedEventArgs(oldName, newName));
         }
 
+        public void WriteCommandSourceSettings(ICommandSourceSettings commandSourceSettings)
+        {
+            if (_commandSourceSettings
+                .FirstOrDefault(c => c.CommandSourceType == commandSourceSettings.CommandSourceType 
+                                     && c.CommandSourceId == commandSourceSettings.CommandSourceId) 
+                is ICommandSourceSettings existingSettings)
+            {
+                _commandSourceSettings.Remove(existingSettings);
+            }
+
+            _commandSourceSettings.Add(commandSourceSettings);
+        }
+
+        public ICommandSourceSettings? ReadCommmandSourceSettings(Type commandSourceType, string commandSourceId = "")
+        {
+            return _commandSourceSettings
+                .FirstOrDefault(c => c.CommandSourceType == commandSourceType 
+                                     && (string.IsNullOrWhiteSpace(commandSourceId) || c.CommandSourceId == commandSourceId)
+            );
+        }
     }
 }

@@ -5,7 +5,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.ProjectManagement
     public class ProjectManager : IProjectManager
     {
         public const string PROJECT_FILE_EXTENSION = ".tnx";
-
+        private readonly ICommandSourceProvider _commandSourceProvider;
         private Project? _currentProject;
         private string _projectFilePath = string.Empty;
 
@@ -54,9 +54,9 @@ namespace Yetibyte.Twitch.TwitchNx.Core.ProjectManagement
         public event EventHandler? ProjectChanged;
         public event EventHandler? ProjectChanging;
 
-        public ProjectManager()
+        public ProjectManager(ICommandSourceProvider commandSourceProvider)
         {
-
+            _commandSourceProvider = commandSourceProvider;
         }
 
         protected virtual void OnProjectChanged()
@@ -91,7 +91,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.ProjectManagement
                 throw new InvalidOperationException("No project file path specified.");
             }
 
-            ProjectSerializer projectSerializer = new ProjectSerializer();
+            ProjectSerializer projectSerializer = new ProjectSerializer(_commandSourceProvider);
 
             ProjectData projectData = projectSerializer.BuildProjectData(CurrentProject);
 
@@ -124,7 +124,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.ProjectManagement
 
             byte[] fileData = File.ReadAllBytes(filePath);
 
-            ProjectSerializer projectSerializer = new ProjectSerializer();
+            ProjectSerializer projectSerializer = new ProjectSerializer(_commandSourceProvider);
 
             ProjectData projectData = projectSerializer.DeserializeProjectData(fileData);
 

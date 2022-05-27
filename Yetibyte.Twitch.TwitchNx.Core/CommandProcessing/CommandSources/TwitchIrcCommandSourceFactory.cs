@@ -1,40 +1,57 @@
 ﻿using Yetibyte.Twitch.TwitchNx.Core.CommandModel;
+using Yetibyte.Twitch.TwitchNx.Core.Common;
 using Yetibyte.Twitch.TwitchNx.Core.Irc;
+using Yetibyte.Twitch.TwitchNx.Core.ProjectManagement;
 
 namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
 {
     public class TwitchIrcCommandSourceFactory : ICommandSourceFactory
     {
-        private ICommandSourceSettingsViewModel? _settings;
-
         public string SourceDisplayName => "Twitch IRC";
 
-        public bool IsReady => _settings is not null;
+        public string Id => "TWITCH_IRC";
 
-        public void ApplySettings(ICommandSourceSettingsViewModel settingsViewModel)
+        public ICommandSourceSettings ApplySettings(ICommandSourceSettingsViewModel settingsViewModel)
         {
-            _settings = settingsViewModel;
-        }
-
-        public ICommandSource CreateCommandSource(CommandSettings commandSettings)
-        {
-            IrcCommandSourceSettingsViewModel? settings = _settings as IrcCommandSourceSettingsViewModel;
+            IrcCommandSourceSettingsViewModel? settings = settingsViewModel as IrcCommandSourceSettingsViewModel;
 
             if (settings is null)
-                throw new InvalidOperationException("No valid settings have been supplied for the command source.");
+                throw new InvalidOperationException("No valid command source settings have been provided.");
+
+            return new TwitchIrcCommandSourceSettings
+            {
+                AuthToken = settings.AuthToken,
+                ChannelName = settings.ChannelName,
+                UserName = settings.UserName
+            };
+        }
+
+        public ICommandSource CreateCommandSource(IProject project)
+        {
+            TwitchIrcCommandSourceSettings? settings = project.ReadCommmandSourceSettings(typeof(TwitchIrcCommandSourceSettings), TwitchIrcCommandSourceSettings.COMMAND_SOURCE_ID) as TwitchIrcCommandSourceSettings;
+
+            if (settings is null)
+                throw new ArgumentException("No valid settings have been supplied for the command source.");
 
             TwitchIrcClient ircClient = new TwitchIrcClient();
 
-            ircClient.Initialize(settings.UserName, settings.ChannelName, settings.AuthToken);
+            ircClient.Initialize(settings.UserName,settings.ChannelName,settings.AuthToken);
 
             var logger = log4net.LogManager.GetLogger("root");
 
-            return new IrcCommandSource(ircClient, commandSettings, logger);
+            return new IrcCommandSource(ircClient, project.CommandSettings, logger);
         }
 
-        public ICommandSourceSettingsViewModel CreateSettingsViewModel()
+        public ICommandSourceSettingsViewModel CreateSettingsViewModel(IDirtiable parentViewModel, IProject? project)
         {
-            return new IrcCommandSourceSettingsViewModel();
+            TwitchIrcCommandSourceSettings? settings = project?.ReadCommmandSourceSettings(typeof(IrcCommandSource), TwitchIrcCommandSourceSettings.COMMAND_SOURCE_ID) as TwitchIrcCommandSourceSettings;
+
+            return new IrcCommandSourceSettingsViewModel(parentViewModel)
+            {
+                AuthToken = settings?.AuthToken ?? string.Empty,
+                ChannelName = settings?.ChannelName ?? string.Empty,
+                UserName = settings?.UserName ?? string.Empty
+            };
         }
     }
 
