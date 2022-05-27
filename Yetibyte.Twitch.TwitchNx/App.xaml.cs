@@ -43,7 +43,7 @@ namespace Yetibyte.Twitch.TwitchNx
             ICommandSourceProvider commandSourceProvider = new DefaultCommandSourceProvider();
             commandSourceProvider.Load();
 
-            IProjectManager projectManager = new ProjectManager(commandSourceProvider);
+            IProjectManager projectManager = new ProjectManager(commandSourceProvider, _logger);
 
             IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade = new MacroInstructionTemplateFactoryFacade();
 

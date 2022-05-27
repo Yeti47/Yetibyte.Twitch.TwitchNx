@@ -149,7 +149,9 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
             _projectManager.CurrentProject.CommandSettings.AddCommandSetup(commandSetup);
 
-            SelectedCommand = _commands.FirstOrDefault(c => c.Name.Equals(commandName, StringComparison.OrdinalIgnoreCase));    
+            SelectedCommand = _commands.FirstOrDefault(c => c.Name.Equals(commandName, StringComparison.OrdinalIgnoreCase));
+
+            SelectedCommand?.OpenCommand?.Execute(null);
         }
 
         private void ProjectManager_ProjectChanging(object? sender, EventArgs e)

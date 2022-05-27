@@ -1,4 +1,5 @@
-﻿using Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources;
+﻿using log4net;
+using Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources;
 
 namespace Yetibyte.Twitch.TwitchNx.Core.ProjectManagement
 {
@@ -6,6 +7,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.ProjectManagement
     {
         public const string PROJECT_FILE_EXTENSION = ".tnx";
         private readonly ICommandSourceProvider _commandSourceProvider;
+        private readonly ILog _logger;
         private Project? _currentProject;
         private string _projectFilePath = string.Empty;
 
@@ -54,9 +56,10 @@ namespace Yetibyte.Twitch.TwitchNx.Core.ProjectManagement
         public event EventHandler? ProjectChanged;
         public event EventHandler? ProjectChanging;
 
-        public ProjectManager(ICommandSourceProvider commandSourceProvider)
+        public ProjectManager(ICommandSourceProvider commandSourceProvider, ILog logger) 
         {
             _commandSourceProvider = commandSourceProvider;
+            _logger = logger;
         }
 
         protected virtual void OnProjectChanged()
@@ -77,6 +80,8 @@ namespace Yetibyte.Twitch.TwitchNx.Core.ProjectManagement
             project.SwitchBridgeClientConnectionSettings.Port = SwitchBridge.SwitchBridgeClientConnectionSettings.DEFAULT_PORT;
 
             CurrentProject = project;
+
+            _logger.Info($"Opened new project '{CurrentProject.Name}'.");
 
             return project;
         }
@@ -104,12 +109,21 @@ namespace Yetibyte.Twitch.TwitchNx.Core.ProjectManagement
 
             File.WriteAllBytes(filePath, fileData);
 
+            _logger.Info($"Saved project to file {filePath}.");
+
             return true;
         }
 
         public void CloseProject()
         {
+            if (CurrentProject is null)
+                return;
+
+            string projectName = CurrentProject.Name;
+
             CurrentProject = null;
+
+            _logger.Info($"Project '{projectName}' closed.");
         }
 
         public bool OpenProject(string filePath)
@@ -132,6 +146,8 @@ namespace Yetibyte.Twitch.TwitchNx.Core.ProjectManagement
 
             ProjectFilePath = filePath;
             CurrentProject = project;
+
+            _logger.Info($"Project '{CurrentProject.Name}' opened.");
 
             return true;
         }
