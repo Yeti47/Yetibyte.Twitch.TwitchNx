@@ -263,8 +263,9 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
                 MacroInstructionTemplateViewModel macroInstructionTemplateViewModel = _macroInstructionTemplateFactoryFacade.CreateFor(trackElement.Instruction);
 
                 MacroTimeTrackElementViewModel trackElementViewModel = new MacroTimeTrackElementViewModel(macroInstructionTemplateViewModel, trackElement.Id);
-                
-                timeTrackViewModel.AddElement(trackElementViewModel);
+
+                //timeTrackViewModel.AddElement(trackElementViewModel);
+                trackElementViewModel.TimeTrack = timeTrackViewModel;
 
                 trackElementViewModel.StartTime = trackElement.StartTime;
                 trackElementViewModel.Duration = trackElement.Duration;
