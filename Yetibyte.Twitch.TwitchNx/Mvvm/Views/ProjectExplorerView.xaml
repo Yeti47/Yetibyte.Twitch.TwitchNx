@@ -31,6 +31,7 @@
                 <ListBox.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="New" Command="{Binding Path=NewCommandSetupCommand}" />
+                        <MenuItem Header="Delete" Command="{Binding Path=DeleteCommandSetupCommand}" />
                     </ContextMenu>
                 </ListBox.ContextMenu>
 

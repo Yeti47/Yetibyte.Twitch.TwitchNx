@@ -71,7 +71,10 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         private readonly ObservableCollection<CommandViewModel> _commands = new ObservableCollection<CommandViewModel>();
         private readonly ObservableCollection<CooldownGroupViewModel> _cooldownGroups = new ObservableCollection<CooldownGroupViewModel>();
+
         private readonly RelayCommand _newCommandSetupCommand;
+        private readonly RelayCommand _deleteCommandSetupCommand;
+
         private readonly IMacroInstructionTemplateFactoryFacade _macroInstructionTemplateFactoryFacade;
         private readonly IProjectManager _projectManager;
         private readonly IDocumentManager _documentManager;
@@ -84,7 +87,11 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         public CommandViewModel? SelectedCommand
         {
             get { return _selectedCommand; }
-            set { _selectedCommand = value; OnPropertyChanged(); }
+            set { 
+                _selectedCommand = value; 
+                OnPropertyChanged();
+                _deleteCommandSetupCommand.NotifyCanExecuteChanged();
+            }
         }
 
         public CooldownGroupViewModel? SelectedCooldownGroup
@@ -94,6 +101,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         }
 
         public ICommand NewCommandSetupCommand => _newCommandSetupCommand;
+        public ICommand DeleteCommandSetupCommand => _deleteCommandSetupCommand;
 
         public IEnumerable<CommandViewModel> Commands => _commands;
         public IEnumerable<CooldownGroupViewModel> CooldownGroups => _cooldownGroups;
@@ -110,9 +118,34 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             _projectManager.ProjectChanged += ProjectManager_ProjectChanged;
 
             _newCommandSetupCommand = new RelayCommand(ExecuteNewCommandSetupCommand, CanExecuteNewCommandSetupCommand);
+            _deleteCommandSetupCommand = new RelayCommand(ExecuteDeleteCommandSetupCommand, CanExecuteDeleteCommandSetupCommand);
 
             _commands.CollectionChanged += commands_CollectionChanged;
             
+        }
+
+        private bool CanExecuteDeleteCommandSetupCommand() => SelectedCommand is not null && _projectManager.IsProjectOpen;
+
+        private void ExecuteDeleteCommandSetupCommand()
+        {
+            if (_projectManager.CurrentProject is null || SelectedCommand is null)
+                return;
+
+            CommandSetup? commandSetup = _projectManager.CurrentProject.CommandSettings.CommandSetups.FirstOrDefault(c => c.Name.Equals(SelectedCommand.Name, StringComparison.OrdinalIgnoreCase));
+        
+            if (commandSetup != null)
+            {
+                SelectedCommand = null;
+
+                if (_documentManager.IsDocumentOpen(typeof(CommandSetup), commandSetup.Name))
+                {
+                    _documentManager.CloseDocument(typeof(CommandSetup), commandSetup.Name);
+                }
+
+                _projectManager.CurrentProject.CommandSettings.RemoveCommandSetup(commandSetup);
+
+            }
+        
         }
 
         private void commands_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -178,6 +211,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             }
 
             _newCommandSetupCommand.NotifyCanExecuteChanged();
+            _deleteCommandSetupCommand.NotifyCanExecuteChanged();
             
             PopulateExplorerItems();
         }
