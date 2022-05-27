@@ -42,7 +42,7 @@
 
                 </MenuItem>
                 <MenuItem Header="View">
-
+                    <MenuItem x:Name="menuRestoreDefaultLayout" Click="menuRestoreDefaultLayout_Click" Header="Restore Default Layout" />
                 </MenuItem>
             </Menu>
         </WrapPanel>
@@ -57,6 +57,7 @@
                         IsEnabled="{Binding Path=CanEditProject}"
                         Visibility="{Binding Path=CanEditProject, Converter={StaticResource BoolToVisibilityConverter}}"
                         DocumentsSource="{Binding Path=DocumentManagerViewModel.Documents}"
+                        Loaded="dockManager_Loaded"
                         >
             <DockingManager.LayoutItemContainerStyleSelector>
                 <st:PanesStyleSelector>

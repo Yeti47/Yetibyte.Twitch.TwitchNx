@@ -29,7 +29,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         private readonly SwitchConnector _switchConnector;
         private readonly IDialogService _dialogService;
         private readonly ObservableCollection<ToolViewModel> _tools;
-
+        private readonly ToolViewModel[] _initialToolSetup;
         private SwitchConnectionViewModel _switchConnectionViewModel;
 
         private readonly RelayCommand _closeProjectCommand;
@@ -115,6 +115,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
                 AppLoggerViewModel
             };
 
+            _initialToolSetup = _tools.ToArray();
+
             _closeProjectCommand = new RelayCommand(() => _projectManager.CloseProject(), () => _projectManager.IsProjectOpen);
         }
 
@@ -131,6 +133,14 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
             _closeProjectCommand.NotifyCanExecuteChanged();
 
+        }
+
+        public void ClearTools() => _tools.Clear();
+
+        public void ReloadTools()
+        {
+            foreach(var tool in _initialToolSetup)
+                _tools.Add(tool);
         }
 
     }

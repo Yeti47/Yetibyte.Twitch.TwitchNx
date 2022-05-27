@@ -1,7 +1,11 @@
-﻿using MahApps.Metro.Controls;
+﻿using AvalonDock;
+using AvalonDock.Layout.Serialization;
+using log4net;
+using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,7 +36,13 @@ namespace Yetibyte.Twitch.TwitchNx
     {
         private const string PROJECT_FILE_FILTER = $"TwitchNX Projects|*{ProjectManager.PROJECT_FILE_EXTENSION}";
 
+        private static readonly ILog _logger = LogManager.GetLogger("root");
+
         private readonly IProjectManager _projectManager;
+        private readonly XmlLayoutSerializer _xmlLayoutSerializer;
+
+        private bool _hasSerializedDefaultLayout = false;
+        private readonly StringBuilder _defaultLayoutStringBuilder = new StringBuilder();
 
         public MainViewModel ViewModel { get; private set; }
 
@@ -43,7 +53,8 @@ namespace Yetibyte.Twitch.TwitchNx
             IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, 
             IDialogService dialogService, 
             ICommandSourceProvider commandSourceProvider,
-            EventLogAppender eventLogAppender)
+            EventLogAppender eventLogAppender            
+            )
         {
             InitializeComponent();
             
@@ -60,6 +71,8 @@ namespace Yetibyte.Twitch.TwitchNx
             dialogService.MainContext = ViewModel;
             
             _projectManager = projectManager;
+
+            _xmlLayoutSerializer = new XmlLayoutSerializer(dockManager);
         }
 
         private void menuNewProject_Click(object sender, RoutedEventArgs e)
@@ -141,5 +154,70 @@ namespace Yetibyte.Twitch.TwitchNx
             }
         }
 
+        private void SerializeDefaultLayout()
+        {
+            try
+            {
+                TextWriter textWriter = new StringWriter(_defaultLayoutStringBuilder);
+                _xmlLayoutSerializer.Serialize(textWriter);
+            }
+            catch (Exception ex)
+            {
+                ILog logger = LogManager.GetLogger("root");
+                logger.Error("Error serializing default docking layout.", ex);
+            }
+
+            _hasSerializedDefaultLayout = true;
+        }
+
+        private void menuRestoreDefaultLayout_Click(object sender, RoutedEventArgs e)
+        {
+            RestoreDefaultLayout();
+        }
+
+        private void RestoreDefaultLayout()
+        {
+            var rootPanel = dockManager.Layout.RootPanel;
+
+            var childrenToRemove = dockManager.Layout.Children.Where(c => c != rootPanel).ToArray();
+
+            foreach (var child in childrenToRemove)
+                dockManager.Layout.RemoveChild(child);
+
+            ViewModel.ClearTools();
+
+            bool deserializeSuccess = DeserializeDefaultLayout();
+
+            ViewModel.ReloadTools();
+
+            if (deserializeSuccess)
+                _logger.Info("Default view layout restored.");
+        }
+
+        private bool DeserializeDefaultLayout()
+        {
+            bool success = true;
+
+            try
+            {
+                TextReader textReader = new StringReader(_defaultLayoutStringBuilder.ToString());
+                _xmlLayoutSerializer.Deserialize(textReader);
+            }
+            catch (Exception ex)
+            {
+                ILog logger = LogManager.GetLogger("root");
+                logger.Error("Error deserializing default docking layout.", ex);
+
+                success = false;
+            }
+
+            return success;
+        }
+
+        private void dockManager_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!_hasSerializedDefaultLayout)
+                SerializeDefaultLayout();
+        }
     }
 }
