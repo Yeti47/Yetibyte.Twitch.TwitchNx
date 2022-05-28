@@ -16,6 +16,10 @@ namespace Yetibyte.Twitch.TwitchNx.CommandSourcePlugin
     {
         public record CommandSourceSettingsViewConfig(Type ViewType, Type ViewModelType);
 
+        private const string XML_NAMESPACE_PREFIX_CS_VIEWMODEL = "csvmplg";
+        private const string XML_NAMESPACE_PREFIX_CS_VIEW = "csvplg";
+        private const string XML_NAMESPACE_PREFIX_XAML = "xx";
+
         private readonly CommandSourceAssemblyFinder _commandSourceAssemblyFinder = new CommandSourceAssemblyFinder();
 
         private readonly List<CommandSourceSettingsViewConfig> _commandSourceSettingsViewConfigs = new List<CommandSourceSettingsViewConfig>();
@@ -47,13 +51,13 @@ namespace Yetibyte.Twitch.TwitchNx.CommandSourcePlugin
                     XamlTypeMapper = new XamlTypeMapper(Array.Empty<string>())
                 };
 
-                parserCtx.XamlTypeMapper.AddMappingProcessingInstruction("csvmplg", config.ViewModelType.Namespace, config.ViewModelType.Assembly.FullName);
-                parserCtx.XamlTypeMapper.AddMappingProcessingInstruction("csvplg" , config.ViewType.Namespace, config.ViewType.Assembly.FullName);
+                parserCtx.XamlTypeMapper.AddMappingProcessingInstruction(XML_NAMESPACE_PREFIX_CS_VIEWMODEL, config.ViewModelType.Namespace, config.ViewModelType.Assembly.FullName);
+                parserCtx.XamlTypeMapper.AddMappingProcessingInstruction(XML_NAMESPACE_PREFIX_CS_VIEW, config.ViewType.Namespace, config.ViewType.Assembly.FullName);
 
                 parserCtx.XmlnsDictionary.Add(string.Empty, "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
-                parserCtx.XmlnsDictionary.Add("xx", "http://schemas.microsoft.com/winfx/2006/xaml");
-                parserCtx.XmlnsDictionary.Add("csvmplg", "csvmplg");
-                parserCtx.XmlnsDictionary.Add("csvplg", "csvplg");
+                parserCtx.XmlnsDictionary.Add(XML_NAMESPACE_PREFIX_XAML, "http://schemas.microsoft.com/winfx/2006/xaml");
+                parserCtx.XmlnsDictionary.Add(XML_NAMESPACE_PREFIX_CS_VIEWMODEL, XML_NAMESPACE_PREFIX_CS_VIEWMODEL);
+                parserCtx.XmlnsDictionary.Add(XML_NAMESPACE_PREFIX_CS_VIEW, XML_NAMESPACE_PREFIX_CS_VIEW);
 
                 DataTemplate? dataTemplate = XamlReader.Parse(dataTemplateXaml, parserCtx) as DataTemplate;
 
