@@ -13,17 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Yetibyte.Twitch.TwitchNx.CommandSourceGui;
-using Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources;
 
-namespace Yetibyte.Twitch.TwitchNx.Mvvm.Views.CommandSourceSettings
+namespace Yetibyte.Twitch.TwitchNx.ExtensionCommandSource.Gui
 {
     /// <summary>
-    /// Interaction logic for IrcCommandSourceSettingsView.xaml
+    /// Interaction logic for ExtensionCommandSourceSettingsView.xaml
     /// </summary>
-    [CommandSourceSettingsView(typeof(IrcCommandSourceSettingsViewModel))]
-    public partial class IrcCommandSourceSettingsView : UserControl
+    [CommandSourceSettingsView(typeof(ExtensionCommandSourceSettingsViewModel))]
+    public partial class ExtensionCommandSourceSettingsView : UserControl
     {
-        public IrcCommandSourceSettingsView()
+        public ExtensionCommandSourceSettingsView()
         {
             InitializeComponent();
         }

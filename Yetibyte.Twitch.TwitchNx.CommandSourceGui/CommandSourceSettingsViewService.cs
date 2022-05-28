@@ -10,7 +10,7 @@ using System.Windows.Markup;
 using System.Xml;
 using Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources;
 
-namespace Yetibyte.Twitch.TwitchNx.CommandSourcePlugin
+namespace Yetibyte.Twitch.TwitchNx.CommandSourceGui
 {
     public class CommandSourceSettingsViewService
     {
@@ -31,7 +31,7 @@ namespace Yetibyte.Twitch.TwitchNx.CommandSourcePlugin
 
         }
 
-        public void RegisterCommandSourceSettingsDataTemplates(Application application)
+        public void RegisterCommandSourceSettingsDataTemplates()
         {
             if (!HasLoadedConfiguration)
                 LoadCommandSourceSettingsViewConfiguration();
@@ -63,7 +63,7 @@ namespace Yetibyte.Twitch.TwitchNx.CommandSourcePlugin
 
                 if (dataTemplate != null)
                 {
-                    application.Resources.Add(dataTemplate.DataTemplateKey, dataTemplate);
+                    Application.Current.Resources.Add(dataTemplate.DataTemplateKey, dataTemplate);
                 }
             }
         }
@@ -86,7 +86,7 @@ namespace Yetibyte.Twitch.TwitchNx.CommandSourcePlugin
 
         private IEnumerable<Assembly> FindAssemblies()
         {
-            return _commandSourceAssemblyFinder.FindCommandSourceAssemblies().Concat(new[] { GetType().Assembly });
+            return _commandSourceAssemblyFinder.FindCommandSourceAssemblies().Concat(new[] { Application.Current.GetType().Assembly });
         }
     }
 }

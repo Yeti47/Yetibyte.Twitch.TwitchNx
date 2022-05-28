@@ -1,9 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,7 +12,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Yetibyte.Twitch.TwitchNx.CommandSourceGui\Yetibyte.Twitch.TwitchNx.CommandSourceGui.csproj" />
     <ProjectReference Include="..\Yetibyte.Twitch.TwitchNx.Core\Yetibyte.Twitch.TwitchNx.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Gui\ExtensionCommandSourceSettingsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
   </ItemGroup>
 
 </Project>

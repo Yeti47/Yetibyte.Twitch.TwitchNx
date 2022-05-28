@@ -830,6 +830,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Yetibyte.Twitch.TwitchNx.CommandSourceGui\Yetibyte.Twitch.TwitchNx.CommandSourceGui.csproj" />
     <ProjectReference Include="..\Yetibyte.Twitch.TwitchNx.Core\Yetibyte.Twitch.TwitchNx.Core.csproj" />
   </ItemGroup>
 

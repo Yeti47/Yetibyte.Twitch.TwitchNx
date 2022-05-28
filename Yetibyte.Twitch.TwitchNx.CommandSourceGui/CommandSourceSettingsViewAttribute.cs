@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Yetibyte.Twitch.TwitchNx.CommandSourcePlugin
+namespace Yetibyte.Twitch.TwitchNx.CommandSourceGui
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class CommandSourceSettingsViewAttribute : Attribute

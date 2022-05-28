@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yetibyte.Twitch.TwitchNx", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yetibyte.Twitch.TwitchNx.ExtensionCommandSource", "Yetibyte.Twitch.TwitchNx.ExtensionCommandSource\Yetibyte.Twitch.TwitchNx.ExtensionCommandSource.csproj", "{0E38B9DB-1D41-4E3B-A590-3B48B9002E4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yetibyte.Twitch.TwitchNx.Test", "Yetibyte.Twitch.TwitchNx.Test\Yetibyte.Twitch.TwitchNx.Test.csproj", "{996E23B1-DD69-43E8-A776-EB164E947740}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yetibyte.Twitch.TwitchNx.Test", "Yetibyte.Twitch.TwitchNx.Test\Yetibyte.Twitch.TwitchNx.Test.csproj", "{996E23B1-DD69-43E8-A776-EB164E947740}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yetibyte.Twitch.TwitchNx.CommandSourceGui", "Yetibyte.Twitch.TwitchNx.CommandSourceGui\Yetibyte.Twitch.TwitchNx.CommandSourceGui.csproj", "{72764675-5324-450A-A5E1-D11360F765A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{996E23B1-DD69-43E8-A776-EB164E947740}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{996E23B1-DD69-43E8-A776-EB164E947740}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{996E23B1-DD69-43E8-A776-EB164E947740}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72764675-5324-450A-A5E1-D11360F765A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72764675-5324-450A-A5E1-D11360F765A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72764675-5324-450A-A5E1-D11360F765A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72764675-5324-450A-A5E1-D11360F765A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
