@@ -21,7 +21,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
 
                 <!--<ResourceDictionary Source="/AvalonDock.Themes.VS2013;component/LightBrushs.xaml" />-->
-               
+
             </ResourceDictionary.MergedDictionaries>
 
             <DataTemplate DataType="{x:Type vm:SwitchConnectionViewModel}">
@@ -56,9 +56,9 @@
                 <vtl:MacroTimeTrackElementView />
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type commandsources:IrcCommandSourceSettingsViewModel}">
+            <!--<DataTemplate DataType="{x:Type commandsources:IrcCommandSourceSettingsViewModel}">
                 <commandsourcesViews:IrcCommandSourceSettingsView />
-            </DataTemplate>
+            </DataTemplate>-->
 
             <DataTemplate DataType="{x:Type vm:CommandSourceViewModel}">
                 <v:CommandSourceView />

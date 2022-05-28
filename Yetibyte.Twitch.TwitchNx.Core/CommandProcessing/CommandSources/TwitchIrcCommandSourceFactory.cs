@@ -53,6 +53,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
                 UserName = settings?.UserName ?? string.Empty
             };
         }
+
     }
 
 }

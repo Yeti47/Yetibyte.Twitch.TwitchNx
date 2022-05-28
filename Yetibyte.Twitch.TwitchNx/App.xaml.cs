@@ -18,6 +18,7 @@ using log4net.Config;
 using Yetibyte.Twitch.TwitchNx.Core.Logging;
 using log4net.Core;
 using Yetibyte.Twitch.TwitchNx.Core.Common;
+using Yetibyte.Twitch.TwitchNx.CommandSourcePlugin;
 
 namespace Yetibyte.Twitch.TwitchNx
 {
@@ -42,6 +43,10 @@ namespace Yetibyte.Twitch.TwitchNx
 
             ICommandSourceProvider commandSourceProvider = new DefaultCommandSourceProvider();
             commandSourceProvider.Load();
+
+            CommandSourceSettingsViewService commandSourceSettingsViewService = new CommandSourceSettingsViewService();
+
+            commandSourceSettingsViewService.RegisterCommandSourceSettingsDataTemplates(this);
 
             IProjectManager projectManager = new ProjectManager(commandSourceProvider, _logger);
 

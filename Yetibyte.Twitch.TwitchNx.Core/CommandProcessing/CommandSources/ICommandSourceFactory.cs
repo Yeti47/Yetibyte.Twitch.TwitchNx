@@ -15,7 +15,5 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
 
         ICommandSourceSettingsViewModel CreateSettingsViewModel(IDirtiable parentViewModel, IProject? project);
 
-
-
     }
 }
