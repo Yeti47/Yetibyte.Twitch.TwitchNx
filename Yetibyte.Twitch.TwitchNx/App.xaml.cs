@@ -30,7 +30,7 @@ namespace Yetibyte.Twitch.TwitchNx
         private const string LOG_FILE_PATH = "twitchnx.log";
 
         private static readonly ILog _logger = LogManager.GetLogger(ApplicationConstants.ROOT_LOGGER_NAME);
-        private EventLogAppender _eventLogAppender;
+        private EventLogAppender _eventLogAppender = new EventLogAppender();
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -75,8 +75,6 @@ namespace Yetibyte.Twitch.TwitchNx
 
         private void ConfigureLogging()
         {
-            _eventLogAppender = new EventLogAppender();
-
             var fileAppender = new log4net.Appender.FileAppender
             {
                 AppendToFile = true,
@@ -85,8 +83,7 @@ namespace Yetibyte.Twitch.TwitchNx
                 LockingModel = new log4net.Appender.FileAppender.MinimalLock(),
                 Name = "FileAppender",
                 File = LOG_FILE_PATH,
-                Layout = new log4net.Layout.PatternLayout("[%date{yyyy-MM-dd hh:mm:ss}] %level: %message%newline"),
-                ErrorHandler = new FileAppenderErrorHandler()
+                Layout = new log4net.Layout.PatternLayout("[%date{yyyy-MM-dd hh:mm:ss}] %level: %message%newline")
             };
 
             fileAppender.ActivateOptions();
@@ -97,22 +94,5 @@ namespace Yetibyte.Twitch.TwitchNx
             );
         }
 
-        private class FileAppenderErrorHandler : log4net.Core.IErrorHandler
-        {
-            public void Error(string message, Exception e, ErrorCode errorCode)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void Error(string message, Exception e)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void Error(string message)
-            {
-                throw new NotImplementedException();
-            }
-        }
     }
 }
