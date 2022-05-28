@@ -70,10 +70,17 @@ namespace Yetibyte.Twitch.TwitchNx
             );
 
             dialogService.MainContext = ViewModel;
+
+            ViewModel.OpeningToolView += ViewModel_OpeningToolView;
             
             _projectManager = projectManager;
 
             _xmlLayoutSerializer = new XmlLayoutSerializer(dockManager);
+        }
+
+        private void ViewModel_OpeningToolView(Mvvm.ViewModels.Layout.ToolViewModel obj)
+        {
+
         }
 
         private void menuNewProject_Click(object sender, RoutedEventArgs e)

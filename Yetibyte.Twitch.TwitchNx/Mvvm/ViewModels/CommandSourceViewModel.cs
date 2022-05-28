@@ -104,6 +104,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             _saveCommand = new RelayCommand(ExecuteSaveCommand);
 
             _projectManager.ProjectChanged += _projectManager_ProjectChanged;
+
+            UnmarkDirty();
         }
 
         private void _projectManager_ProjectChanged(object? sender, EventArgs e)

@@ -43,6 +43,14 @@
                 </MenuItem>
                 <MenuItem Header="View">
                     <MenuItem x:Name="menuRestoreDefaultLayout" Click="menuRestoreDefaultLayout_Click" Header="Restore Default Layout" />
+                    <Separator />
+                    <MenuItem Command="{Binding OpenViewCommand}" CommandParameter="{Binding SwitchConnectionViewModel}" Header="{Binding Path=SwitchConnectionViewModel.Title}" />
+                    <MenuItem Command="{Binding OpenViewCommand}" CommandParameter="{Binding SwitchControlViewModel}" Header="{Binding Path=SwitchControlViewModel.Title}" />
+                    <MenuItem Command="{Binding OpenViewCommand}" CommandParameter="{Binding ProjectExplorerViewModel}" Header="{Binding Path=ProjectExplorerViewModel.Title}" />
+                    <MenuItem Command="{Binding OpenViewCommand}" CommandParameter="{Binding MacroTesterViewModel}" Header="{Binding Path=MacroTesterViewModel.Title}" />
+                    <MenuItem Command="{Binding OpenViewCommand}" CommandParameter="{Binding MacroToolBoxViewModel}" Header="{Binding Path=MacroToolBoxViewModel.Title}" />
+                    <MenuItem Command="{Binding OpenViewCommand}" CommandParameter="{Binding CommandSourceViewModel}" Header="{Binding Path=CommandSourceViewModel.Title}" />
+                    <MenuItem Command="{Binding OpenViewCommand}" CommandParameter="{Binding AppLoggerViewModel}" Header="{Binding Path=AppLoggerViewModel.Title}" />
                 </MenuItem>
             </Menu>
         </WrapPanel>
@@ -64,7 +72,7 @@
                     <st:PanesStyleSelector.ToolStyle>
                         <Style TargetType="{x:Type LayoutAnchorableItem}"> 
                             <Setter Property="Title" Value="{Binding Model.Title}" />
-                            <Setter Property="CanClose" Value="True" />
+                            <Setter Property="CanClose" Value="False" />
                             <Setter Property="IconSource" Value="{Binding Model.IconSource}" />
                             <Setter Property="Visibility" Value="{Binding Model.IsVisible, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={StaticResource FALSE}}" />
                             <Setter Property="ContentId" Value="{Binding Model.ContentId}" />

@@ -34,10 +34,12 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         private SwitchConnectionViewModel _switchConnectionViewModel;
 
         private readonly RelayCommand _closeProjectCommand;
+        private readonly RelayCommand<ToolViewModel> _openViewCommand;
 
         private bool _isProjectOpen;
 
         public ICommand CloseProjectCommand => _closeProjectCommand;
+        public ICommand OpenViewCommand => _openViewCommand;
 
         public SwitchConnectionViewModel SwitchConnectionViewModel
         {
@@ -73,6 +75,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public event Action<ToolViewModel> OpeningToolView;
 
         public MainViewModel(
             IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, 
@@ -119,6 +123,19 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             _initialToolSetup = _tools.ToArray();
 
             _closeProjectCommand = new RelayCommand(() => _projectManager.CloseProject(), () => _projectManager.IsProjectOpen);
+
+            _openViewCommand = new RelayCommand<ToolViewModel>(ExecuteOpenViewCommand, tvm => _projectManager.IsProjectOpen);
+        }
+
+        private void ExecuteOpenViewCommand(ToolViewModel? obj)
+        {
+            if (obj is null)
+                return;
+
+            obj.IsSelected = true;
+            obj.IsActive = true;
+            obj.IsVisible = true;
+
         }
 
         private void _projectManager_ProjectChanging(object? sender, EventArgs e)
@@ -133,6 +150,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             SwitchConnectionViewModel.SwitchBridgeClientConnectionSettings = _projectManager.CurrentProject?.SwitchBridgeClientConnectionSettings ?? SwitchBridgeClientConnectionSettings.CreateEmpty();
 
             _closeProjectCommand.NotifyCanExecuteChanged();
+            _openViewCommand.NotifyCanExecuteChanged();
 
         }
 
