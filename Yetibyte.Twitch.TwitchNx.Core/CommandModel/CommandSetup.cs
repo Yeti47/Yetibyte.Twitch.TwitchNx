@@ -13,6 +13,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
     {
         private string _command = string.Empty;
         private string _name = string.Empty;
+        private CooldownGroup? _cooldownGroup;
 
         public string Name
         {
@@ -31,11 +32,20 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
 
         public PermissionLevel PermissionLevel { get; set; } = PermissionLevel.Any;
 
-        public CooldownGroup? CooldownGroup { get; set; }
+        public CooldownGroup? CooldownGroup
+        {
+            get => _cooldownGroup;
+            set
+            {
+                _cooldownGroup = value;
+                OnCooldownGroupChanged();
+            }
+        }
 
         public int ControllerIndex { get; set; } = 0;
 
         public event EventHandler<NameChangedEventArgs>? NameChanged;
+        public event EventHandler? CooldownGroupChanged;
 
         public CommandSetup(string name, Macro macro)
         {
@@ -57,6 +67,13 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
             var handler = NameChanged;
             handler?.Invoke(this, new NameChangedEventArgs(oldName, Name));
         }
+
+        protected virtual void OnCooldownGroupChanged()
+        {
+            var handler = CooldownGroupChanged;
+            handler?.Invoke(this, EventArgs.Empty);
+        }
+
 
     }
 }

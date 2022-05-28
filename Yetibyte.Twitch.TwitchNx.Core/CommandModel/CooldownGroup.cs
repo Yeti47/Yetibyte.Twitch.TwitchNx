@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Yetibyte.Twitch.TwitchNx.Core.Common;
 
 namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
 {
@@ -12,9 +13,19 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
     {
         [JsonInclude]
         private readonly Dictionary<PermissionLevel, float> _times = new Dictionary<PermissionLevel, float>();
+        private string _name;
 
-        public string Name { get; set; }
-        
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                string oldName = _name;
+                _name = value;
+                OnNameChanged(oldName);
+            }
+        }
+
         public float SharedTime { get; set; }
 
         public string UserCooldownMessage { get; set; } = "{USER}, please wait another {TIME} seconds before using this command again.";
@@ -25,6 +36,8 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
 
         [JsonIgnore]
         public IEnumerable<(PermissionLevel permissionLevel, float time)> Times => _times.Select(kvp => (kvp.Key, kvp.Value));
+
+        public event EventHandler<NameChangedEventArgs>? NameChanged;
 
         public CooldownGroup(string name)
         {
@@ -66,6 +79,12 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
             return messageTemplate
                 .Replace("{USER}", userName)
                 .Replace("{TIME}", remainingSeconds.ToString(".1"));
+        }
+
+        protected virtual void OnNameChanged(string oldName)
+        {
+            var handler = NameChanged;
+            handler?.Invoke(this, new NameChangedEventArgs(oldName, Name));
         }
 
     }

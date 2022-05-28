@@ -123,6 +123,11 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
 
         protected virtual void OnCooldownGroupRemoved(CooldownGroup cooldownGroup)
         {
+            foreach (var command in _commands.Where(c => c.CooldownGroup == cooldownGroup))
+            {
+                command.CooldownGroup = null;
+            }
+
             var handler = CooldownGroupRemoved;
             handler?.Invoke(this, new CooldownGroupRemovedEventArgs(cooldownGroup));
         }
@@ -138,6 +143,24 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
             int ctr = 0;
 
             while (_commands.Any(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
+            {
+                ctr++;
+
+                name = $"{defaultName}{ctr}";
+            }
+
+            return name;
+        }
+
+        public string GetFreeDefaultCooldownGroupName()
+        {
+            const string defaultName = "untitled";
+
+            string name = defaultName;
+
+            int ctr = 0;
+
+            while (_cooldownGroups.Any(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
             {
                 ctr++;
 

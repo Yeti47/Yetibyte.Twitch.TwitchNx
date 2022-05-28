@@ -24,6 +24,9 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
     {
         public class CooldownGroupViewModel : ObservableObject
         {
+            private readonly IDocumentManager _documentManager;
+            private readonly RelayCommand _openCommand;
+
             private string _name = string.Empty;
 
             public string Name
@@ -31,6 +34,27 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
                 get { return _name; }
                 set { _name = value; OnPropertyChanged(); }
             }
+
+            public CooldownGroup CooldownGroup { get; }
+
+            public ICommand OpenCommand => _openCommand;
+
+            public CooldownGroupViewModel(CooldownGroup cooldownGroup, IDocumentManager documentManager)
+            {
+                _documentManager = documentManager;
+                _name = cooldownGroup.Name;
+                CooldownGroup = cooldownGroup;
+
+                _openCommand = new RelayCommand(() =>
+                {
+                    if (!_documentManager.IsDocumentOpen(typeof(CooldownGroup), CooldownGroup.Name))
+                    {
+                        _documentManager.OpenDocument(new CooldownGroupDocumentViewModel(CooldownGroup, _documentManager));
+                    }
+                    _documentManager.TrySelect(typeof(CooldownGroup), CooldownGroup.Name);
+                });
+            }
+
         }
 
         public class CommandViewModel : ObservableObject
@@ -75,6 +99,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         private readonly RelayCommand _newCommandSetupCommand;
         private readonly RelayCommand _deleteCommandSetupCommand;
 
+        private readonly RelayCommand _newCooldownGroupCommand;
+
         private readonly IMacroInstructionTemplateFactoryFacade _macroInstructionTemplateFactoryFacade;
         private readonly IProjectManager _projectManager;
         private readonly IDocumentManager _documentManager;
@@ -103,6 +129,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         public ICommand NewCommandSetupCommand => _newCommandSetupCommand;
         public ICommand DeleteCommandSetupCommand => _deleteCommandSetupCommand;
 
+        public ICommand NewCooldownGroupCommand => _newCooldownGroupCommand;
+
         public IEnumerable<CommandViewModel> Commands => _commands;
         public IEnumerable<CooldownGroupViewModel> CooldownGroups => _cooldownGroups;
 
@@ -120,8 +148,32 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             _newCommandSetupCommand = new RelayCommand(ExecuteNewCommandSetupCommand, CanExecuteNewCommandSetupCommand);
             _deleteCommandSetupCommand = new RelayCommand(ExecuteDeleteCommandSetupCommand, CanExecuteDeleteCommandSetupCommand);
 
+            _newCooldownGroupCommand = new RelayCommand(ExecuteNewCooldownGroupCommand, CanExecuteNewCooldownGroupCommand);
+
             _commands.CollectionChanged += commands_CollectionChanged;
+            _cooldownGroups.CollectionChanged += cooldownGroups_CollectionChanged;
             
+        }
+
+
+        private bool CanExecuteNewCooldownGroupCommand()
+        {
+            return _projectManager.IsProjectOpen;
+        }
+
+        private void ExecuteNewCooldownGroupCommand()
+        {
+            if (_projectManager.CurrentProject is null)
+                return;
+
+            string cooldownGroupName = _projectManager.CurrentProject.CommandSettings.GetFreeDefaultCooldownGroupName();
+            CooldownGroup cooldownGroup = new CooldownGroup(cooldownGroupName);
+
+            _projectManager.CurrentProject.CommandSettings.AddCooldownGroup(cooldownGroup);
+
+            SelectedCooldownGroup = _cooldownGroups.FirstOrDefault(cdg => cdg.Name.Equals(cooldownGroupName, StringComparison.OrdinalIgnoreCase));
+
+            SelectedCooldownGroup?.OpenCommand?.Execute(null);
         }
 
         private bool CanExecuteDeleteCommandSetupCommand() => SelectedCommand is not null && _projectManager.IsProjectOpen;
@@ -165,6 +217,33 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
                     newItem.CommandSetup.NameChanged += CommandSetup_NameChanged;
                 }
             }
+        }
+
+        private void cooldownGroups_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems is not null)
+            {
+                foreach (CooldownGroupViewModel oldItem in e.OldItems)
+                {
+                    oldItem.CooldownGroup.NameChanged -= CooldownGroup_NameChanged;
+                }
+            }
+
+            if (e.NewItems is not null)
+            {
+                foreach (CooldownGroupViewModel newItem in e.NewItems)
+                {
+                    newItem.CooldownGroup.NameChanged += CooldownGroup_NameChanged;
+                }
+            }
+        }
+
+        private void CooldownGroup_NameChanged(object? sender, NameChangedEventArgs e)
+        {
+            var cooldownGroupVm = _cooldownGroups.FirstOrDefault(c => c.Name == e.OldName);
+
+            if (cooldownGroupVm != null)
+                cooldownGroupVm.Name = e.NewName;
         }
 
         private bool CanExecuteNewCommandSetupCommand()
@@ -235,7 +314,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         private void CommandSettings_CooldownGroupAdded(object? sender, Core.CommandModel.CooldownGroupAddedEventArgs e)
         {
-            _cooldownGroups.Add(new CooldownGroupViewModel { Name = e.CooldownGroup.Name });
+            _cooldownGroups.Add(new CooldownGroupViewModel(e.CooldownGroup, _documentManager));
         }
 
         private void CommandSettings_CommandSetupAdded(object? sender, Core.CommandModel.CommandSetupAddedEventArgs e)
@@ -269,7 +348,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
             }
 
-            foreach(var cooldownVm in _projectManager.CurrentProject.CommandSettings.CooldownGroups.Select(cg => new CooldownGroupViewModel { Name = cg.Name }))
+            foreach(var cooldownVm in _projectManager.CurrentProject.CommandSettings.CooldownGroups.Select(cg => new CooldownGroupViewModel(cg, _documentManager)))
             {
                 _cooldownGroups.Add(cooldownVm);
             }

@@ -60,9 +60,28 @@
 
             <ListBox ItemsSource="{Binding Path=CooldownGroups}" 
                      SelectedItem="{Binding Path=SelectedCooldownGroup}"
-                     DisplayMemberPath="Name" 
+                     
                      BorderThickness="1"
-                     BorderBrush="{DynamicResource MahApps.Brushes.Accent4}"/>
+                     BorderBrush="{DynamicResource MahApps.Brushes.Accent4}">
+
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="New" Command="{Binding Path=NewCooldownGroupCommand}" />
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate> 
+                        <Label Content="{Binding Path=Name}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseDoubleClick">
+                                    <i:InvokeCommandAction Command="{Binding Path=OpenCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Label>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
 
         </ScrollViewer>
 
