@@ -83,7 +83,7 @@ namespace Yetibyte.Twitch.TwitchNx
                 LockingModel = new log4net.Appender.FileAppender.MinimalLock(),
                 Name = "FileAppender",
                 File = LOG_FILE_PATH,
-                Layout = new log4net.Layout.PatternLayout("[%date{yyyy-MM-dd hh:mm:ss}] %level: %message%newline")
+                Layout = new log4net.Layout.PatternLayout("[%date{yyyy-MM-dd HH:mm:ss}] %level: %message%newline")
             };
 
             fileAppender.ActivateOptions();
