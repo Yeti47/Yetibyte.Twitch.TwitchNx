@@ -32,7 +32,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         private readonly ObservableCollection<ToolViewModel> _tools;
         private readonly ToolViewModel[] _initialToolSetup;
         private SwitchConnectionViewModel _switchConnectionViewModel;
-
+        private MacroTimeLineViewModelFactory _macroTimeLineViewModelFactory;
         private readonly RelayCommand _closeProjectCommand;
         private readonly RelayCommand<ToolViewModel> _openViewCommand;
 
@@ -94,7 +94,10 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
             DocumentManagerViewModel = new DocumentManagerViewModel();
             SwitchControlViewModel = new SwitchControlViewModel(switchConnector);
-            ProjectExplorerViewModel = new ProjectExplorerViewModel(macroInstructionTemplateFactoryFacade, projectManager, DocumentManagerViewModel, switchConnector, SwitchControlViewModel, dialogService);
+
+            _macroTimeLineViewModelFactory = new MacroTimeLineViewModelFactory(macroInstructionTemplateFactoryFacade, switchConnector, SwitchControlViewModel, dialogService);
+           
+            ProjectExplorerViewModel = new ProjectExplorerViewModel(projectManager, DocumentManagerViewModel, _macroTimeLineViewModelFactory);
             MacroTesterViewModel = new MacroTesterViewModel(switchConnector, SwitchControlViewModel);
 
             CommandSourceViewModel = new CommandSourceViewModel(_projectManager, commandSourceProvider);

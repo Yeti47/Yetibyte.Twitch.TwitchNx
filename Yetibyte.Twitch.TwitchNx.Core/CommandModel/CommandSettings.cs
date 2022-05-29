@@ -14,10 +14,10 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
     {
         private const string DEFAULT_COMMAND_PREFIX = "!";
 
-        [Newtonsoft.Json.JsonProperty("CommandSetups")]
+        [Newtonsoft.Json.JsonProperty("CommandSetups", Order = 1)]
         private readonly List<CommandSetup> _commands = new List<CommandSetup>();
 
-        [Newtonsoft.Json.JsonProperty("CooldownGroups")]
+        [Newtonsoft.Json.JsonProperty("CooldownGroups", Order = 0, ItemIsReference = true)]
         private readonly List<CooldownGroup> _cooldownGroups = new List<CooldownGroup>();
 
         public string CommandPrefix { get; set; } = DEFAULT_COMMAND_PREFIX;

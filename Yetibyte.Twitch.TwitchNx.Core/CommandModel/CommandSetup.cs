@@ -32,6 +32,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
 
         public PermissionLevel PermissionLevel { get; set; } = PermissionLevel.Any;
 
+        [Newtonsoft.Json.JsonProperty(IsReference = true)]
         public CooldownGroup? CooldownGroup
         {
             get => _cooldownGroup;

@@ -1,0 +1,129 @@
+﻿<UserControl x:Class="Yetibyte.Twitch.TwitchNx.Mvvm.Views.CooldownGroupDocumentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:db="clr-namespace:Yetibyte.Twitch.TwitchNx.DataBinding"
+             xmlns:st="clr-namespace:Yetibyte.Twitch.TwitchNx.Styling"
+             xmlns:local="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.Views" 
+             xmlns:viewmodels="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:CooldownGroupDocumentViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="32" />
+        </Grid.RowDefinitions>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="0">
+            <StackPanel Margin="4,4">
+                <DockPanel HorizontalAlignment="Stretch" Style="{StaticResource ResourceKey=FormDock}" >
+                    <Label DockPanel.Dock="Left" FontWeight="SemiBold" Width="120">Name:</Label>
+                    <st:LeftStretchPanel>
+                        <TextBox Text="{Binding Path=CooldownGroupName, UpdateSourceTrigger=PropertyChanged}" Width="Auto" VerticalContentAlignment="Center"
+                                 />
+                    </st:LeftStretchPanel>
+                </DockPanel>
+                <DockPanel HorizontalAlignment="Stretch" Style="{StaticResource ResourceKey=FormDock}" Margin="0,12,0,12" >
+                    <Label DockPanel.Dock="Left" FontWeight="SemiBold" Width="120">Shared Time (sec.):</Label>
+                    <st:LeftStretchPanel>
+                        <mah:NumericUpDown Value="{Binding Path=SharedTime, UpdateSourceTrigger=PropertyChanged}"
+                                           Width="Auto"
+                                           VerticalContentAlignment="Center"
+                                           NumericInputMode="Decimal"
+                                           Minimum="0"
+                                           Maximum="9999.99"
+                                           StringFormat="0.####"
+                                           />
+                    </st:LeftStretchPanel>
+                </DockPanel>
+
+                <GroupBox Header="User Level Cooldown Times (sec.)" Margin="8,8">
+
+                    <StackPanel Margin="8,8">
+                        <DockPanel HorizontalAlignment="Stretch" Style="{StaticResource ResourceKey=FormDock}" >
+                            <Label DockPanel.Dock="Left" FontWeight="SemiBold" Width="120">Anyone:</Label>
+                            <st:LeftStretchPanel>
+                                <mah:NumericUpDown Value="{Binding Path=LevelTimeAnyone, UpdateSourceTrigger=PropertyChanged}"
+                                               Width="Auto"
+                                               VerticalContentAlignment="Center"
+                                               NumericInputMode="Decimal"
+                                               Minimum="0"
+                                               Maximum="9999.99"
+                                               StringFormat="0.####"
+                                               />
+                            </st:LeftStretchPanel>
+                        </DockPanel>
+                        <DockPanel HorizontalAlignment="Stretch" Style="{StaticResource ResourceKey=FormDock}" >
+                            <Label DockPanel.Dock="Left" FontWeight="SemiBold" Width="120">Subscriber:</Label>
+                            <st:LeftStretchPanel>
+                                <mah:NumericUpDown Value="{Binding Path=LevelTimeSubscriber, UpdateSourceTrigger=PropertyChanged}"
+                                               Width="Auto"
+                                               VerticalContentAlignment="Center"
+                                               NumericInputMode="Decimal"
+                                               Minimum="0"
+                                               Maximum="9999.99"
+                                               StringFormat="0.####"
+                                               />
+                            </st:LeftStretchPanel>
+                        </DockPanel>
+                        <DockPanel HorizontalAlignment="Stretch" Style="{StaticResource ResourceKey=FormDock}" >
+                            <Label DockPanel.Dock="Left" FontWeight="SemiBold" Width="120">Moderator:</Label>
+                            <st:LeftStretchPanel>
+                                <mah:NumericUpDown Value="{Binding Path=LevelTimeModerator, UpdateSourceTrigger=PropertyChanged}"
+                                               Width="Auto"
+                                               VerticalContentAlignment="Center"
+                                               NumericInputMode="Decimal"
+                                               Minimum="0"
+                                               Maximum="9999.99"
+                                               StringFormat="0.####"
+                                               />
+                            </st:LeftStretchPanel>
+                        </DockPanel>
+                        <DockPanel HorizontalAlignment="Stretch" Style="{StaticResource ResourceKey=FormDock}" >
+                            <Label DockPanel.Dock="Left" FontWeight="SemiBold" Width="120">Channel Owner:</Label>
+                            <st:LeftStretchPanel>
+                                <mah:NumericUpDown Value="{Binding Path=LevelTimeChannelOwner, UpdateSourceTrigger=PropertyChanged}"
+                                               Width="Auto"
+                                               VerticalContentAlignment="Center"
+                                               NumericInputMode="Decimal"
+                                               Minimum="0"
+                                               Maximum="9999.99"
+                                               StringFormat="0.####"
+                                               />
+                            </st:LeftStretchPanel>
+                        </DockPanel>
+                    </StackPanel>
+
+                </GroupBox>
+
+                <DockPanel HorizontalAlignment="Stretch" Style="{StaticResource ResourceKey=FormDock}" Margin="0,12,0,0" >
+                    <Label DockPanel.Dock="Left" FontWeight="SemiBold" Width="120">User Level Message:</Label>
+                    <st:LeftStretchPanel>
+                        <TextBox Text="{Binding Path=UserLevelMessage, UpdateSourceTrigger=PropertyChanged}" Width="Auto" VerticalContentAlignment="Center"
+                                 />
+                    </st:LeftStretchPanel>
+                </DockPanel>
+                <DockPanel HorizontalAlignment="Stretch" Style="{StaticResource ResourceKey=FormDock}" >
+                    <Label DockPanel.Dock="Left" FontWeight="SemiBold" Width="120">Shared Message:</Label>
+                    <st:LeftStretchPanel>
+                        <TextBox Text="{Binding Path=SharedMessage, UpdateSourceTrigger=PropertyChanged}" Width="Auto" VerticalContentAlignment="Center"
+                                 />
+                    </st:LeftStretchPanel>
+                </DockPanel>
+            </StackPanel>
+        </ScrollViewer>
+        <StackPanel Grid.Row="1"
+                    Margin="2,2"
+                    Orientation="Horizontal"
+                    FlowDirection="RightToLeft">
+
+            <Button Content="Save" 
+                            Command="{Binding ApplyCommand}" 
+                            Width="80"  
+                            />
+
+        </StackPanel>
+    </Grid>
+</UserControl>

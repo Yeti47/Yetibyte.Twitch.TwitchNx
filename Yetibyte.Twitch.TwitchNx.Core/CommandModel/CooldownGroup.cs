@@ -11,8 +11,8 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
     [Serializable]
     public class CooldownGroup
     {
-        [JsonInclude]
-        private readonly Dictionary<PermissionLevel, float> _times = new Dictionary<PermissionLevel, float>();
+        [Newtonsoft.Json.JsonProperty("Times")]
+        private Dictionary<PermissionLevel, float> _times = new Dictionary<PermissionLevel, float>();
         private string _name;
 
         public string Name
@@ -31,10 +31,10 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel
         public string UserCooldownMessage { get; set; } = "{USER}, please wait another {TIME} seconds before using this command again.";
         public string SharedCooldownMessage { get; set; } = "{USER}, this command is not ready yet. Please wait another {TIME} seconds.";
 
-        [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public TimeSpan SharedDuration => TimeSpan.FromSeconds(SharedTime);
 
-        [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public IEnumerable<(PermissionLevel permissionLevel, float time)> Times => _times.Select(kvp => (kvp.Key, kvp.Value));
 
         public event EventHandler<NameChangedEventArgs>? NameChanged;

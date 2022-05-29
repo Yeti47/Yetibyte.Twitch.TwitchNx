@@ -39,7 +39,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
             public ICommand OpenCommand => _openCommand;
 
-            public CooldownGroupViewModel(CooldownGroup cooldownGroup, IDocumentManager documentManager)
+            public CooldownGroupViewModel(CooldownGroup cooldownGroup, IDocumentManager documentManager, IProjectManager projectManager)
             {
                 _documentManager = documentManager;
                 _name = cooldownGroup.Name;
@@ -49,7 +49,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
                 {
                     if (!_documentManager.IsDocumentOpen(typeof(CooldownGroup), CooldownGroup.Name))
                     {
-                        _documentManager.OpenDocument(new CooldownGroupDocumentViewModel(CooldownGroup, _documentManager));
+                        _documentManager.OpenDocument(new CooldownGroupDocumentViewModel(CooldownGroup, _documentManager, projectManager));
                     }
                     _documentManager.TrySelect(typeof(CooldownGroup), CooldownGroup.Name);
                 });
@@ -75,7 +75,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
             public CommandSetup CommandSetup => _commandSetup;
 
-            public CommandViewModel(IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, IDocumentManager documentManager, CommandSetup commandSetup, SwitchConnector switchConnector, ISwitchControllerSelector switchControllerSelector, IDialogService dialogService)
+            public CommandViewModel(CommandSetup commandSetup, IDocumentManager documentManager, IMacroTimeLineViewModelFactory macroTimeLineViewModelFactory, IProjectManager projectManager)
             {
                 _documentManager = documentManager;
                 _commandSetup = commandSetup;
@@ -86,7 +86,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
                 {
                     if (!_documentManager.IsDocumentOpen(typeof(CommandSetup), _commandSetup.Name))
                     {
-                        _documentManager.OpenDocument(new CommandSetupDocumentViewModel(macroInstructionTemplateFactoryFacade, _documentManager, _commandSetup, switchConnector, switchControllerSelector, dialogService));
+                        _documentManager.OpenDocument(new CommandSetupDocumentViewModel(documentManager, _commandSetup, macroTimeLineViewModelFactory, projectManager));
                     }
                     _documentManager.TrySelect(typeof(CommandSetup), _commandSetup.Name);
                 });
@@ -101,12 +101,10 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         private readonly RelayCommand _newCooldownGroupCommand;
 
-        private readonly IMacroInstructionTemplateFactoryFacade _macroInstructionTemplateFactoryFacade;
         private readonly IProjectManager _projectManager;
         private readonly IDocumentManager _documentManager;
-        private readonly SwitchConnector _switchConnector;
-        private readonly IDialogService _dialogService;
-        private readonly ISwitchControllerSelector _switchControllerSelector;
+        private readonly IMacroTimeLineViewModelFactory _macroTimeLineViewModelFactory;
+
         private CommandViewModel? _selectedCommand;
         private CooldownGroupViewModel? _selectedCooldownGroup;
 
@@ -134,14 +132,12 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         public IEnumerable<CommandViewModel> Commands => _commands;
         public IEnumerable<CooldownGroupViewModel> CooldownGroups => _cooldownGroups;
 
-        public ProjectExplorerViewModel(IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, IProjectManager projectManager, IDocumentManager documentManager, SwitchConnector switchConnector, ISwitchControllerSelector switchControllerSelector, IDialogService dialogService) : base("Project Explorer")
+        public ProjectExplorerViewModel(IProjectManager projectManager, IDocumentManager documentManager, IMacroTimeLineViewModelFactory macroTimeLineViewModelFactory) : base("Project Explorer")
         {
-            _macroInstructionTemplateFactoryFacade = macroInstructionTemplateFactoryFacade;
             _projectManager = projectManager;
             _documentManager = documentManager;
-            _switchConnector = switchConnector;
-            _dialogService = dialogService;
-            _switchControllerSelector = switchControllerSelector;
+            _macroTimeLineViewModelFactory = macroTimeLineViewModelFactory;
+
             _projectManager.ProjectChanging += ProjectManager_ProjectChanging;
             _projectManager.ProjectChanged += ProjectManager_ProjectChanged;
 
@@ -314,12 +310,12 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         private void CommandSettings_CooldownGroupAdded(object? sender, Core.CommandModel.CooldownGroupAddedEventArgs e)
         {
-            _cooldownGroups.Add(new CooldownGroupViewModel(e.CooldownGroup, _documentManager));
+            _cooldownGroups.Add(new CooldownGroupViewModel(e.CooldownGroup, _documentManager, _projectManager));
         }
 
         private void CommandSettings_CommandSetupAdded(object? sender, Core.CommandModel.CommandSetupAddedEventArgs e)
         {
-            _commands.Add(new CommandViewModel(_macroInstructionTemplateFactoryFacade, _documentManager, e.CommandSetup, _switchConnector, _switchControllerSelector, _dialogService));
+            _commands.Add(new CommandViewModel(e.CommandSetup, _documentManager, _macroTimeLineViewModelFactory, _projectManager));
 
         }
 
@@ -342,13 +338,13 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             _commands.Clear(); 
             _cooldownGroups.Clear(); 
 
-            foreach(var commandVm in _projectManager.CurrentProject.CommandSettings.CommandSetups.Select(cs => new CommandViewModel(_macroInstructionTemplateFactoryFacade, _documentManager, cs, _switchConnector, _switchControllerSelector, _dialogService)))
+            foreach(var commandVm in _projectManager.CurrentProject.CommandSettings.CommandSetups.Select(cs => new CommandViewModel(cs, _documentManager, _macroTimeLineViewModelFactory, _projectManager)))
             {
                 _commands.Add(commandVm);
 
             }
 
-            foreach(var cooldownVm in _projectManager.CurrentProject.CommandSettings.CooldownGroups.Select(cg => new CooldownGroupViewModel(cg, _documentManager)))
+            foreach(var cooldownVm in _projectManager.CurrentProject.CommandSettings.CooldownGroups.Select(cg => new CooldownGroupViewModel(cg, _documentManager, _projectManager)))
             {
                 _cooldownGroups.Add(cooldownVm);
             }
