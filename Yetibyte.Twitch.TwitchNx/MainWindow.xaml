@@ -32,6 +32,7 @@
                     <MenuItem x:Name="menuNew" Header="New">
                         <MenuItem  Click="menuNewProject_Click" Header="Project..."/>
                         <MenuItem Command="{Binding Path=ProjectExplorerViewModel.NewCommandSetupCommand}" Header="Command" />
+                        <MenuItem Command="{Binding Path=ProjectExplorerViewModel.NewCooldownGroupCommand}" Header="Cooldown Group" />
                     </MenuItem>
                     <MenuItem x:Name="menuLoadProject" Click="menuLoadProject_Click" Header="Open..." />
                     <MenuItem x:Name="menuSaveProject" Click="menuSaveProject_Click"   Header="Save" />

@@ -287,6 +287,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
             _newCommandSetupCommand.NotifyCanExecuteChanged();
             _deleteCommandSetupCommand.NotifyCanExecuteChanged();
+
+            _newCooldownGroupCommand.NotifyCanExecuteChanged();
             
             PopulateExplorerItems();
         }
