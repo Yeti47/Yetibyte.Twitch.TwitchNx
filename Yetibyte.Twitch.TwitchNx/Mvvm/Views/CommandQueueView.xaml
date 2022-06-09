@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="Yetibyte.Twitch.TwitchNx.Mvvm.Views.CommandQueueView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.Views"
+             xmlns:viewmodels="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels" 
+             mc:Ignorable="d" 
+             Background="LimeGreen"
+             d:DataContext="{d:DesignInstance Type=viewmodels:CommandQueueViewModel}"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Margin="4,4">
+        <ItemsControl ItemsSource="{Binding Path=QueueItems}"  >
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel VerticalAlignment="Bottom" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="{Binding Path=QueueItem.Command.Timestamp, StringFormat=HH:mm:ss}" 
+                                   FontSize="14"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,8,0"
+                                   TextAlignment="Left" />
+                        <TextBlock Text="{Binding Path=QueueItem.Command.User.DisplayName}" 
+                                   Foreground="{Binding Path=QueueItem.Command.User.Color, Converter={StaticResource ColorToBrushConverter}}"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,8,0"
+                                   TextAlignment="Left" />
+                        <TextBlock Text="{Binding Path=QueueItem.Command.Name}" 
+                                   VerticalAlignment="Center"
+                                   FontSize="14"
+                                   FontWeight="Bold"
+                                   Margin="0,0,8,0"
+                                   TextAlignment="Left" />
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</UserControl>

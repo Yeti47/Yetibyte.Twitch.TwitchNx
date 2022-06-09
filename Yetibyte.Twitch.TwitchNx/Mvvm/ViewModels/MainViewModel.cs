@@ -59,8 +59,13 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         public MacroToolBoxViewModel MacroToolBoxViewModel { get; private set; }
 
         public CommandSourceViewModel CommandSourceViewModel { get; private set; }
+
+        private readonly SessionManager _sessionManager;
+
         public SessionToolbarViewModel SessionToolbarViewModel { get; private set; }
         public AppLoggerViewModel AppLoggerViewModel { get; private set; }
+
+        public CommandQueueViewModel CommandQueueViewModel { get; private set; }
 
         public IEnumerable<ToolViewModel> Tools => _tools;
 
@@ -102,9 +107,13 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
             CommandSourceViewModel = new CommandSourceViewModel(_projectManager, commandSourceProvider);
 
-            SessionToolbarViewModel = new SessionToolbarViewModel(new SessionManager(_projectManager, _switchConnector, _logger), _logger);
+            _sessionManager = new SessionManager(_projectManager, _switchConnector, _logger);
+
+            SessionToolbarViewModel = new SessionToolbarViewModel(_sessionManager, _logger);
 
             AppLoggerViewModel = new AppLoggerViewModel(eventLogAppender);
+
+            CommandQueueViewModel = new CommandQueueViewModel(_sessionManager.CommandReceiver);
 
             IEnumerable<MacroInstructionTemplateViewModel> macroInstructionTemplateViewModels = macroInstructionTemplateProvider.GetMacroInstructionTemplates();
 
@@ -120,7 +129,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
                 MacroTesterViewModel,
                 MacroToolBoxViewModel,
                 CommandSourceViewModel,
-                AppLoggerViewModel
+                AppLoggerViewModel,
+                CommandQueueViewModel
             };
 
             _initialToolSetup = _tools.ToArray();

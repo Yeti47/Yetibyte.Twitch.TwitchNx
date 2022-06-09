@@ -75,7 +75,11 @@
             <DataTemplate DataType="{x:Type vm:AppLoggerViewModel}">
                 <v:AppLoggerView />
             </DataTemplate>
-            
+
+            <DataTemplate DataType="{x:Type vm:CommandQueueViewModel}">
+                <v:CommandQueueView />
+            </DataTemplate>
+
             <Style x:Key="FormDock" TargetType="DockPanel">
                 <Setter Property="Margin" Value="0,2"/>
             </Style>
@@ -97,6 +101,8 @@
             <db:BooleanToBrushConverter x:Key="SelectionBooleanToBrushConverter" 
                                         TrueBrush="{DynamicResource MahApps.Brushes.AccentBase}"
                                         FalseBrush="{DynamicResource MahApps.Brushes.Highlight}" />
+
+            <db:ColorToBrushConverter x:Key="ColorToBrushConverter" />
 
         </ResourceDictionary>
     </Application.Resources>

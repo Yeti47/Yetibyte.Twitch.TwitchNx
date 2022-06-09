@@ -28,7 +28,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
 
         public ICommandSource CreateCommandSource(IProject project)
         {
-            TwitchIrcCommandSourceSettings? settings = project.ReadCommmandSourceSettings(typeof(TwitchIrcCommandSourceSettings), TwitchIrcCommandSourceSettings.COMMAND_SOURCE_ID) as TwitchIrcCommandSourceSettings;
+            TwitchIrcCommandSourceSettings? settings = project.ReadCommmandSourceSettings(typeof(IrcCommandSource), TwitchIrcCommandSourceSettings.COMMAND_SOURCE_ID) as TwitchIrcCommandSourceSettings;
 
             if (settings is null)
                 throw new ArgumentException("No valid settings have been supplied for the command source.");

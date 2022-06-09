@@ -62,7 +62,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.Irc
         }
 
         private void client_OnConnected(object? sender, TwitchLib.Client.Events.OnConnectedArgs e)
-        {
+        { 
             OnConnected(new IrcConnectedEventArgs(e.AutoJoinChannel));
         }
 
@@ -70,7 +70,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.Irc
         {
             IrcMember author = new IrcMember(e.ChatMessage.Username, e.ChatMessage.DisplayName)
             {
-                Color = e.ChatMessage.Color,
+                Color = System.Drawing.ColorTranslator.FromHtml(e.ChatMessage.ColorHex),
                 IsMod = e.ChatMessage.IsModerator,
                 IsSubscriber = e.ChatMessage.IsSubscriber,
                 IsMe = e.ChatMessage.IsMe,
