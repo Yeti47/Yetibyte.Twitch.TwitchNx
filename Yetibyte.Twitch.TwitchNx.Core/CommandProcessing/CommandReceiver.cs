@@ -27,18 +27,63 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
             string MacroMessageId { get; }
             Command Command { get; }
             QueueItemState State { get; }
+
+            event EventHandler? Updated;
         }
 
         public class QueueItem : IQueueItem
         {
-            public string MacroMessageId { get; set; } = string.Empty;
+            private readonly CommandReceiver _commandReceiver;
+
+            private string _macroMessageId = string.Empty;
+            private QueueItemState _state = QueueItemState.New;
+
+            public string MacroMessageId
+            {
+                get => _macroMessageId;
+                set
+                {
+                    _macroMessageId = value;
+                    OnUpdated();
+                }
+            }
+
             public Command Command { get; }
 
-            public QueueItemState State { get; set; } = QueueItemState.New;
+            public QueueItemState State
+            {
+                get => _state;
+                set
+                {
+                    _state = value;
+                    OnUpdated();
+                }
+            }
 
-            public QueueItem(Command command)
+            public event EventHandler? Updated;
+
+            public QueueItem(Command command, CommandReceiver commandReceiver)
             {
                 Command = command;
+                _commandReceiver = commandReceiver;
+            }
+
+            protected virtual void OnUpdated()
+            {
+                var handler = Updated;
+                handler?.Invoke(this, EventArgs.Empty);
+
+                _commandReceiver.RaiseQueueItemUpdatedEvent(this);
+            }
+        }
+
+        public class QueueItemEventArgs : EventArgs
+        {
+            public CommandReceiver.IQueueItem QueueItem { get; }
+
+            public QueueItemEventArgs(CommandReceiver.IQueueItem queueItem)
+            {
+                QueueItem = queueItem;
             }
         }
 
@@ -48,41 +93,51 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
         private readonly List<QueueItem> _commandQueue = new List<QueueItem>();
         private readonly List<QueueItem> _commandHistory = new List<QueueItem>();
 
-        private readonly ICommandSource _commandSource;
         private readonly SwitchConnector _switchConnector;
-        private readonly SwitchBridgeClientConnectionSettings _connectionSettings;
+
+        private ICommandSource? _commandSource;
+        private SwitchBridgeClientConnectionSettings? _connectionSettings;
+
         private readonly List<CommandProcessor> _commandProcessors = new List<CommandProcessor>();
         private readonly ILog? _logger;
 
         public event EventHandler? Started;
         public event EventHandler? Stopped;
 
+        public event EventHandler<QueueItemEventArgs>? QueueItemAdded;
+        public event EventHandler<QueueItemEventArgs>? QueueItemRemoved;
+        public event EventHandler<QueueItemEventArgs>? QueueItemUpdated;
+
         public event EventHandler<CommandExecutionRequestedEventArgs>? CommandExecutionRequested;
 
-        public ICommandSource CommandSource => _commandSource;
+        public ICommandSource? CommandSource => _commandSource;
 
-        public bool IsRunning => _commandSource.IsRunning;
+        public bool IsRunning => _commandSource?.IsRunning ?? false;
 
         public bool IsQueueFull => _commandQueue.Count >= CommandSettings.MaxQueueCapacity;
 
-        public CommandSettings CommandSettings { get; }
+        public CommandSettings CommandSettings { get; private set; }
 
         public IQueueItem? CurrentCommandQueueItem => GetCurrentQueueItem();
 
+        public bool IsInitialized { get; private set; } = false;
 
-        public CommandReceiver(ICommandSource commandSource, 
-            SwitchConnector switchConnector, 
-            SwitchBridgeClientConnectionSettings connectionSettings, 
-            CommandSettings commandSettings, 
-            ILog? logger = null)
+        public CommandReceiver(SwitchConnector switchConnector, ILog? logger = null)
         {
-            _commandSource = commandSource;
             _switchConnector = switchConnector;
-            _connectionSettings = connectionSettings;
-            CommandSettings = commandSettings;
             _logger = logger;
 
-            InitializeCommandProcessors();
+            CommandSettings = new CommandSettings();
+
+        }
+
+        public void Initialize(ICommandSource commandSource, SwitchBridgeClientConnectionSettings connectionSettings, CommandSettings commandSettings)
+        {
+            _commandSource = commandSource;
+
+            CommandSettings = commandSettings;
+
+            _connectionSettings = connectionSettings;
 
             _commandSource.Started += commandSource_Started;
             _commandSource.Stopped += commandSource_Stopped;
@@ -91,6 +146,24 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
             _switchConnector.MacroExecuted += switchConnector_MacroExecuted;
             _switchConnector.MacroComplete += switchConnector_MacroComplete;
 
+            InitializeCommandProcessors();
+
+            IsInitialized = true;   
+        }
+
+        public void Destroy()
+        {
+            if (_commandSource is not null)
+            {
+                _commandSource.Started -= commandSource_Started;
+                _commandSource.Stopped -= commandSource_Stopped;
+                _commandSource.CommandReceived -= commandSource_CommandReceived;
+            }
+
+            _switchConnector.MacroExecuted -= switchConnector_MacroExecuted;
+            _switchConnector.MacroComplete -= switchConnector_MacroComplete;
+
+            IsInitialized = false;
         }
 
         private void switchConnector_MacroComplete(object? sender, SwitchConnectorMacroCompleteEventArgs e)
@@ -105,6 +178,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
             queueItem.State = QueueItemState.MacroComplete;
 
             _commandQueue.Remove(queueItem);
+            OnQueueItemRemoved(queueItem);  
 
             if (!_commandHistory.Contains(queueItem))
                 _commandHistory.Add(queueItem);
@@ -136,6 +210,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
                     _logger?.Error($"Macro completion for of command '{queueItem.Command.Name}' timed out.");
 
                     _commandQueue.Remove(queueItem);
+                    OnQueueItemRemoved(queueItem);
 
                     if (!_commandHistory.Contains(queueItem))
                         _commandHistory.Add(queueItem);
@@ -203,10 +278,16 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
 
         public bool Start()
         {
-            if (IsRunning)
+            if (IsRunning || _connectionSettings is null)
                 return false;
 
-            bool success = _commandSource.Start();
+            if (!IsInitialized)
+            {
+                _logger?.Error("Cannot start command receiver since it has not been initialized.");
+                return false;
+            }
+
+            bool success = _commandSource?.Start() ?? false;
 
             if (success && !_switchConnector.IsConnected)
             {
@@ -221,7 +302,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
             if (!IsRunning)
                 return false;
 
-            bool success = _commandSource.Stop();
+            bool success = _commandSource?.Stop() ?? false;
 
             return success;
         }
@@ -242,7 +323,10 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
                 return false;
             }
 
-            _commandQueue.Add(new QueueItem(command));
+            var queueItem = new QueueItem(command, this);
+
+            _commandQueue.Add(queueItem);
+            OnQueueItemAdded(queueItem);
 
             _logger?.Info($"Command '{command.Name}' enqueued.");
 
@@ -279,6 +363,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
                 _logger?.Error($"Error processing command '{queueItem.Command.Name}'. Details: {ex.Message}.");
 
                 _commandQueue.Remove(queueItem);
+                OnQueueItemRemoved(queueItem);
                 return;
             }
 
@@ -298,6 +383,8 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
 
                     _commandQueue.Remove(queueItem);
 
+                    OnQueueItemRemoved(queueItem);
+
                     if (!_commandHistory.Contains(queueItem))
                         _commandHistory.Add(queueItem);
                 }
@@ -305,6 +392,24 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
 
             queueItem.State = QueueItemState.MacroStartRequested;
             
+        }
+
+        protected virtual void OnQueueItemAdded(QueueItem queueItem)
+        {
+            var handler = QueueItemAdded;
+            handler?.Invoke(this, new QueueItemEventArgs(queueItem));
+        }
+
+        protected virtual void OnQueueItemRemoved(QueueItem queueItem)
+        {
+            var handler = QueueItemRemoved;
+            handler?.Invoke(this, new QueueItemEventArgs(queueItem));
+        }
+
+        private void RaiseQueueItemUpdatedEvent(QueueItem queueItem)
+        {
+            var handler = QueueItemUpdated;
+            handler?.Invoke(this, new QueueItemEventArgs(queueItem));
         }
 
     }

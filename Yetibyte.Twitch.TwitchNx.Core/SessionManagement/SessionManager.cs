@@ -17,13 +17,16 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SessionManagement
         private readonly SwitchConnector _switchConnector;
         private readonly ILog _logger;
 
-        private CommandReceiver? _commandReceiver;
+        private readonly CommandReceiver _commandReceiver;
 
         public DateTime? SessionStartTime { get; private set; }
 
         public DateTime? SessionEndTime { get; private set; }
 
         public bool IsSessionRunning => _commandReceiver?.IsRunning ?? false;
+
+        public CommandReceiver CommandReceiver => _commandReceiver;
+
 
         public event EventHandler<SessionStartedEventArgs>? SessionStarted;
         public event EventHandler<SessionStoppedEventArgs>? SessionStopped;
@@ -33,6 +36,11 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SessionManagement
             _projectManager = projectManager;
             _switchConnector = switchConnector;
             _logger = logger;
+
+            _commandReceiver = new CommandReceiver(_switchConnector, logger);
+
+            _commandReceiver.Started += _commandReceiver_Started;
+            _commandReceiver.Stopped += _commandReceiver_Stopped;
         }
 
         public bool StartSession()
@@ -77,25 +85,15 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SessionManagement
                 return false;
             }
 
-            if (_commandReceiver is not null)
+            if (_commandReceiver.IsInitialized)
             {
-                _commandReceiver.Started -= _commandReceiver_Started;
-                _commandReceiver.Stopped -= _commandReceiver_Stopped;
-
                 if(_commandReceiver.IsRunning)
                     _commandReceiver.Stop();
+
+                _commandReceiver.Destroy(); // Clean up dependencies and unsub from events to prevent memory leaks
             }
 
-            _commandReceiver = new CommandReceiver(
-                commandSource,
-                _switchConnector,
-                _projectManager.CurrentProject.SwitchBridgeClientConnectionSettings,
-                _projectManager.CurrentProject.CommandSettings,
-                null
-            );
-
-            _commandReceiver.Started += _commandReceiver_Started;
-            _commandReceiver.Stopped += _commandReceiver_Stopped;
+            _commandReceiver.Initialize(commandSource, _projectManager.CurrentProject.SwitchBridgeClientConnectionSettings, _projectManager.CurrentProject.CommandSettings);
 
             _commandReceiver.Start();
 
