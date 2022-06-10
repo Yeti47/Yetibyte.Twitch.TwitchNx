@@ -6,40 +6,71 @@
              xmlns:local="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.Views"
              xmlns:viewmodels="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels" 
              mc:Ignorable="d" 
-             Background="LimeGreen"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             Background="{Binding Path=BackgroundColor,Converter={StaticResource ColorToBrushConverter}}"
              d:DataContext="{d:DesignInstance Type=viewmodels:CommandQueueViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="4,4">
-        <ItemsControl ItemsSource="{Binding Path=QueueItems}"  >
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VirtualizingStackPanel VerticalAlignment="Bottom" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="{Binding Path=QueueItem.Command.Timestamp, StringFormat=HH:mm:ss}" 
-                                   FontSize="14"
-                                   VerticalAlignment="Center"
-                                   Margin="0,0,8,0"
-                                   TextAlignment="Left" />
-                        <TextBlock Text="{Binding Path=QueueItem.Command.User.DisplayName}" 
-                                   Foreground="{Binding Path=QueueItem.Command.User.Color, Converter={StaticResource ColorToBrushConverter}}"
-                                   FontSize="14"
-                                   FontWeight="SemiBold"
-                                   VerticalAlignment="Center"
-                                   Margin="0,0,8,0"
-                                   TextAlignment="Left" />
-                        <TextBlock Text="{Binding Path=QueueItem.Command.Name}" 
-                                   VerticalAlignment="Center"
-                                   FontSize="14"
-                                   FontWeight="Bold"
-                                   Margin="0,0,8,0"
-                                   TextAlignment="Left" />
-                    </StackPanel>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="64" />
+        </Grid.ColumnDefinitions>
+
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+
+            <ItemsControl ItemsSource="{Binding Path=QueueItems}"  >
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel VerticalAlignment="Bottom" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Path=QueueItem.Command.Timestamp, StringFormat=HH:mm:ss}" 
+                                       Foreground="{Binding Path=DataContext.ForegroundColor, RelativeSource={RelativeSource AncestorType={x:Type local:CommandQueueView}}, Converter={StaticResource ColorToBrushConverter}}"
+                                       FontSize="14"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,8,0"
+                                       TextAlignment="Left" />
+                            <TextBlock Text="{Binding Path=QueueItem.Command.User.DisplayName}" 
+                                       Foreground="{Binding Path=QueueItem.Command.User.Color, Converter={StaticResource ColorToBrushConverter}}"
+                                       FontSize="14"
+                                       FontWeight="SemiBold"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,8,0"
+                                       TextAlignment="Left" />
+                            <TextBlock Text="{Binding Path=QueueItem.Command.Name}" 
+                                       Foreground="{Binding Path=DataContext.ForegroundColor, RelativeSource={RelativeSource AncestorType={x:Type local:CommandQueueView}}, Converter={StaticResource ColorToBrushConverter}}"
+                                       VerticalAlignment="Center"
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       Margin="0,0,8,0"
+                                       TextAlignment="Left" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+        </ScrollViewer>
+
+        <Grid Grid.Column="1" FlowDirection="RightToLeft">
+            <Expander IsExpanded="{Binding IsSettingsOpen}" ExpandDirection="Down"  >
+                <StackPanel Orientation="Vertical">
+                    <Button Content="Clear"/>
+                    <mah:ColorPicker SelectedColor="{Binding Path=BackgroundColor, Converter={StaticResource DrawingColorToMediaColorConverter}}"
+                                     Margin="0,2"
+                                     Foreground="Transparent"
+                                     />
+                    <mah:ColorPicker SelectedColor="{Binding Path=ForegroundColor, Converter={StaticResource DrawingColorToMediaColorConverter}}"
+                                     Margin="0,2"
+                                     Foreground="Transparent"
+                                     />
+                </StackPanel>
+            </Expander>
+
+        </Grid>
+
     </Grid>
 </UserControl>

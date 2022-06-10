@@ -31,7 +31,45 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         private readonly ObservableCollection<CommandQueueItemViewModel> _queueItems = new ObservableCollection<CommandQueueItemViewModel>();
 
+        private System.Drawing.Color _backgroundColor = System.Drawing.Color.LimeGreen;
+        private System.Drawing.Color _foregroundColor = System.Drawing.Color.Black;
+
+        private bool _isSettingsOpen = false;
+
         public IEnumerable<CommandQueueItemViewModel> QueueItems => _queueItems;
+
+        public bool IsSettingsOpen
+        {
+            get => _isSettingsOpen;
+            set
+            {
+                _isSettingsOpen = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsSettingsClosed));
+            }
+        }
+
+        public bool IsSettingsClosed => !IsSettingsOpen;
+
+        public System.Drawing.Color BackgroundColor
+        {
+            get => _backgroundColor;
+            set
+            {
+                _backgroundColor = value; 
+                OnPropertyChanged();
+            }
+        }
+
+        public System.Drawing.Color ForegroundColor
+        {
+            get => _foregroundColor;
+            set
+            {
+                _foregroundColor = value;
+                OnPropertyChanged();
+            }
+        }
 
         public CommandQueueViewModel(CommandReceiver commandReceiver) : base("Command Queue")
         {

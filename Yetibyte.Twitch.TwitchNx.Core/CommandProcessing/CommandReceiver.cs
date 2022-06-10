@@ -207,7 +207,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
                 {
                     queueItem.State = QueueItemState.Error;
 
-                    _logger?.Error($"Macro completion for of command '{queueItem.Command.Name}' timed out.");
+                    _logger?.Error($"Macro completion for command '{queueItem.Command.Name}' timed out (ID: {queueItem.Command.Id}).");
 
                     _commandQueue.Remove(queueItem);
                     OnQueueItemRemoved(queueItem);
@@ -379,7 +379,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
                 {
                     queueItem.State = QueueItemState.Error;
 
-                    _logger?.Error($"Execution of command '{queueItem.Command.Name}' timed out.");
+                    _logger?.Error($"Execution of command '{queueItem.Command.Name}' timed out (ID: {queueItem.Command.Id}).");
 
                     _commandQueue.Remove(queueItem);
 

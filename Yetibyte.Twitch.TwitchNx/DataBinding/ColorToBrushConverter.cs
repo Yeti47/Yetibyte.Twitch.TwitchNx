@@ -17,7 +17,9 @@ namespace Yetibyte.Twitch.TwitchNx.DataBinding
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            SolidColorBrush solidColorBrush = (SolidColorBrush)value;
+
+            return System.Drawing.Color.FromArgb(solidColorBrush.Color.A, solidColorBrush.Color.R, solidColorBrush.Color.G, solidColorBrush.Color.B);
         }
     }
 }

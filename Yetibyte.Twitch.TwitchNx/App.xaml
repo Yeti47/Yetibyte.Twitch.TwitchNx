@@ -103,6 +103,9 @@
                                         FalseBrush="{DynamicResource MahApps.Brushes.Highlight}" />
 
             <db:ColorToBrushConverter x:Key="ColorToBrushConverter" />
+            <db:DrawingColorToMediaColorConverter x:Key="DrawingColorToMediaColorConverter" />
+
+            <db:BoolToCollapsedConverter x:Key="BooleanToCollapsedConverter" />
 
         </ResourceDictionary>
     </Application.Resources>

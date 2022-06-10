@@ -97,6 +97,8 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
 
         public bool Connect()
         {
+            _webSocket.IsReconnectionEnabled = true;
+
             try
             {
                 var startTask = _webSocket.Start();
@@ -112,11 +114,18 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
 
         public bool Disconnect()
         {
-            var stopTask = _webSocket.Stop(System.Net.WebSockets.WebSocketCloseStatus.NormalClosure, "Close requested.");
+            //var stopTask = _webSocket.Stop(System.Net.WebSockets.WebSocketCloseStatus.NormalClosure, "Close requested.");
             //stopTask.Wait();
+            _webSocket.IsReconnectionEnabled = false;
+
+            Task.Run(async () => await _webSocket.Stop(System.Net.WebSockets.WebSocketCloseStatus.NormalClosure, "Close requested."));
+
+            return true;
+
+            //return Task.Run(() => _webSocket.Stop(System.Net.WebSockets.WebSocketCloseStatus.NormalClosure, "Close requested.")).GetAwaiter().GetResult();
 
             //return stopTask.Result;
-            return true;
+            //return stopTask.GetAwaiter().GetResult(); 
         }
 
         public bool ConnectAsync()
@@ -140,6 +149,8 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
             //    }
 
             //});
+
+            _webSocket.IsReconnectionEnabled = true;
 
             _webSocket.Start();
 
