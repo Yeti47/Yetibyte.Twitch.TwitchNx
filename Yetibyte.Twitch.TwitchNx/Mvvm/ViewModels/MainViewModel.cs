@@ -109,6 +109,9 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
             _sessionManager = new SessionManager(_projectManager, _switchConnector, _logger);
 
+            _sessionManager.SessionStarted += _sessionManager_SessionStarted;
+            _sessionManager.SessionStopped += _sessionManager_SessionStopped;
+
             SessionToolbarViewModel = new SessionToolbarViewModel(_sessionManager, _logger);
 
             AppLoggerViewModel = new AppLoggerViewModel(eventLogAppender);
@@ -138,6 +141,18 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             _closeProjectCommand = new RelayCommand(() => _projectManager.CloseProject(), () => _projectManager.IsProjectOpen);
 
             _openViewCommand = new RelayCommand<ToolViewModel>(ExecuteOpenViewCommand, tvm => _projectManager.IsProjectOpen);
+        }
+
+        private void _sessionManager_SessionStopped(object? sender, SessionStoppedEventArgs e)
+        {
+            foreach (var tool in _tools.Where(t => t.DisableDuringSession))
+                tool.IsEnabled = true;
+        }
+
+        private void _sessionManager_SessionStarted(object? sender, SessionStartedEventArgs e)
+        {
+            foreach(var tool in _tools.Where(t => t.DisableDuringSession))
+                tool.IsEnabled = false;
         }
 
         private void ExecuteOpenViewCommand(ToolViewModel? obj)

@@ -7,6 +7,7 @@
              xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:dd="urn:gong-wpf-dragdrop"
+             IsEnabled="{Binding IsEnabled}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>

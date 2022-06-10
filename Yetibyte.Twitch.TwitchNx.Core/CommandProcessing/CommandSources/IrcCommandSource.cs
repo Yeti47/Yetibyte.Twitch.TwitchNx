@@ -41,7 +41,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources
 
         private void ircClient_Connected(object? sender, IrcConnectedEventArgs e)
         {
-            _logger?.Info($"IRC client successfully connected to channel '{e.Channel}'.");
+            _logger?.Info("IRC client successfully connected to Twitch.");
         }
 
         private void ircClient_ConnectionErrorOccurred(object? sender, IrcErrorEventArgs e)

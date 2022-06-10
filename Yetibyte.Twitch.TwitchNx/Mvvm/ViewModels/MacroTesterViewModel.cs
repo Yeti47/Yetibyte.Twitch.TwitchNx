@@ -24,6 +24,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         public SwitchControlViewModel SwitchControlViewModel { get; }
 
+        public override bool DisableDuringSession => false;
+
         public ICommand SendMacroCommand => _sendMacroCommand;
 
         public string MacroText

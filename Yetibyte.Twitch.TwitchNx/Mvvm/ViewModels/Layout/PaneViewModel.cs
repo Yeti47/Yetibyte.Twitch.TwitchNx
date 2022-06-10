@@ -18,9 +18,23 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.Layout
 		private bool _isSelected = false;
 		private bool _isActive = false;
 
+		private bool _isEnabled = true;
+
 		#endregion Fields
 
 		#region Props
+
+		public virtual bool DisableDuringSession => true;
+
+		public virtual bool IsEnabled
+        {
+			get => _isEnabled;
+			set
+            {
+				_isEnabled = value;
+				OnPropertyChanged();
+            }
+        }
 
 		public string Title
 		{

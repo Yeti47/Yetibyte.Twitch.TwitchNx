@@ -9,6 +9,7 @@
              xmlns:st="clr-namespace:Yetibyte.Twitch.TwitchNx.Styling"
              xmlns:db="clr-namespace:Yetibyte.Twitch.TwitchNx.DataBinding"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             IsEnabled="{Binding IsEnabled}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="300">
     <UserControl.Resources>

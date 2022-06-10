@@ -9,6 +9,7 @@
              xmlns:local="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.Views" 
              xmlns:viewmodels="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels" 
              d:DataContext="{d:DesignInstance Type=viewmodels:CooldownGroupDocumentViewModel}"
+             IsEnabled="{Binding IsEnabled}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>

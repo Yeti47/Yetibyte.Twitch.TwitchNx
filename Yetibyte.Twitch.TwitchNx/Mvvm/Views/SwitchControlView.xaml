@@ -9,6 +9,7 @@
              xmlns:local="clr-namespace:Yetibyte.Twitch.TwitchNx.Mvvm.Views"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             IsEnabled="{Binding IsEnabled}"
              mc:Ignorable="d" 
              x:Name="usrControlView"
              d:DesignHeight="450" d:DesignWidth="400">

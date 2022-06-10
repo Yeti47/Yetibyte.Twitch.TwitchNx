@@ -343,7 +343,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
         {
             var queueItem = GetCurrentQueueItem();
 
-            if (queueItem is null)
+            if (queueItem is null || queueItem.State != QueueItemState.New)
                 return;
 
             if (_switchConnector.Controllers.Count < queueItem.Command.CommandSetup.ControllerIndex)
@@ -404,6 +404,8 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
         {
             var handler = QueueItemRemoved;
             handler?.Invoke(this, new QueueItemEventArgs(queueItem));
+
+            ProcessCurrentCommand();
         }
 
         private void RaiseQueueItemUpdatedEvent(QueueItem queueItem)

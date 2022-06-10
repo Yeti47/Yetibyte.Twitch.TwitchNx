@@ -23,7 +23,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
                 QueueItem = queueItem;
             }
 
-            public void NotifyPropertyChanged() => OnPropertyChanged();
+            public void NotifyPropertyChanged() => OnPropertyChanged(string.Empty);
 
         }
 
@@ -35,6 +35,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         private System.Drawing.Color _foregroundColor = System.Drawing.Color.Black;
 
         private bool _isSettingsOpen = false;
+
+        public override bool DisableDuringSession => false;
 
         public IEnumerable<CommandQueueItemViewModel> QueueItems => _queueItems;
 

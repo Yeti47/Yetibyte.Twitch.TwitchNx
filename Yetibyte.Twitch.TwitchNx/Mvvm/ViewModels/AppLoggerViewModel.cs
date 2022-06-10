@@ -87,6 +87,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         private readonly RelayCommand _clearCommand;
 
+        public override bool DisableDuringSession => false;
+
         public ICommand ClearCommand => _clearCommand;
 
         public IEnumerable<LogEventViewModel> LogEvents => _logEvents;
