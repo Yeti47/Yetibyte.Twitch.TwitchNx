@@ -59,7 +59,7 @@
         <Grid Grid.Column="1" FlowDirection="RightToLeft">
             <Expander IsExpanded="{Binding IsSettingsOpen}" ExpandDirection="Down"  >
                 <StackPanel Orientation="Vertical">
-                    <Button Content="Clear"/>
+                    <Button Content="Clear" Command="{Binding ClearCommand}"/>
                     <mah:ColorPicker SelectedColor="{Binding Path=BackgroundColor, Converter={StaticResource DrawingColorToMediaColorConverter}}"
                                      Margin="0,2"
                                      Foreground="Transparent"

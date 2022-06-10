@@ -8,6 +8,7 @@ using Yetibyte.Twitch.TwitchNx.Core.CommandProcessing.CommandSources;
 using Yetibyte.Twitch.TwitchNx.Core.Common;
 using Yetibyte.Twitch.TwitchNx.Core.SwitchBridge;
 using log4net;
+using Yetibyte.Twitch.TwitchNx.Core.Utilities;
 
 namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
 {
@@ -219,6 +220,15 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
 
         }
 
+        public void ClearQueue()
+        {
+            _commandQueue.MutableForeach(qi =>
+            {
+                _commandQueue.Remove(qi);
+                OnQueueItemRemoved(qi, true);
+            });
+        }
+
         private void InitializeCommandProcessors()
         {
             _commandProcessors.Clear();
@@ -400,12 +410,13 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
             handler?.Invoke(this, new QueueItemEventArgs(queueItem));
         }
 
-        protected virtual void OnQueueItemRemoved(QueueItem queueItem)
+        protected virtual void OnQueueItemRemoved(QueueItem queueItem, bool skipProcessingNextItem = false)
         {
             var handler = QueueItemRemoved;
             handler?.Invoke(this, new QueueItemEventArgs(queueItem));
 
-            ProcessCurrentCommand();
+            if (!skipProcessingNextItem)
+                ProcessCurrentCommand();
         }
 
         private void RaiseQueueItemUpdatedEvent(QueueItem queueItem)

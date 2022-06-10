@@ -1,10 +1,12 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Yetibyte.Twitch.TwitchNx.Core.CommandProcessing;
 using Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.Layout;
 using Yetibyte.Twitch.TwitchNx.Styling;
@@ -31,6 +33,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         private readonly ObservableCollection<CommandQueueItemViewModel> _queueItems = new ObservableCollection<CommandQueueItemViewModel>();
 
+        private readonly RelayCommand _clearCommand;
+
         private System.Drawing.Color _backgroundColor = System.Drawing.Color.LimeGreen;
         private System.Drawing.Color _foregroundColor = System.Drawing.Color.Black;
 
@@ -39,6 +43,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         public override bool DisableDuringSession => false;
 
         public IEnumerable<CommandQueueItemViewModel> QueueItems => _queueItems;
+
+        public ICommand ClearCommand => _clearCommand;
 
         public bool IsSettingsOpen
         {
@@ -80,6 +86,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             _commandReceiver.QueueItemAdded += _commandReceiver_QueueItemAdded;
             _commandReceiver.QueueItemRemoved += _commandReceiver_QueueItemRemoved;
             _commandReceiver.QueueItemUpdated += _commandReceiver_QueueItemUpdated;
+
+            _clearCommand = new RelayCommand(_commandReceiver.ClearQueue);
         }
 
         private void _commandReceiver_QueueItemUpdated(object? sender, CommandReceiver.QueueItemEventArgs e)
