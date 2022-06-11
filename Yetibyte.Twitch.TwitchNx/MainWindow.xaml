@@ -39,9 +39,9 @@
                     <MenuItem x:Name="menuSaveProjectAs" Click="menuSaveProjectAs_Click" Header="Save As..." />
                     <MenuItem x:Name="menuCloseProject" Command="{Binding Path=CloseProjectCommand}" Header="Close" />
                 </MenuItem>
-                <MenuItem Header="Edit">
+                <!--<MenuItem Header="Edit">
 
-                </MenuItem>
+                </MenuItem>-->
                 <MenuItem Header="View">
                     <MenuItem x:Name="menuRestoreDefaultLayout" Click="menuRestoreDefaultLayout_Click" Header="Restore Default Layout" />
                     <Separator />
@@ -53,6 +53,7 @@
                     <MenuItem Command="{Binding OpenViewCommand}" CommandParameter="{Binding CommandSourceViewModel}" Header="{Binding Path=CommandSourceViewModel.Title}" />
                     <MenuItem Command="{Binding OpenViewCommand}" CommandParameter="{Binding AppLoggerViewModel}" Header="{Binding Path=AppLoggerViewModel.Title}" />
                     <MenuItem Command="{Binding OpenViewCommand}" CommandParameter="{Binding CommandQueueViewModel}" Header="{Binding Path=CommandQueueViewModel.Title}" />
+                    <MenuItem Command="{Binding OpenViewCommand}" CommandParameter="{Binding MacroTimeTrackElementOptionsViewModel}" Header="{Binding Path=MacroTimeTrackElementOptionsViewModel.Title}" />
                 </MenuItem>
             </Menu>
         </WrapPanel>
