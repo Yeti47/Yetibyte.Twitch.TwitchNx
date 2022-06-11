@@ -65,6 +65,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
         private readonly ISwitchControllerSelector _switchControllerSelector;
         private readonly SwitchConnector _switchConnector;
         private readonly IDialogService _dialogService;
+        private readonly MacroTimeTrackElementOptionsViewModel _macroTimeTrackElementOptionsViewModel;
         private ZoomLevels _zoomlevel = ZoomLevels.Percent100;
 
         private TimeSpan _targetDuration;
@@ -149,13 +150,14 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
         public ICommand ExportToClipboardCommand => _exportToClipboardCommand;
         public ICommand TestMacroCommand => _testMacroCommand;
 
-        public MacroTimeLineViewModel(IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, Macro macro, ISwitchControllerSelector switchControllerSelector, SwitchConnector switchConnector, IDialogService dialogService)
+        public MacroTimeLineViewModel(IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, Macro macro, ISwitchControllerSelector switchControllerSelector, SwitchConnector switchConnector, IDialogService dialogService, MacroTimeTrackElementOptionsViewModel macroTimeTrackElementOptionsViewModel)
         {
             _macroInstructionTemplateFactoryFacade = macroInstructionTemplateFactoryFacade;
             _macro = macro;
             _switchControllerSelector = switchControllerSelector;
             _switchConnector = switchConnector;
             _dialogService = dialogService;
+            _macroTimeTrackElementOptionsViewModel = macroTimeTrackElementOptionsViewModel;
             _zoomlevel = ZoomLevels.Percent100;
 
             _zoomSteps = Enum.GetValues<ZoomLevels>()
@@ -245,7 +247,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
                 }
                 else
                 {
-                    MacroTimeTrackViewModel trackVm = new MacroTimeTrackViewModel(this);
+                    MacroTimeTrackViewModel trackVm = new MacroTimeTrackViewModel(this, _macroTimeTrackElementOptionsViewModel);
                     _tracks.Add(trackVm);
                 }
 
@@ -254,7 +256,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 
         private MacroTimeTrackViewModel AddTrackFromModel(MacroTimeTrack macroTimeTrack)
         {
-            MacroTimeTrackViewModel timeTrackViewModel = new MacroTimeTrackViewModel(this);
+            MacroTimeTrackViewModel timeTrackViewModel = new MacroTimeTrackViewModel(this, _macroTimeTrackElementOptionsViewModel);
 
             _tracks.Add(timeTrackViewModel);
 
@@ -262,13 +264,15 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
             {
                 MacroInstructionTemplateViewModel macroInstructionTemplateViewModel = _macroInstructionTemplateFactoryFacade.CreateFor(trackElement.Instruction);
 
-                MacroTimeTrackElementViewModel trackElementViewModel = new MacroTimeTrackElementViewModel(macroInstructionTemplateViewModel, trackElement.Id);
+                MacroTimeTrackElementViewModel trackElementViewModel = new MacroTimeTrackElementViewModel(macroInstructionTemplateViewModel, trackElement.Id, _macroTimeTrackElementOptionsViewModel);
 
                 //timeTrackViewModel.AddElement(trackElementViewModel);
                 trackElementViewModel.TimeTrack = timeTrackViewModel;
 
                 trackElementViewModel.StartTime = trackElement.StartTime;
                 trackElementViewModel.Duration = trackElement.Duration;
+
+                trackElementViewModel.OptionsViewModel = macroInstructionTemplateViewModel.CreateOptionsViewModel(trackElement.Instruction);
             }
 
             return timeTrackViewModel;
@@ -375,7 +379,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 
                 foreach (var timeTrackElementVm in timeTackVm.Elements)
                 {
-                    IMacroInstruction macroInstruction = timeTrackElementVm.InstructionTemplateViewModel.CreateMacroInstruction();
+                    IMacroInstruction macroInstruction = timeTrackElementVm.InstructionTemplateViewModel.CreateMacroInstruction(timeTrackElementVm.OptionsViewModel);
 
                     MacroTimeTrackElement macroTimeTrackElement = new MacroTimeTrackElement(
                         timeTrackElementVm.Id,

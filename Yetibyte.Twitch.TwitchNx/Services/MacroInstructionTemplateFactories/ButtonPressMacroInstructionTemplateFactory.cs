@@ -51,7 +51,7 @@ namespace Yetibyte.Twitch.TwitchNx.Services.MacroInstructionTemplateFactories
                             new AnimationFrame("Images/Macros/btn_L/L_2.png", LR_FRAME_DURATION_SHORT),
                         },
                         MacroInstructionType.Simple,
-                        () => new ButtonPressMacroInstruction(ControllerButton.L)
+                        _ => new ButtonPressMacroInstruction(ControllerButton.L)
                     )
                 { ToolTip = "Press L Button" };
             }
@@ -63,7 +63,7 @@ namespace Yetibyte.Twitch.TwitchNx.Services.MacroInstructionTemplateFactories
                             new AnimationFrame("Images/Macros/btn_R/R_2.png", LR_FRAME_DURATION_SHORT),
                         },
                         MacroInstructionType.Simple,
-                        () => new ButtonPressMacroInstruction(ControllerButton.R)
+                        _ => new ButtonPressMacroInstruction(ControllerButton.R)
                     )
                 { ToolTip = "Press R Button" };
             }
@@ -75,7 +75,7 @@ namespace Yetibyte.Twitch.TwitchNx.Services.MacroInstructionTemplateFactories
                             new AnimationFrame("Images/Macros/btn_ZL/ZL_2.png", LR_FRAME_DURATION_SHORT),
                         },
                         MacroInstructionType.Simple,
-                        () => new ButtonPressMacroInstruction(ControllerButton.ZL)
+                        _ => new ButtonPressMacroInstruction(ControllerButton.ZL)
                     )
                 { ToolTip = "Press ZL Trigger" };
             }
@@ -87,7 +87,7 @@ namespace Yetibyte.Twitch.TwitchNx.Services.MacroInstructionTemplateFactories
                             new AnimationFrame("Images/Macros/btn_ZR/ZR_2.png", LR_FRAME_DURATION_SHORT),
                         },
                         MacroInstructionType.Simple,
-                        () => new ButtonPressMacroInstruction(ControllerButton.ZR)
+                        _ => new ButtonPressMacroInstruction(ControllerButton.ZR)
                     )
                 { ToolTip = "Press ZR Trigger" };
             }
@@ -107,7 +107,7 @@ namespace Yetibyte.Twitch.TwitchNx.Services.MacroInstructionTemplateFactories
                             new AnimationFrame("Images/Macros/dpad/Dpad_2.png", DPAD_FRAME_DURATION_SHORT),
                         },
                         MacroInstructionType.Simple,
-                        () => new ButtonPressMacroInstruction(ControllerButton.DpadUp),
+                        _ => new ButtonPressMacroInstruction(ControllerButton.DpadUp),
                         "Images/Macros/dpad/Dpad_2.png"
                     )
                 { ToolTip = "Press D-Pad Up" };
@@ -120,7 +120,7 @@ namespace Yetibyte.Twitch.TwitchNx.Services.MacroInstructionTemplateFactories
                             new AnimationFrame("Images/Macros/dpad/Dpad_3.png", DPAD_FRAME_DURATION_SHORT),
                         },
                         MacroInstructionType.Simple,
-                        () => new ButtonPressMacroInstruction(ControllerButton.DpadRight),
+                        _ => new ButtonPressMacroInstruction(ControllerButton.DpadRight),
                         "Images/Macros/dpad/Dpad_3.png"
                     )
                 { ToolTip = "Press D-Pad Right" };
@@ -133,7 +133,7 @@ namespace Yetibyte.Twitch.TwitchNx.Services.MacroInstructionTemplateFactories
                             new AnimationFrame("Images/Macros/dpad/Dpad_4.png", DPAD_FRAME_DURATION_SHORT),
                         },
                         MacroInstructionType.Simple,
-                        () => new ButtonPressMacroInstruction(ControllerButton.DpadDown),
+                        _ => new ButtonPressMacroInstruction(ControllerButton.DpadDown),
                         "Images/Macros/dpad/Dpad_4.png"
                     )
                 { ToolTip = "Press D-Pad Down" };
@@ -146,7 +146,7 @@ namespace Yetibyte.Twitch.TwitchNx.Services.MacroInstructionTemplateFactories
                             new AnimationFrame("Images/Macros/dpad/Dpad_5.png", DPAD_FRAME_DURATION_SHORT),
                         },
                         MacroInstructionType.Simple,
-                        () => new ButtonPressMacroInstruction(ControllerButton.DpadLeft),
+                        _ => new ButtonPressMacroInstruction(ControllerButton.DpadLeft),
                         "Images/Macros/dpad/Dpad_5.png"
                     )
                 { ToolTip = "Press D-Pad Left" };
@@ -165,7 +165,7 @@ namespace Yetibyte.Twitch.TwitchNx.Services.MacroInstructionTemplateFactories
                     BUTTON_FRAME_DURATION_SHORT
                 ),
                 MacroInstructionType.Simple,
-                () => new ButtonPressMacroInstruction(buttonPressMacroInstruction.Button ?? ControllerButton.A)
+                _ => new ButtonPressMacroInstruction(buttonPressMacroInstruction.Button ?? ControllerButton.A)
             )
             {
                 ToolTip = $"Press {buttonPressMacroInstruction.Button?.Name}"

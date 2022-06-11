@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros;
 using Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels;
+using Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine;
 using static Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroInstructionTemplateViewModel;
 
 namespace Yetibyte.Twitch.TwitchNx.Services.MacroInstructionTemplateFactories
@@ -32,12 +33,20 @@ namespace Yetibyte.Twitch.TwitchNx.Services.MacroInstructionTemplateFactories
                             STICK_ROTATION_FRAME_DURATION_SHORT
                         ),
                         MacroInstructionType.Animation,
-                        () => new StickRotationMacroInstruction(
-                            Core.CommandModel.ControllerStickDirection.North,
-                            Core.CommandModel.ControllerStickDirection.North,
+                        static opt => new StickRotationMacroInstruction(
+                            (opt as StickRotationMacroOptionsViewModel)?.SelectedStartDirection?.ControllerStickDirection ?? Core.CommandModel.ControllerStickDirection.North,
+                            (opt as StickRotationMacroOptionsViewModel)?.SelectedEndDirection?.ControllerStickDirection ?? Core.CommandModel.ControllerStickDirection.North,
                             Core.CommandModel.ControllerStick.Left
-                        ),
-                        "Images/Macros/stick_L/Joy_L_PreView.png"
+                        )
+                        {
+                            IsCounterClockwise = (opt as StickRotationMacroOptionsViewModel)?.IsCounterClockwise ?? false
+                        },
+                        "Images/Macros/stick_L/Joy_L_PreView.png",
+                        static mi => new StickRotationMacroOptionsViewModel(
+                            (mi as StickRotationMacroInstruction)?.StartDirection ?? Core.CommandModel.ControllerStickDirection.North,
+                            (mi as StickRotationMacroInstruction)?.EndDirection ?? Core.CommandModel.ControllerStickDirection.North,
+                            (mi as StickRotationMacroInstruction)?.IsCounterClockwise ?? false
+                        )
                     )
                 { ToolTip = "Left Stick Rotation: 0° to 360° (CW)" };
             }
@@ -51,13 +60,20 @@ namespace Yetibyte.Twitch.TwitchNx.Services.MacroInstructionTemplateFactories
                             STICK_ROTATION_FRAME_DURATION_SHORT
                         ),
                         MacroInstructionType.Animation,
-                        () => new StickRotationMacroInstruction(
-                            Core.CommandModel.ControllerStickDirection.North,
-                            Core.CommandModel.ControllerStickDirection.North,
+                        static opt => new StickRotationMacroInstruction(
+                            (opt as StickRotationMacroOptionsViewModel)?.SelectedStartDirection?.ControllerStickDirection ?? Core.CommandModel.ControllerStickDirection.North,
+                            (opt as StickRotationMacroOptionsViewModel)?.SelectedEndDirection?.ControllerStickDirection ?? Core.CommandModel.ControllerStickDirection.North,
                             Core.CommandModel.ControllerStick.Right
-                        ),
-                        "Images/Macros/stick_R/Joy_R_PreView.png"
-                    )
+                        )
+                        {
+                            IsCounterClockwise = (opt as StickRotationMacroOptionsViewModel)?.IsCounterClockwise ?? false
+                        },
+                        "Images/Macros/stick_R/Joy_R_PreView.png",
+                        static mi => new StickRotationMacroOptionsViewModel(
+                            (mi as StickRotationMacroInstruction)?.StartDirection ?? Core.CommandModel.ControllerStickDirection.North,
+                            (mi as StickRotationMacroInstruction)?.EndDirection ?? Core.CommandModel.ControllerStickDirection.North,
+                            (mi as StickRotationMacroInstruction)?.IsCounterClockwise ?? false
+                        ))
                 { ToolTip = "Right Stick Rotation: 0° to 360° (CW)" };
             }
         }

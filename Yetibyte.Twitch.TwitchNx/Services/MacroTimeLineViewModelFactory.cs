@@ -11,18 +11,20 @@ namespace Yetibyte.Twitch.TwitchNx.Services
         private readonly SwitchConnector _switchConnector;
         private readonly ISwitchControllerSelector _switchControllerSelector;
         private readonly IDialogService _dialogService;
+        private readonly MacroTimeTrackElementOptionsViewModel _macroTimeTrackElementOptionsViewModel;
 
-        public MacroTimeLineViewModelFactory(IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, SwitchConnector switchConnector, ISwitchControllerSelector switchControllerSelector, IDialogService dialogService)
+        public MacroTimeLineViewModelFactory(IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, SwitchConnector switchConnector, ISwitchControllerSelector switchControllerSelector, IDialogService dialogService, MacroTimeTrackElementOptionsViewModel macroTimeTrackElementOptionsViewModel)
         {
             _macroInstructionTemplateFactoryFacade = macroInstructionTemplateFactoryFacade;
             _switchConnector = switchConnector;
             _switchControllerSelector = switchControllerSelector;
             _dialogService = dialogService;
+            _macroTimeTrackElementOptionsViewModel = macroTimeTrackElementOptionsViewModel;
         }
 
         public MacroTimeLineViewModel CreateViewModel(Macro macro)
         {
-            return new MacroTimeLineViewModel(_macroInstructionTemplateFactoryFacade, macro, _switchControllerSelector, _switchConnector, _dialogService);
+            return new MacroTimeLineViewModel(_macroInstructionTemplateFactoryFacade, macro, _switchControllerSelector, _switchConnector, _dialogService, _macroTimeTrackElementOptionsViewModel);
         }
     }
 }

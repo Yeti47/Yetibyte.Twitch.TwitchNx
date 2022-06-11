@@ -60,6 +60,14 @@
                 <vtl:MacroTimeTrackElementView />
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type vmtl:MacroTimeTrackElementOptionsViewModel}">
+                <vtl:MacroTimeTrackElementOptionsView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vmtl:StickRotationMacroOptionsViewModel}">
+                <vtl:StickRotationMacroOptionsView />
+            </DataTemplate>
+            
             <!--<DataTemplate DataType="{x:Type commandsources:IrcCommandSourceSettingsViewModel}">
                 <commandsourcesViews:IrcCommandSourceSettingsView />
             </DataTemplate>-->

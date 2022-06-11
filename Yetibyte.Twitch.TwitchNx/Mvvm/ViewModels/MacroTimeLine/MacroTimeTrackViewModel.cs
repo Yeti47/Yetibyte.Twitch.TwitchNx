@@ -14,7 +14,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 
         private readonly ObservableCollection<MacroTimeTrackElementViewModel> _elements = new ObservableCollection<MacroTimeTrackElementViewModel>();
         private readonly MacroTimeLineViewModel _timeLineViewModel;
-
+        private readonly MacroTimeTrackElementOptionsViewModel _macroTimeTrackElementOptionsViewModel;
         private long _snapStepTicks = 100000 * 5 / 2;
 
         public long SnapStepTicks
@@ -42,9 +42,10 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 
         public event EventHandler? ElementCollectionChanged;
 
-        public MacroTimeTrackViewModel(MacroTimeLineViewModel timeLineViewModel)
+        public MacroTimeTrackViewModel(MacroTimeLineViewModel timeLineViewModel, MacroTimeTrackElementOptionsViewModel macroTimeTrackElementOptionsViewModel)
         {
             _timeLineViewModel = timeLineViewModel;
+            _macroTimeTrackElementOptionsViewModel = macroTimeTrackElementOptionsViewModel;
             _elements.CollectionChanged += elements_CollectionChanged;
         }
 
@@ -165,13 +166,16 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
                 MacroTimeTrackElementViewModel macroTimeTrackElementViewModel = new MacroTimeTrackElementViewModel(
                     //macroToolBoxItemViewModel.MacroInstructionTemplateViewModel.Clone()
                     macroToolBoxItemViewModel.MacroInstructionTemplateViewModel,
-                    Guid.NewGuid().ToString()
+                    Guid.NewGuid().ToString(),
+                    _macroTimeTrackElementOptionsViewModel
                 );
 
                 _timeLineViewModel.DeselectAllCommand.Execute(null);
                 macroTimeTrackElementViewModel.IsSelected = true;
 
                 macroTimeTrackElementViewModel.Duration = TimeSpan.FromSeconds(DEFAULT_ELEMENT_DURATION);
+
+                macroTimeTrackElementViewModel.OptionsViewModel = macroToolBoxItemViewModel.MacroInstructionTemplateViewModel.CreateOptionsViewModel(null);
 
                 PlaceInTimeLine(dropInfo, macroTimeTrackElementViewModel);
             }

@@ -17,6 +17,7 @@ using Yetibyte.Twitch.TwitchNx.Core.ProjectManagement;
 using Yetibyte.Twitch.TwitchNx.Core.SessionManagement;
 using Yetibyte.Twitch.TwitchNx.Core.SwitchBridge;
 using Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.Layout;
+using Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine;
 using Yetibyte.Twitch.TwitchNx.Services;
 using Yetibyte.Twitch.TwitchNx.Services.Dialog;
 
@@ -67,6 +68,9 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         public CommandQueueViewModel CommandQueueViewModel { get; private set; }
 
+        public MacroTimeTrackElementOptionsViewModel MacroTimeTrackElementOptionsViewModel { get; private set; }
+
+
         public IEnumerable<ToolViewModel> Tools => _tools;
 
         public Theme Theme { get; } = new AvalonDock.Themes.Vs2013LightTheme();
@@ -100,7 +104,9 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             DocumentManagerViewModel = new DocumentManagerViewModel();
             SwitchControlViewModel = new SwitchControlViewModel(switchConnector);
 
-            _macroTimeLineViewModelFactory = new MacroTimeLineViewModelFactory(macroInstructionTemplateFactoryFacade, switchConnector, SwitchControlViewModel, dialogService);
+            MacroTimeTrackElementOptionsViewModel = new MacroTimeTrackElementOptionsViewModel();
+
+            _macroTimeLineViewModelFactory = new MacroTimeLineViewModelFactory(macroInstructionTemplateFactoryFacade, switchConnector, SwitchControlViewModel, dialogService, MacroTimeTrackElementOptionsViewModel);
            
             ProjectExplorerViewModel = new ProjectExplorerViewModel(projectManager, DocumentManagerViewModel, _macroTimeLineViewModelFactory);
             MacroTesterViewModel = new MacroTesterViewModel(switchConnector, SwitchControlViewModel);
@@ -133,7 +139,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
                 MacroToolBoxViewModel,
                 CommandSourceViewModel,
                 AppLoggerViewModel,
-                CommandQueueViewModel
+                CommandQueueViewModel,
+                MacroTimeTrackElementOptionsViewModel
             };
 
             _initialToolSetup = _tools.ToArray();

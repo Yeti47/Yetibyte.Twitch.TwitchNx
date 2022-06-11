@@ -17,7 +17,7 @@ namespace Yetibyte.Twitch.TwitchNx.Services.MacroInstructionTemplateFactories
             return new MacroInstructionTemplateViewModel(
                 Array.Empty<AnimationFrame>(),
                 MacroInstructionType.Simple,
-                () => new KeyFrameMacroInstruction()
+                _ => new KeyFrameMacroInstruction()
             );
         }
     }

@@ -10,7 +10,9 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
     {
         public record AnimationFrame(string ImagePath, float Duration);
 
-        private readonly Func<IMacroInstruction> _instructionFactory;
+        private readonly Func<object?, IMacroInstruction> _instructionFactory;
+        private readonly Func<IMacroInstruction?, object?> _optionsViewModelFactory;
+
         private readonly AnimationFrame[] _animationFrames;
         private readonly string _defaultImagePath;
         private bool _isAnimationPlaying;
@@ -54,7 +56,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         public MacroInstructionType MacroInstructionType { get; }
 
-        public MacroInstructionTemplateViewModel(IEnumerable<AnimationFrame> animationFrames, MacroInstructionType macroInstructionType, Func<IMacroInstruction> instructionFactory, string defaultImagePath = "")
+        public MacroInstructionTemplateViewModel(IEnumerable<AnimationFrame> animationFrames, MacroInstructionType macroInstructionType, Func<object?, IMacroInstruction> instructionFactory, string defaultImagePath = "", Func<IMacroInstruction?, object?>? optionsViewModelFactory = null)
         {
             _animationFrames = animationFrames.ToArray();
 
@@ -67,9 +69,13 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
             MacroInstructionType = macroInstructionType;
             _instructionFactory = instructionFactory;
+
+            _optionsViewModelFactory = optionsViewModelFactory ?? (static _ => null);
         }
 
-        public IMacroInstruction CreateMacroInstruction() => _instructionFactory();
+        public IMacroInstruction CreateMacroInstruction(object? optionsViewModel) => _instructionFactory(optionsViewModel);
+
+        public object? CreateOptionsViewModel(IMacroInstruction? macroInstruction) => _optionsViewModelFactory(macroInstruction);
 
         public MacroInstructionTemplateViewModel Clone()
         {

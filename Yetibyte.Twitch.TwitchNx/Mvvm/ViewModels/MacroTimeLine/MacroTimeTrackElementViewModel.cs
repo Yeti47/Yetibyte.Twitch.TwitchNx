@@ -22,6 +22,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
         private MacroTimeTrackViewModel? _originalTimeTrack;
         private TimeSpan? _originalStartTime;
         private MacroInstructionTemplateViewModel _instructionTemplateViewModel;
+        private readonly MacroTimeTrackElementOptionsViewModel _macroTimeTrackElementOptionsViewModel;
         private bool _isSelected;
 
         public bool IsSelected
@@ -38,6 +39,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
         public ICommand SelectCommand => _selectCommand;
 
         public Point HandlePosition { get; private set; }
+
+        public object? OptionsViewModel { get; set; }
 
         public MacroInstructionTemplateViewModel InstructionTemplateViewModel
         {
@@ -112,13 +115,18 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
 
         public string Id { get; }
 
-        public MacroTimeTrackElementViewModel(MacroInstructionTemplateViewModel instructionTemplateViewModel, string id)
+        public MacroTimeTrackElementViewModel(MacroInstructionTemplateViewModel instructionTemplateViewModel, string id, MacroTimeTrackElementOptionsViewModel macroTimeTrackElementOptionsViewModel)
         {
             _instructionTemplateViewModel = instructionTemplateViewModel;
             Id = id;
+            _macroTimeTrackElementOptionsViewModel = macroTimeTrackElementOptionsViewModel;
 
             _deleteCommand = new RelayCommand(() => this.TimeTrack = null);
-            _selectCommand = new RelayCommand(() => this.IsSelected = true);
+            _selectCommand = new RelayCommand(() =>
+            {
+                this.IsSelected = true;
+                this._macroTimeTrackElementOptionsViewModel.ShowOptions(this.OptionsViewModel);
+            });
         }
 
         public void AdjustDurationByUnits(double units)
