@@ -18,7 +18,10 @@ namespace Yetibyte.Twitch.TwitchNx.Services.MacroInstructionTemplateFactories
                 Array.Empty<AnimationFrame>(),
                 MacroInstructionType.Simple,
                 _ => new KeyFrameMacroInstruction()
-            );
+            )
+            {
+                ToolTip = "Do nothing"
+            };
         }
     }
 }

@@ -171,11 +171,13 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
                 );
 
                 _timeLineViewModel.DeselectAllCommand.Execute(null);
+
+                macroTimeTrackElementViewModel.OptionsViewModel = macroToolBoxItemViewModel.MacroInstructionTemplateViewModel.CreateOptionsViewModel(null);
+
                 macroTimeTrackElementViewModel.IsSelected = true;
 
                 macroTimeTrackElementViewModel.Duration = TimeSpan.FromSeconds(DEFAULT_ELEMENT_DURATION);
 
-                macroTimeTrackElementViewModel.OptionsViewModel = macroToolBoxItemViewModel.MacroInstructionTemplateViewModel.CreateOptionsViewModel(null);
 
                 PlaceInTimeLine(dropInfo, macroTimeTrackElementViewModel);
             }

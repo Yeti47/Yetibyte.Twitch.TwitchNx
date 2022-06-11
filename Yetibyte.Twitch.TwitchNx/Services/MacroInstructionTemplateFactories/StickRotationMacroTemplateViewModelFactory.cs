@@ -48,7 +48,7 @@ namespace Yetibyte.Twitch.TwitchNx.Services.MacroInstructionTemplateFactories
                             (mi as StickRotationMacroInstruction)?.IsCounterClockwise ?? false
                         )
                     )
-                { ToolTip = "Left Stick Rotation: 0° to 360° (CW)" };
+                { ToolTip = "Left Stick Rotation" };
             }
             else
             {
@@ -74,7 +74,7 @@ namespace Yetibyte.Twitch.TwitchNx.Services.MacroInstructionTemplateFactories
                             (mi as StickRotationMacroInstruction)?.EndDirection ?? Core.CommandModel.ControllerStickDirection.North,
                             (mi as StickRotationMacroInstruction)?.IsCounterClockwise ?? false
                         ))
-                { ToolTip = "Right Stick Rotation: 0° to 360° (CW)" };
+                { ToolTip = "Right Stick Rotation" };
             }
         }
 

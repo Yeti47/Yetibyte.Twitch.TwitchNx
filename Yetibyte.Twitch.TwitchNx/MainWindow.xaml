@@ -50,10 +50,10 @@
                     <MenuItem Command="{Binding OpenViewCommand}" CommandParameter="{Binding ProjectExplorerViewModel}" Header="{Binding Path=ProjectExplorerViewModel.Title}" />
                     <MenuItem Command="{Binding OpenViewCommand}" CommandParameter="{Binding MacroTesterViewModel}" Header="{Binding Path=MacroTesterViewModel.Title}" />
                     <MenuItem Command="{Binding OpenViewCommand}" CommandParameter="{Binding MacroToolBoxViewModel}" Header="{Binding Path=MacroToolBoxViewModel.Title}" />
-                    <MenuItem Command="{Binding OpenViewCommand}" CommandParameter="{Binding CommandSourceViewModel}" Header="{Binding Path=CommandSourceViewModel.Title}" />
-                    <MenuItem Command="{Binding OpenViewCommand}" CommandParameter="{Binding AppLoggerViewModel}" Header="{Binding Path=AppLoggerViewModel.Title}" />
-                    <MenuItem Command="{Binding OpenViewCommand}" CommandParameter="{Binding CommandQueueViewModel}" Header="{Binding Path=CommandQueueViewModel.Title}" />
                     <MenuItem Command="{Binding OpenViewCommand}" CommandParameter="{Binding MacroTimeTrackElementOptionsViewModel}" Header="{Binding Path=MacroTimeTrackElementOptionsViewModel.Title}" />
+                    <MenuItem Command="{Binding OpenViewCommand}" CommandParameter="{Binding CommandSourceViewModel}" Header="{Binding Path=CommandSourceViewModel.Title}" />
+                    <MenuItem Command="{Binding OpenViewCommand}" CommandParameter="{Binding CommandQueueViewModel}" Header="{Binding Path=CommandQueueViewModel.Title}" />
+                    <MenuItem Command="{Binding OpenViewCommand}" CommandParameter="{Binding AppLoggerViewModel}" Header="{Binding Path=AppLoggerViewModel.Title}" />
                 </MenuItem>
             </Menu>
         </WrapPanel>

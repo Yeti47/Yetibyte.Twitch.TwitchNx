@@ -30,7 +30,9 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
             get { return _isSelected; }
             set { 
                 _isSelected = value; 
-                OnPropertyChanged(); 
+                OnPropertyChanged();
+
+                this._macroTimeTrackElementOptionsViewModel.ShowOptions(this.OptionsViewModel);
             }
         }
 
@@ -122,11 +124,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels.MacroTimeLine
             _macroTimeTrackElementOptionsViewModel = macroTimeTrackElementOptionsViewModel;
 
             _deleteCommand = new RelayCommand(() => this.TimeTrack = null);
-            _selectCommand = new RelayCommand(() =>
-            {
-                this.IsSelected = true;
-                this._macroTimeTrackElementOptionsViewModel.ShowOptions(this.OptionsViewModel);
-            });
+            _selectCommand = new RelayCommand(() => this.IsSelected = true);
+
         }
 
         public void AdjustDurationByUnits(double units)
