@@ -67,7 +67,11 @@
             <DataTemplate DataType="{x:Type vmtl:StickRotationMacroOptionsViewModel}">
                 <vtl:StickRotationMacroOptionsView />
             </DataTemplate>
-            
+
+            <DataTemplate DataType="{x:Type vmtl:FixedStickDirectionMacroOptionsViewModel}">
+                <vtl:FixedStickDirectionMacroOptionsView />
+            </DataTemplate>
+
             <!--<DataTemplate DataType="{x:Type commandsources:IrcCommandSourceSettingsViewModel}">
                 <commandsourcesViews:IrcCommandSourceSettingsView />
             </DataTemplate>-->

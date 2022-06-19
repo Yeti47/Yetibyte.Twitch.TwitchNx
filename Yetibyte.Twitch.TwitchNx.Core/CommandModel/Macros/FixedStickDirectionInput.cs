@@ -22,10 +22,22 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros
 
         public ControllerStickDirection StickDirection { get; set; }
 
+        public float Pressure { get; set; } = 1f;
+
         public ControllerStick Stick { get; set; } = ControllerStick.Left;
 
         [Newtonsoft.Json.JsonIgnore]
-        public Point Position => _pointMap[StickDirection];
+        public Point Position
+        {
+            get
+            {
+                Point directionUnscaled = _pointMap[StickDirection];
+
+                PointF directionScaled = new PointF(directionUnscaled.X * Pressure, directionUnscaled.Y * Pressure);
+
+                return Point.Truncate(directionScaled);
+            }
+        }
 
         public string GetMacro()
         {
