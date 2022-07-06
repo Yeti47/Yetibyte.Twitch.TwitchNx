@@ -92,6 +92,10 @@
                 <v:CommandQueueView />
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type vm:CommandHistoryViewModel}">
+                <v:CommandQueueView />
+            </DataTemplate>
+
             <Style x:Key="FormDock" TargetType="DockPanel">
                 <Setter Property="Margin" Value="0,2"/>
             </Style>

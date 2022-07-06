@@ -109,6 +109,9 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
         public event EventHandler<QueueItemEventArgs>? QueueItemRemoved;
         public event EventHandler<QueueItemEventArgs>? QueueItemUpdated;
 
+        public event EventHandler<QueueItemEventArgs?> QueueItemAddedToHistory;
+        public event EventHandler<QueueItemEventArgs?> QueueItemRemovedFromHistory;
+
         public event EventHandler<CommandExecutionRequestedEventArgs>? CommandExecutionRequested;
 
         public ICommandSource? CommandSource => _commandSource;
@@ -182,7 +185,10 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
             OnQueueItemRemoved(queueItem);  
 
             if (!_commandHistory.Contains(queueItem))
+            {
                 _commandHistory.Add(queueItem);
+                OnQueueItemAddedToHistory(queueItem);
+            }
 
             ProcessCurrentCommand();
         }
@@ -214,7 +220,10 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
                     OnQueueItemRemoved(queueItem);
 
                     if (!_commandHistory.Contains(queueItem))
+                    {
                         _commandHistory.Add(queueItem);
+                        OnQueueItemAddedToHistory(queueItem);
+                    }
                 }
             });
 
@@ -226,6 +235,15 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
             {
                 _commandQueue.Remove(qi);
                 OnQueueItemRemoved(qi, true);
+            });
+        }
+
+        public void ClearHistory()
+        {
+            _commandHistory.MutableForeach(qh =>
+            {
+                _commandHistory.Remove(qh);
+                OnQueueItemRemovedFromHistory(qh);
             });
         }
 
@@ -396,7 +414,10 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
                     OnQueueItemRemoved(queueItem);
 
                     if (!_commandHistory.Contains(queueItem))
+                    {
                         _commandHistory.Add(queueItem);
+                        OnQueueItemAddedToHistory(queueItem);
+                    }
                 }
             });
 
@@ -407,6 +428,18 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandProcessing
         protected virtual void OnQueueItemAdded(QueueItem queueItem)
         {
             var handler = QueueItemAdded;
+            handler?.Invoke(this, new QueueItemEventArgs(queueItem));
+        }
+
+        protected virtual void OnQueueItemAddedToHistory(QueueItem queueItem)
+        {
+            var handler = QueueItemAddedToHistory;
+            handler?.Invoke(this, new QueueItemEventArgs(queueItem));
+        }
+
+        protected virtual void OnQueueItemRemovedFromHistory(QueueItem queueItem)
+        {
+            var handler = QueueItemRemovedFromHistory;
             handler?.Invoke(this, new QueueItemEventArgs(queueItem));
         }
 

@@ -67,6 +67,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         public AppLoggerViewModel AppLoggerViewModel { get; private set; }
 
         public CommandQueueViewModel CommandQueueViewModel { get; private set; }
+        public CommandHistoryViewModel CommandHistoryViewModel { get; private set; }
 
         public MacroTimeTrackElementOptionsViewModel MacroTimeTrackElementOptionsViewModel { get; private set; }
 
@@ -85,7 +86,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             }
         }
 
-        public event Action<ToolViewModel> OpeningToolView;
+        public event Action<ToolViewModel>? OpeningToolView;
 
         public MainViewModel(
             IMacroInstructionTemplateFactoryFacade macroInstructionTemplateFactoryFacade, 
@@ -123,6 +124,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             AppLoggerViewModel = new AppLoggerViewModel(eventLogAppender);
 
             CommandQueueViewModel = new CommandQueueViewModel(_sessionManager.CommandReceiver);
+            CommandHistoryViewModel = new CommandHistoryViewModel(_sessionManager.CommandReceiver);
 
             IEnumerable<MacroInstructionTemplateViewModel> macroInstructionTemplateViewModels = macroInstructionTemplateProvider.GetMacroInstructionTemplates();
 
@@ -140,6 +142,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
                 CommandSourceViewModel,
                 AppLoggerViewModel,
                 CommandQueueViewModel,
+                CommandHistoryViewModel,
                 MacroTimeTrackElementOptionsViewModel
             };
 

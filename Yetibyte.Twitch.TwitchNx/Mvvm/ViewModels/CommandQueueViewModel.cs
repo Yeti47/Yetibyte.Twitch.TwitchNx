@@ -13,8 +13,7 @@ using Yetibyte.Twitch.TwitchNx.Styling;
 
 namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 {
-    [DefaultPane("MainBottom")]
-    public class CommandQueueViewModel : ToolViewModel
+    public abstract class CommandQueueViewModelBase : ToolViewModel
     {
         public class CommandQueueItemViewModel : ObservableObject
         {
@@ -29,11 +28,12 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
 
         }
 
-        private readonly CommandReceiver _commandReceiver;
+        protected readonly CommandReceiver _commandReceiver;
 
-        private readonly ObservableCollection<CommandQueueItemViewModel> _queueItems = new ObservableCollection<CommandQueueItemViewModel>();
+        protected readonly ObservableCollection<CommandQueueItemViewModel> _queueItems = new ObservableCollection<CommandQueueItemViewModel>();
 
-        private readonly RelayCommand _clearCommand;
+        protected readonly RelayCommand _clearCommand;
+
 
         private System.Drawing.Color _backgroundColor = System.Drawing.Color.LimeGreen;
         private System.Drawing.Color _foregroundColor = System.Drawing.Color.Black;
@@ -64,7 +64,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             get => _backgroundColor;
             set
             {
-                _backgroundColor = value; 
+                _backgroundColor = value;
                 OnPropertyChanged();
             }
         }
@@ -79,15 +79,25 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             }
         }
 
-        public CommandQueueViewModel(CommandReceiver commandReceiver) : base("Command Queue")
-        {
+        public CommandQueueViewModelBase(string toolName, CommandReceiver commandReceiver) : base(toolName)
+        { 
             _commandReceiver = commandReceiver;
 
+            _clearCommand = new RelayCommand(ExecuteClearCommand);
+        }
+
+        protected abstract void ExecuteClearCommand();
+    }
+
+    [DefaultPane("MainBottom")]
+    public class CommandQueueViewModel : CommandQueueViewModelBase
+    {
+
+        public CommandQueueViewModel(CommandReceiver commandReceiver) : base("Command Queue", commandReceiver)
+        {
             _commandReceiver.QueueItemAdded += _commandReceiver_QueueItemAdded;
             _commandReceiver.QueueItemRemoved += _commandReceiver_QueueItemRemoved;
             _commandReceiver.QueueItemUpdated += _commandReceiver_QueueItemUpdated;
-
-            _clearCommand = new RelayCommand(_commandReceiver.ClearQueue);
         }
 
         private void _commandReceiver_QueueItemUpdated(object? sender, CommandReceiver.QueueItemEventArgs e)
@@ -102,7 +112,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         {
             if (_queueItems.FirstOrDefault(qi => qi.QueueItem == e.QueueItem) is CommandQueueItemViewModel itemVm)
             {
-                App.Current.Dispatcher.Invoke(() => _queueItems.Remove(itemVm));
+                System.Windows.Application.Current.Dispatcher.Invoke(() => _queueItems.Remove(itemVm));
             }
         }
 
@@ -110,8 +120,47 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         {
             CommandQueueItemViewModel commandQueueItemViewModel = new CommandQueueItemViewModel(e.QueueItem);
 
-            App.Current.Dispatcher.Invoke(() => _queueItems.Add(commandQueueItemViewModel));
-            
+            System.Windows.Application.Current.Dispatcher.Invoke(() => _queueItems.Add(commandQueueItemViewModel));
+
         }
+
+        protected override void ExecuteClearCommand() => _commandReceiver.ClearQueue();
+
+    }
+
+    [DefaultPane("MainBottom")]
+    public class CommandHistoryViewModel : CommandQueueViewModelBase
+    {
+        public CommandHistoryViewModel(CommandReceiver commandReceiver) : base("Command History", commandReceiver)
+        {
+            _commandReceiver.QueueItemAddedToHistory += _commandReceiver_QueueItemAddedToHistory;
+            _commandReceiver.QueueItemRemovedFromHistory += _commandReceiver_QueueItemRemovedFromHistory;
+            _commandReceiver.QueueItemUpdated += _commandReceiver_QueueItemUpdated;
+        }
+
+        private void _commandReceiver_QueueItemRemovedFromHistory(object? sender, CommandReceiver.QueueItemEventArgs? e)
+        {
+            if (_queueItems.FirstOrDefault(qi => qi.QueueItem == e.QueueItem) is CommandQueueItemViewModel itemVm)
+            {
+                System.Windows.Application.Current.Dispatcher.Invoke(() => _queueItems.Remove(itemVm));
+            }
+        }
+
+        private void _commandReceiver_QueueItemAddedToHistory(object? sender, CommandReceiver.QueueItemEventArgs? e)
+        {
+            CommandQueueItemViewModel commandQueueItemViewModel = new CommandQueueItemViewModel(e.QueueItem);
+
+            System.Windows.Application.Current.Dispatcher.Invoke(() => _queueItems.Add(commandQueueItemViewModel));
+        }
+
+        private void _commandReceiver_QueueItemUpdated(object? sender, CommandReceiver.QueueItemEventArgs e)
+        {
+            if (_queueItems.FirstOrDefault(qi => qi.QueueItem == e.QueueItem) is CommandQueueItemViewModel itemVm)
+            {
+                itemVm.NotifyPropertyChanged();
+            }
+        }
+
+        protected override void ExecuteClearCommand() => _commandReceiver.ClearHistory();
     }
 }
