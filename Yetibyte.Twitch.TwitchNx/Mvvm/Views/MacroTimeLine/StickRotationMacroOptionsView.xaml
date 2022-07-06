@@ -7,31 +7,41 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="128" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="30" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="4" />
-            <RowDefinition Height="30" />
-        </Grid.RowDefinitions>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
 
-        <Label Grid.Row="0" Grid.Column="0" Content="Start Position:" />
-        <ComboBox Grid.Row="0" Grid.Column="1" 
-                  SelectedItem="{Binding Path=SelectedStartDirection, UpdateSourceTrigger=PropertyChanged}"
-                  DisplayMemberPath="Name"
-                  ItemsSource="{Binding StickDirections}" />
+            <Grid Margin="4,4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="128" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="4" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                </Grid.RowDefinitions>
 
-        <Label Grid.Row="1" Grid.Column="0" Content="End Position:" />
-        <ComboBox Grid.Row="1" Grid.Column="1" 
-                  SelectedItem="{Binding Path=SelectedEndDirection, UpdateSourceTrigger=PropertyChanged}"
-                  DisplayMemberPath="Name"
-                  ItemsSource="{Binding StickDirections}" />
+                <Label Grid.Row="0" Grid.Column="0" Content="Start Position:" />
+                <ComboBox Grid.Row="0" Grid.Column="1" 
+                          SelectedItem="{Binding Path=SelectedStartDirection, UpdateSourceTrigger=PropertyChanged}"
+                          DisplayMemberPath="Name"
+                          ItemsSource="{Binding StickDirections}" />
 
-        <Label Grid.Row="3" Grid.Column="0" Content="Counter-Clockwise:" />
-        <CheckBox Grid.Row="3" Grid.Column="1" IsChecked="{Binding Path=IsCounterClockwise, UpdateSourceTrigger=PropertyChanged}" />
+                <Label Grid.Row="1" Grid.Column="0" Content="End Position:" />
+                <ComboBox Grid.Row="1" Grid.Column="1" 
+                          SelectedItem="{Binding Path=SelectedEndDirection, UpdateSourceTrigger=PropertyChanged}"
+                          DisplayMemberPath="Name"
+                          ItemsSource="{Binding StickDirections}" />
 
+                <Label Grid.Row="3" Grid.Column="0" Content="Counter-Clockwise:" />
+                <CheckBox Grid.Row="3" Grid.Column="1" IsChecked="{Binding Path=IsCounterClockwise, UpdateSourceTrigger=PropertyChanged}" />
+
+                <Label  Grid.Row="4" Grid.Column="0" Content="Pressure:" />
+                <Slider Grid.Row="4" Grid.Column="1" Value="{Binding Pressure}" Minimum="{Binding MinPressure}" Maximum="{Binding MaxPressure}" />
+
+            </Grid>
+
+        </ScrollViewer>
     </Grid>
 </UserControl>

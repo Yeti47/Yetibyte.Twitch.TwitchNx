@@ -68,6 +68,8 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros
         [Newtonsoft.Json.JsonIgnore]
         public ControllerInputType ControllerInputType => ControllerInputType.Stick;
 
+        public float Pressure { get; set; } = 1f;
+
         public StickRotationMacroInstruction(ControllerStickDirection startDirection, ControllerStickDirection endDirection, ControllerStick stick = ControllerStick.Left)
         {
             StartDirection = startDirection;
@@ -82,7 +84,7 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros
 
         public IEnumerator<IControllerInput> GetEnumerator()
         {
-            foreach (var stepDirectionInput in Steps.Select(s => new FixedStickDirectionInput { Stick = Stick, StickDirection = s }))
+            foreach (var stepDirectionInput in Steps.Select(s => new FixedStickDirectionInput { Stick = Stick, StickDirection = s, Pressure = Pressure }))
             {
                 yield return stepDirectionInput;
             }

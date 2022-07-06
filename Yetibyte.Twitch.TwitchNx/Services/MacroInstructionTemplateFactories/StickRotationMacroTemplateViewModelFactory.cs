@@ -39,13 +39,15 @@ namespace Yetibyte.Twitch.TwitchNx.Services.MacroInstructionTemplateFactories
                             Core.CommandModel.ControllerStick.Left
                         )
                         {
-                            IsCounterClockwise = (opt as StickRotationMacroOptionsViewModel)?.IsCounterClockwise ?? false
+                            IsCounterClockwise = (opt as StickRotationMacroOptionsViewModel)?.IsCounterClockwise ?? false,
+                            Pressure = (opt as StickRotationMacroOptionsViewModel)?.NormalizedPressure ?? 1f
                         },
                         "Images/Macros/stick_L/Joy_L_PreView.png",
                         static mi => new StickRotationMacroOptionsViewModel(
                             (mi as StickRotationMacroInstruction)?.StartDirection ?? Core.CommandModel.ControllerStickDirection.North,
                             (mi as StickRotationMacroInstruction)?.EndDirection ?? Core.CommandModel.ControllerStickDirection.North,
-                            (mi as StickRotationMacroInstruction)?.IsCounterClockwise ?? false
+                            (mi as StickRotationMacroInstruction)?.IsCounterClockwise ?? false,
+                            (mi as StickRotationMacroInstruction)?.Pressure ?? 1f
                         )
                     )
                 { ToolTip = "Left Stick Rotation" };
