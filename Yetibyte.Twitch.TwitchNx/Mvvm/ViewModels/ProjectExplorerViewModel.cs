@@ -100,6 +100,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         private readonly RelayCommand _deleteCommandSetupCommand;
 
         private readonly RelayCommand _newCooldownGroupCommand;
+        private readonly RelayCommand _deleteCooldownGroupCommand;
 
         private readonly IProjectManager _projectManager;
         private readonly IDocumentManager _documentManager;
@@ -128,6 +129,7 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         public ICommand DeleteCommandSetupCommand => _deleteCommandSetupCommand;
 
         public ICommand NewCooldownGroupCommand => _newCooldownGroupCommand;
+        public ICommand DeleteCooldownGroupCommand => _deleteCooldownGroupCommand;
 
         public IEnumerable<CommandViewModel> Commands => _commands;
         public IEnumerable<CooldownGroupViewModel> CooldownGroups => _cooldownGroups;
@@ -145,12 +147,35 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             _deleteCommandSetupCommand = new RelayCommand(ExecuteDeleteCommandSetupCommand, CanExecuteDeleteCommandSetupCommand);
 
             _newCooldownGroupCommand = new RelayCommand(ExecuteNewCooldownGroupCommand, CanExecuteNewCooldownGroupCommand);
+            _deleteCooldownGroupCommand = new RelayCommand(ExecuteDeleteCooldownGroupCommand, CanExecuteDeleteCooldownGroupCommand);
 
             _commands.CollectionChanged += commands_CollectionChanged;
             _cooldownGroups.CollectionChanged += cooldownGroups_CollectionChanged;
             
         }
 
+        private bool CanExecuteDeleteCooldownGroupCommand() => SelectedCooldownGroup is not null && _projectManager.IsProjectOpen;
+
+        private void ExecuteDeleteCooldownGroupCommand()
+        {
+            if (_projectManager.CurrentProject is null || SelectedCooldownGroup is null)
+                return;
+
+            CooldownGroup? cooldownGroup = _projectManager.CurrentProject.CommandSettings.CooldownGroups.FirstOrDefault(c => c.Name.Equals(SelectedCooldownGroup.Name, StringComparison.OrdinalIgnoreCase));
+
+            if (cooldownGroup != null)
+            {
+                SelectedCooldownGroup = null;
+
+                if (_documentManager.IsDocumentOpen(typeof(CooldownGroup), cooldownGroup.Name))
+                {
+                    _documentManager.CloseDocument(typeof(CooldownGroup), cooldownGroup.Name);
+                }
+
+                _projectManager.CurrentProject.CommandSettings.RemoveCooldownGroup(cooldownGroup);
+
+            }
+        }
 
         private bool CanExecuteNewCooldownGroupCommand()
         {

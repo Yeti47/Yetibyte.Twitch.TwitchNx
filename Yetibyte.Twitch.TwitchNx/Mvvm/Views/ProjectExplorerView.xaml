@@ -68,6 +68,7 @@
                 <ListBox.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="New" Command="{Binding Path=NewCooldownGroupCommand}" />
+                        <MenuItem Header="Delete" Command="{Binding Path=DeleteCooldownGroupCommand}" />
                     </ContextMenu>
                 </ListBox.ContextMenu>
 
