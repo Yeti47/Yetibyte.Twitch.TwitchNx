@@ -36,11 +36,13 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
         private MacroTimeLineViewModelFactory _macroTimeLineViewModelFactory;
         private readonly RelayCommand _closeProjectCommand;
         private readonly RelayCommand<ToolViewModel> _openViewCommand;
+        private readonly RelayCommand _exitAppCommand;
 
         private bool _isProjectOpen;
 
         public ICommand CloseProjectCommand => _closeProjectCommand;
         public ICommand OpenViewCommand => _openViewCommand;
+        public ICommand ExitAppCommand => _exitAppCommand;
 
         public SwitchConnectionViewModel SwitchConnectionViewModel
         {
@@ -151,6 +153,8 @@ namespace Yetibyte.Twitch.TwitchNx.Mvvm.ViewModels
             _closeProjectCommand = new RelayCommand(() => _projectManager.CloseProject(), () => _projectManager.IsProjectOpen);
 
             _openViewCommand = new RelayCommand<ToolViewModel>(ExecuteOpenViewCommand, tvm => _projectManager.IsProjectOpen);
+
+            _exitAppCommand = new RelayCommand(System.Windows.Application.Current.Shutdown);
         }
 
         private void _sessionManager_SessionStopped(object? sender, SessionStoppedEventArgs e)

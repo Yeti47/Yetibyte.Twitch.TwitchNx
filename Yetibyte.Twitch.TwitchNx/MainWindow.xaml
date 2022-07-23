@@ -38,6 +38,8 @@
                     <MenuItem x:Name="menuSaveProject" Click="menuSaveProject_Click"   Header="Save" />
                     <MenuItem x:Name="menuSaveProjectAs" Click="menuSaveProjectAs_Click" Header="Save As..." />
                     <MenuItem x:Name="menuCloseProject" Command="{Binding Path=CloseProjectCommand}" Header="Close" />
+                    <Separator/>
+                    <MenuItem x:Name="menuExitApp" Command="{Binding Path=ExitAppCommand}" Header="Exit" />
                 </MenuItem>
                 <!--<MenuItem Header="Edit">
 
