@@ -4,7 +4,7 @@
     {
         public ISwitchBridgeClient CreateClient(SwitchBridgeClientConnectionSettings connectionSettings)
         {
-            return new SwitchBridgeClient(connectionSettings);
+            return new SwitchBridgeClient(connectionSettings.Address, connectionSettings.Port);
         }
     }
 }

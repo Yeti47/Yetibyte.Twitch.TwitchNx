@@ -13,8 +13,6 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
         event EventHandler? Connected;
         event EventHandler? Disconnected;
 
-        SwitchBridgeClientConnectionSettings ConnectionSettings { get; set; }
-
         bool IsConnected { get; }
 
         bool Connect();

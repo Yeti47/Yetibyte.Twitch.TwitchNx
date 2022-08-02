@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -11,6 +12,8 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros
     [Serializable]
     public class Macro
     {
+        private const string TIME_NUMERIC_REGEX = @"\d+(\.\d+)?";
+
         private const string VALIDATION_REGEX = @"^(\s*(([ABLRXY]|(Z[LR])|(DPAD_UP)|(DPAD_DOWN)|(DPAD_LEFT)|(DPAD_RIGHT)|(HOME)|(CAPTURE)|(PLUS)|(MINUS)|(JCL_SR)|(JCL_SL)|(JCR_SR)|(JCR_SL)|([LR]_STICK_PRESS)|([LR]_STICK@([+-][0-1][0-9][0-9]){2}))\s+)+\d(\.\d+)?s\s*(\n|$))*$";
         private const int TIME_SLICE_MIN_TICKS = 5;
 
@@ -29,6 +32,17 @@ namespace Yetibyte.Twitch.TwitchNx.Core.CommandModel.Macros
         public static bool Validate(string macroText)
         {
             return Regex.IsMatch(macroText, VALIDATION_REGEX);
+        }
+
+        public static IEnumerable<string> GetLines(string macroText) => macroText.Replace("\r", string.Empty).Split("\n");
+
+        public static float GetMacroDuration(string macroText)
+        {
+            IEnumerable<string> macroLines = GetLines(macroText);
+
+            CultureInfo formatCulture = new CultureInfo("en-US");
+
+            return macroLines.SelectMany(ml => Regex.Matches(ml, TIME_NUMERIC_REGEX)).Sum(m => Convert.ToSingle(m.Value, formatCulture));
         }
 
         public void Clear() => _timeTracks.Clear();

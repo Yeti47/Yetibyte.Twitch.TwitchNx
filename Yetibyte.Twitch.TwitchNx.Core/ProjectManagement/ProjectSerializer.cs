@@ -22,6 +22,9 @@ namespace Yetibyte.Twitch.TwitchNx.Core.ProjectManagement
                 CommandSettings = project.CommandSettings,
                 SwitchBridgeAddress = project.SwitchBridgeClientConnectionSettings.Address,
                 SwitchBridgePort = project.SwitchBridgeClientConnectionSettings.Port,
+                IsSwitchBridgeClientMockingEnabled = project.SwitchBridgeClientConnectionSettings.IsMockingEnabled,
+                MockConnectionTimeSeconds = project.SwitchBridgeClientConnectionSettings.MockConnectionTimeSeconds,
+                MockDisconnectionTimeSeconds = project.SwitchBridgeClientConnectionSettings.MockDisconnectionTimeSeconds,
                 CommandSourceFactory = project.CommandSourceFactory?.Id ?? string.Empty
             };
 
@@ -51,7 +54,12 @@ namespace Yetibyte.Twitch.TwitchNx.Core.ProjectManagement
             SwitchBridge.SwitchBridgeClientConnectionSettings switchBridgeClientConnectionSettings = new SwitchBridge.SwitchBridgeClientConnectionSettings(
                 projectData.SwitchBridgeAddress,
                 projectData.SwitchBridgePort
-            );
+            )
+            {
+                IsMockingEnabled = projectData.IsSwitchBridgeClientMockingEnabled,
+                MockConnectionTimeSeconds = projectData.MockConnectionTimeSeconds,
+                MockDisconnectionTimeSeconds = projectData.MockDisconnectionTimeSeconds
+            };
 
             Project project = new Project(projectData.Name, projectData.CommandSettings, switchBridgeClientConnectionSettings);
 

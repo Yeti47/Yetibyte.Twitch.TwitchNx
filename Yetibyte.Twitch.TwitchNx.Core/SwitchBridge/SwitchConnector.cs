@@ -63,8 +63,6 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
 
         public bool IsConnectedToSwitch => !string.IsNullOrWhiteSpace(SwitchAddress);
 
-        public SwitchBridgeClientConnectionSettings ConnectionSettings => _client?.ConnectionSettings ?? SwitchBridgeClientConnectionSettings.CreateEmpty();
-
         #endregion
 
         #region Events

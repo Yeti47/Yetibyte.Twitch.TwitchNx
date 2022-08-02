@@ -6,6 +6,9 @@
 
         private string _address;
         private int _port;
+        private bool _isMockingEnabled = false;
+        private float _mockConnectionTimeSeconds = 1f;
+        private float _mockDisconnectionTimeSeconds = 1f;
 
         public string Address
         {
@@ -29,6 +32,36 @@
                     _port = value;
                     OnSettingsChanged();
                 }
+            }
+        }
+
+        public bool IsMockingEnabled
+        {
+            get => _isMockingEnabled;
+            set
+            {
+                _isMockingEnabled = value;
+                OnSettingsChanged();
+            }
+        }
+
+        public float MockConnectionTimeSeconds
+        {
+            get => _mockConnectionTimeSeconds;
+            set
+            {
+                _mockConnectionTimeSeconds = value;
+                OnSettingsChanged();
+            }
+        }
+
+        public float MockDisconnectionTimeSeconds
+        {
+            get => _mockDisconnectionTimeSeconds;
+            set
+            {
+                _mockDisconnectionTimeSeconds = value;
+                OnSettingsChanged();
             }
         }
 

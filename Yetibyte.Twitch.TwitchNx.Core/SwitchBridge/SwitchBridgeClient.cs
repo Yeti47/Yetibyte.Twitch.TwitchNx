@@ -14,18 +14,20 @@ namespace Yetibyte.Twitch.TwitchNx.Core.SwitchBridge
 
         public bool IsConnected => _webSocket.IsRunning;
 
-        public string Url => $"ws://{ConnectionSettings.Address}:{ConnectionSettings.Port}";
+        public string Address { get; set; } = string.Empty;
+        public int Port { get; set; } = 4789;
 
-        public SwitchBridgeClientConnectionSettings ConnectionSettings { get; set; }
+        public string Url => $"ws://{Address}:{Port}";
 
 
         public event EventHandler<SwitchBridgeMessageReceivedEventArgs>? MessageReceived;
         public event EventHandler? Connected;
         public event EventHandler? Disconnected;
 
-        public SwitchBridgeClient(SwitchBridgeClientConnectionSettings connectionSettings)
+        public SwitchBridgeClient(string address, int port = 4769)
         {
-            ConnectionSettings = connectionSettings;
+            Address = address;
+            Port = port;
 
             _webSocket = new WebsocketClient(new Uri(Url));
 
